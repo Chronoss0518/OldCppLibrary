@@ -1,0 +1,31 @@
+#pragma once
+#ifndef Ch_D3D9_Sp_h
+#define Ch_D3D9_Sp_h
+
+#include"../../CGameIncludeFile.h"
+
+
+typedef class ChSprite {
+private:
+
+	LPD3DXSPRITE Sp;
+	LPDIRECT3DDEVICE9 Device;
+
+public:
+
+	///////////////////////////////////////////////////////////////////////////////////
+
+	ChSprite(const LPDIRECT3DDEVICE9 _d);
+
+	///////////////////////////////////////////////////////////////////////////////////
+
+	~ChSprite();
+
+	///////////////////////////////////////////////////////////////////////////////////
+
+	void DrawSprite(LpChTex _tex,const D3DXMATRIX *_Mat);
+
+}ChSp,*LPChSp;
+
+#endif
+//CopyRight Chronoss0518 2018/08

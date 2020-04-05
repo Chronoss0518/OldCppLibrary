@@ -1,0 +1,41 @@
+#ifdef _WINDOWS_
+
+#ifndef Ch_Win_SubWin_h
+#define Ch_Win_SubWin_h
+
+#include"../WinBaseWind/ChWinBaseWind.h"
+
+namespace ChSystem
+{
+	class Windows;
+}
+
+namespace ChWin
+{
+
+	class SubWind :public WindObject
+	{
+
+	public:
+
+		///////////////////////////////////////////////////////////////////////////////////////
+		//ConstructerDestructer//
+
+		SubWind(const HWND& _WindHndl) { Init(_WindHndl); };
+
+		///////////////////////////////////////////////////////////////////////////////////////
+
+		void Create(
+			const std::string& _Title
+			, const int _x
+			, const int _y
+			, const int _w
+			, const int _h);
+
+	};
+
+}
+
+#endif
+
+#endif

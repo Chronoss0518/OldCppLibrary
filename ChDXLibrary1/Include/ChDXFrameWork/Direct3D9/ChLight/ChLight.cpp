@@ -1,0 +1,96 @@
+
+#include"../../CGameIncludeFile.h"
+
+#ifdef CopyRight_Chronoss_2018Y_08M
+
+///////////////////////////////////////////////////////////////////////////////////////
+//ChLightメソッド
+///////////////////////////////////////////////////////////////////////////////////////
+
+ChLight::ChLight(LPDIRECT3DDEVICE9 _Dv) 
+{
+	Device = _Dv;
+	PointFlg = NULL;
+	Device->SetRenderState(D3DRS_LIGHTING, TRUE);
+	Device->SetRenderState(D3DRS_SPECULARENABLE, FALSE);
+	Device->SetRenderState(D3DRS_AMBIENT, FALSE);
+
+	///////////////////////////////////////////////////////////////////////////////////////
+	//TypeSet(光源の種類)
+
+	Light.Type = D3DLIGHT_DIRECTIONAL;
+
+	///////////////////////////////////////////////////////////////////////////////////////
+	//DirectionSet(ライトの角度)
+
+	Light.Direction = D3DXVECTOR3(1.0f, -1.0f, 0.0f);
+
+	///////////////////////////////////////////////////////////////////////////////////////
+	//DiffuserSet(光源色)
+
+	Light.Diffuse.a = 1.0f;
+	Light.Diffuse.r = 1.0f;
+	Light.Diffuse.g = 1.0f;
+	Light.Diffuse.b = 1.0f;
+
+	///////////////////////////////////////////////////////////////////////////////////////
+	//RangeSet(ライトの範囲)
+
+	Light.Range = 25.0f;
+
+	///////////////////////////////////////////////////////////////////////////////////////
+	//SpecularSet(光沢効果)
+
+	Light.Specular.a = 0.0f;
+	Light.Specular.r = 1.0f;
+	Light.Specular.g = 1.0f;
+	Light.Specular.b = 1.0f;
+
+	///////////////////////////////////////////////////////////////////////////////////////
+	//AnmbientSet(環境光効果)
+
+	Light.Ambient.a = 0.0f;
+	Light.Ambient.r = 1.0f;
+	Light.Ambient.g = 1.0f;
+	Light.Ambient.b = 1.0f;
+
+	///////////////////////////////////////////////////////////////////////////////////////
+	//AttenuatSet(長距離へ行った時のライトの強さ計算)
+
+	Light.Attenuation0 = 0.0f;
+	Light.Attenuation1 = 2.0f;
+	Light.Attenuation2 = 0.0f;
+
+	///////////////////////////////////////////////////////////////////////////////////////
+	//PositionSet(Point,SpotLight時のライトの位置)
+
+	Light.Position = D3DXVECTOR3(0.0f, 5.0f, 0.0f);
+
+	///////////////////////////////////////////////////////////////////////////////////////
+	//RegisterLight
+
+	Device->SetLight(0, &Light);
+	Device->LightEnable(0, TRUE);
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
+void ChLight::SetType(unsigned char _LightTypeNum) 
+{
+	if (_LightTypeNum < 4 || _LightTypeNum == 0)return;
+	switch (_LightTypeNum) 
+	{
+	case 1:
+		Light.Type = D3DLIGHT_POINT;
+		return;
+	case 2:
+		Light.Type = D3DLIGHT_SPOT;
+		return;
+	case 3:
+		Light.Type = D3DLIGHT_DIRECTIONAL;
+		return;
+	}
+}
+
+#endif

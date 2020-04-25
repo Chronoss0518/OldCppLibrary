@@ -4,7 +4,6 @@
 #include"../ChTexture/ChBaseTexture.h"
 
 #include"ChModel.h"
-#include"ChXFileMesh.h"
 
 using namespace ChCpp;
 

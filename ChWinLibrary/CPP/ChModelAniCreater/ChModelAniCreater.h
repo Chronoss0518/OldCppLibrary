@@ -14,10 +14,7 @@ namespace ChCpp
 
 		///////////////////////////////////////////////////////////////////////////////////////
 
-		inline std::string& ModelNameIns()
-		{
-			return Model->ModelName;
-		}
+		std::string& ModelNameIns();
 
 		///////////////////////////////////////////////////////////////////////////////////////
 
@@ -33,7 +30,7 @@ namespace ChCpp
 
 	private:
 
-		inline void Init(const ModelObject* _Model) { Model = const_cast<ModelObject*>(_Model); }
+		void Init(const ModelObject* _Model);
 
 		ModelObject* Model;
 

@@ -1,7 +1,7 @@
 #include"../../BaseIncluder/ChBase.h"
 
 #include"../ChModel/ChModel.h"
-#include"ChModelAniCreater.h"
+#include"ChAnimationCreater.h"
 
 using namespace ChCpp;
 
@@ -9,14 +9,14 @@ using namespace ChCpp;
 //ModelAniCreater Method//
 ///////////////////////////////////////////////////////////////////////////////////////
 
-void ModelAniCreater::Init(const ModelObject* _Model)
+void AnimationCreater::Init(ModelObject* _Model)
 {
-	Model = const_cast<ModelObject*>(_Model); 
+	Model = _Model;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-std::string& ModelAniCreater::ModelNameIns()
+std::string& AnimationCreater::ModelNameIns()
 {
 	return Model->ModelName;
 }

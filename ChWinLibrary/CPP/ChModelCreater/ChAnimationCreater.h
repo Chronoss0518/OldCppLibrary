@@ -7,7 +7,7 @@ namespace ChCpp
 
 	class ModelObject;
 
-	class ModelAniCreater
+	class AnimationCreater
 	{
 
 	public:
@@ -30,7 +30,7 @@ namespace ChCpp
 
 	private:
 
-		void Init(const ModelObject* _Model);
+		void Init(ModelObject* _Model);
 
 		ModelObject* Model;
 

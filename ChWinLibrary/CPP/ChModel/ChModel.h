@@ -4,7 +4,7 @@
 namespace ChCpp
 {
 	class ModelCreater;
-	class ModelAniCreater;
+	class AnimationCreater;
 
 	 typedef class ModelObject :public  ChCpp::ChCp::InitPack
 	{
@@ -147,7 +147,7 @@ namespace ChCpp
 		void OutModelFile(const std::string& _FilePath);
 
 		friend ModelCreater;
-		friend ModelAniCreater;
+		friend AnimationCreater;
 
 	protected:
 

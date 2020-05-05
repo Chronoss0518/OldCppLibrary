@@ -4,6 +4,11 @@
 #include"ChModelCreater.h"
 #include"ChCMXFileMesh.h"
 
+void ChCpp::ModelCreater::Init(ModelObject *_Model)
+{
+	Model = _Model;
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////////////
 //ChXFileMesh Method//

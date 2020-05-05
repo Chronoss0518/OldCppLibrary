@@ -38,7 +38,7 @@ namespace ChCpp
 
 	private:
 
-		inline void Init(const ModelObject* _Model) { Model = const_cast<ModelObject*>(_Model); }
+		inline void Init(ModelObject* _Model);
 
 		ModelObject* Model;
 

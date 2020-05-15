@@ -37,6 +37,7 @@
 #include"CPP/ChTexture/ChBaseTexture.h"
 #include"CPP/ChNetWork/ChNetWork.h"
 
+#include"CPP/ChModelCreater/ChCMXFileMesh.h"
 
 #include"BaseSystem/ChBaseSystem/ChBaseSystem.h"
 

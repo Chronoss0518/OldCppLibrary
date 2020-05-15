@@ -63,15 +63,3 @@ void Model::Release()
 //}template void Model::SetMyModelCreater<int>(const typename std::enable_if<!std::is_base_of<ModelCreater, int>::value, std::string&>::type _ModelName);
 
 ///////////////////////////////////////////////////////////////////////////////////////
-
-void Model::CreateModel(const std::string& _FilePath)
-{
-
-}
-
-///////////////////////////////////////////////////////////////////////////////////////
-
-void Model::OutModelFile(const std::string& _FilePath)
-{
-
-}

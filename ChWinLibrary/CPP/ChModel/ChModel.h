@@ -1,10 +1,12 @@
 #ifndef Ch_CPP_Model_h
 #define Ch_CPP_Model_h
 
+#include"../ChModelCreater/ChModelCreater.h"
+#include"../ChModelCreater/ChAnimationCreater.h"
+
+
 namespace ChCpp
 {
-	class ModelCreater;
-	class AnimationCreater;
 
 	 typedef class ModelObject :public  ChCpp::ChCp::InitPack
 	{
@@ -125,7 +127,6 @@ namespace ChCpp
 			CreaterList[_ModelName] =
 				[](const std::string& _FineName)->ChPtr::Shared<ModelCreater>
 			{
-
 				return ChPtr::Make_S<T>();
 			};
 
@@ -137,14 +138,23 @@ namespace ChCpp
 		///////////////////////////////////////////////////////////////////////////////////////
 		//InsFunction//
 
+		///////////////////////////////////////////////////////////////////////////////////////
+		
+		template<class T>
+		auto CreateModel(const std::string& _FilePath)->typename std::enable_if<
+			std::is_base_of<ModelCreater,T>::value,void>::type
+		{
+
+		}
 
 		///////////////////////////////////////////////////////////////////////////////////////
 
-		void CreateModel(const std::string& _FilePath);
+		template<class T>
+		auto OutModelFile(const std::string& _FilePath)->typename std::enable_if<
+			std::is_base_of<ModelCreater, T>::value, void>::type
+		{
 
-		///////////////////////////////////////////////////////////////////////////////////////
-
-		void OutModelFile(const std::string& _FilePath);
+		}
 
 		friend ModelCreater;
 		friend AnimationCreater;

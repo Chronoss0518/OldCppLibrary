@@ -15,12 +15,6 @@
 
 #include"BaseIncluder/ChBase.h"
 
-#include"BasePack/ChStd.h"
-#include"BasePack/ChPtr.h"
-#include"BasePack/ChFIO.h"
-#include"BasePack/ChCmd.h"
-#include"BasePack/ChMath.h"
-
 #include"CPP/ChClassParts/ChCPInitializePack.h"
 #include"CPP/ChClassParts/ChCPClassNameGetter.h"
 

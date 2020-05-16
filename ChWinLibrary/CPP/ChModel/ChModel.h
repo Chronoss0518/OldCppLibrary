@@ -161,16 +161,8 @@ namespace ChCpp
 
 	protected:
 
-		ChPtr::Shared<ModelCreater>Creater = nullptr;
-
 		std::vector<ChPtr::Shared<Frame>>ModelData;
 		std::string ModelName;
-
-		static std::map<
-			std::string
-			,std::function
-			<ChPtr::Shared<ModelCreater>(const std::string& _FineName)>
-		>CreaterList;
 
 		std::vector<std::string>AnimatorNames;
 
@@ -204,14 +196,14 @@ namespace ChCpp
 			 ChVec3 Scal;
 		 };
 
-		 struct Animation
+		 struct AnimationData
 		 {
 			 AniDatas Start;
 			 AniDatas End;
 			 unsigned long AnimationFrameCount;
 		 };
 
-		 std::vector<ChPtr::Shared<Animation>>Animation;
+		 std::vector<ChPtr::Shared<AnimationData>>Animation;
 
 	 };
 

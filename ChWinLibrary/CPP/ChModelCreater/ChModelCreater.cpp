@@ -19,7 +19,7 @@ void ChCpp::CMXFileModel::CreateMesh(const std::string& _FilePath, ModelObject* 
 	if (_FilePath.size() <= 0)return;
 	if (_FilePath.rfind(".") == std::string::npos)return;
 
-	std::string Text;
+	ChFIO::FileObject Text;
 
 	{
 
@@ -27,26 +27,26 @@ void ChCpp::CMXFileModel::CreateMesh(const std::string& _FilePath, ModelObject* 
 
 		Files.FileOpen(_FilePath);
 
-		Text = Files.FileRead();
+		Files.FileRead(Text);
 
 		Files.FileClose();
 
-		if (Text.size() <= 0)
+		if (Text.GetText().length() <= 0)
 		{
 			std::remove(_FilePath.c_str());
 			return;
 		}
 	}
 
-	if (Text.find("xof") != 0)return;
+	if (Text.GetText().find("xof") != 0)return;
 
-	size_t TextPos = Text.find("xof");
+	size_t TextPos = Text.GetText().find("xof");
 
 	{
 		std::string Tmp = "template Frame";
-		size_t TmpLen = Text.find(Tmp);
+		size_t TmpLen = Text.GetText().find(Tmp);
 
-		if (TmpLen != Text.npos) {
+		if (TmpLen != Tmp.npos) {
 			TextPos = TmpLen;
 			TextPos += Tmp.length();
 		}
@@ -67,7 +67,7 @@ void ChCpp::CMXFileModel::OutMeshFile(const std::string& _FilePath, const ModelO
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-void ChCpp::CMXFileModel::SetFrame(size_t& _TextPos, const std::string& _Text)
+void ChCpp::CMXFileModel::SetFrame(size_t& _TextPos, const ChFIO::FileObject& _Text)
 {
 
 	{
@@ -81,14 +81,14 @@ void ChCpp::CMXFileModel::SetFrame(size_t& _TextPos, const std::string& _Text)
 
 			Tmp = "Frame ";
 
-			FrameTagTestPos = _Text.find(Tmp, _TextPos);
+			FrameTagTestPos = _Text.FindLine(Tmp, _TextPos);
 
-			if (FrameTagTestPos == std::string::npos)return;
+			if (FrameTagTestPos == 0)return;
 			FrameTagTestPos += Tmp.length();
 
 			Tmp = "FrameTransformMatrix {";
 
-			FrameTransformMatrixTagTest = _Text.find(Tmp, FrameTagTestPos);
+			FrameTransformMatrixTagTest = _Text.FindLine(Tmp, FrameTagTestPos);
 
 			if (FrameTagTestPos == std::string::npos)return;
 
@@ -98,9 +98,9 @@ void ChCpp::CMXFileModel::SetFrame(size_t& _TextPos, const std::string& _Text)
 
 			size_t Test;
 
-			Test = _Text.find("}", FrameTransformMatrixTagTest);
+			Test = _Text.FindLine("}", FrameTransformMatrixTagTest);
 
-			Tmp = _Text.substr(FrameTransformMatrixTagTest, Test + 1);
+			Tmp = _Text.SubStr(FrameTransformMatrixTagTest, Test + 1);
 
 			frame->BaseMat.Deserialize(Tmp);
 

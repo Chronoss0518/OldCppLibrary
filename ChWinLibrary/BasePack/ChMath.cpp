@@ -1,6 +1,4 @@
-
-#include"ChStd.h"
-#include"ChMath.h"
+#include"../BaseIncluder/ChBase.h"
 
 ///////////////////////////////////////////////////////////////////////////////////
 //ChVector4 Method//
@@ -191,6 +189,45 @@ std::string ChVec4::Serialize(
 	Tmp += _EndChar;
 
 	return Tmp;
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
+void ChVec4::Deserialize(
+	const ChFIO::FileObject& _Str
+	, const size_t _FPos
+	, const std::string& _CutChar
+	, const std::string& _EndChar)
+{
+
+	ChFIO::FileObject TmpStr = _Str.SubStrToFileObject(_FPos);
+
+	size_t TmpFPos = _FPos;
+
+	size_t Tmp = _FPos;
+
+	size_t EPos = TmpStr.FindLine(_EndChar, Tmp);
+
+	if (EPos == 0)EPos = TmpStr.LineCount();
+
+	for (unsigned char i = 0; i < 4; i++)
+	{
+		size_t Test = TmpStr.Find(_CutChar, Tmp);
+		if (Test > EPos)Test = EPos;
+		{
+			TmpFPos = Test;
+
+			std::string Num = TmpStr.SubStr(Tmp, TmpFPos - Tmp);
+
+			Val[i] = (float)std::atof(Num.c_str());
+			Tmp += Num.length();
+			Tmp += 1;
+
+		}
+
+		if (Test >= EPos)return;
+	}
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

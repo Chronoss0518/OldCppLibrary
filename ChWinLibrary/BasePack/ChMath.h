@@ -194,9 +194,6 @@ struct ChVector4 : public ChMath::ChVector4Base
 		, const std::string& _CutChar = ","
 		, const std::string& _EndChar = ";");
 
-	void Deserialize(
-		const ChFIO::FileObject& _Str, const size_t _FPos = 0, const std::string& _CutChar = ",", const std::string& _EndChar = ";");
-
 	///////////////////////////////////////////////////////////////////////////////////
 	//GetFunction//
 

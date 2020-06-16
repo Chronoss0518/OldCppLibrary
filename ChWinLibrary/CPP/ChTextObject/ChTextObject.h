@@ -8,14 +8,14 @@ namespace ChCpp
 	{
 	public:
 
-		std::string operator[](int _Index)
+		std::string operator[](size_t _Index)
 		{
 			if (FileText.size() <= _Index)return "";
 
 			return FileText[_Index];
 		}
 
-		std::string operator[](int _Index)const
+		std::string operator[](size_t _Index)const
 		{
 
 			if (FileText.size() <= _Index)return "";
@@ -30,7 +30,7 @@ namespace ChCpp
 		std::string GetText()const;
 
 		//Text‚©‚çˆês“Ç‚ÝŽæ‚é//
-		std::string GetTextLine(const unsigned int _Index = 0)const;
+		std::string GetTextLine(const size_t _Index = 0)const;
 
 		///////////////////////////////////////////////////////////////////////////////////////
 		//SetFunction//
@@ -103,7 +103,9 @@ namespace ChCpp
 
 		//Text‚Ì’†‚ÉŽw’è‚µ‚½•¶Žš—ñ‚ðæ“ª‚æ‚è’T‚µ//
 		//‰‚ß‚ÉŒ©‚Â‚¯‚½ˆÊ’u‚ðŽæ“¾//
-		unsigned long Find(const std::string& _FindStr, const size_t _StartPos = 0)const
+		unsigned long Find(
+			const std::string& _FindStr
+			, const size_t _StartPos = 0)const
 		{
 
 			std::string Str = GetText();

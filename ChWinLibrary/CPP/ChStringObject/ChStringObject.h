@@ -1,7 +1,11 @@
 #ifndef Ch_CPP_Str_h
 #define Ch_CPP_Str_h
 
-#include<Windows.h>
+#ifdef _Windows
+
+#pragma execution_character_set("UTF-8")
+
+#endif
 
 namespace ChCpp
 {
@@ -10,56 +14,57 @@ namespace ChCpp
 	{
 	public:
 
-		enum class LocalizeName : unsigned char
+		StringObject& operator = (const char* _Str);
+		StringObject& operator = (const std::string& _Str);
+		StringObject& operator = (const std::wstring& _Str);
+		StringObject& operator = (const StringObject _Str);
+
+		StringObject& operator +=(const char* _Str);
+		StringObject& operator +=(const std::string& _Str);
+		StringObject& operator +=(const std::wstring& _Str);
+		StringObject& operator +=(const StringObject& _Str);
+
+		StringObject& operator -=(const char* _Str);
+		StringObject& operator -=(const std::string& _Str);
+		StringObject& operator -=(const std::wstring& _Str);
+		StringObject& operator -=(const StringObject& _Str);
+
+		operator const char* ()const;
+		operator const std::string ()const;
+		operator const std::wstring ()const;
+
+		StringObject();
+		StringObject(const StringObject& _Str);
+		StringObject(const char* _Str);
+		StringObject(const std::string& _Str);
+		StringObject(const std::wstring& _Str);
+
+		size_t Length()const
 		{
-			USA, Count
-		};
-
-		enum class StringCode : unsigned char
-		{
-			UTF8 ,Ascii,ShiftJis,Unicode
-		};
-
-		StringObject()
-		{
-
-#ifdef _UNICODE
-
-			CodeType = StringCode::Unicode;
-
-#elif _WIN32
-
-			CodeType = StringCode::ShiftJis;
-
-#else
-
-			CodeType = StringCode::UTF8;
-#endif
+			size_t Tmp = 0;
+			while (*(text +Tmp) != '\0')
+			{
+				Tmp++;
+			}
+			return Tmp;
 		}
 
-		static void SetGlobalLocale();
+	protected:
 
-		static void SetLocal();
+		void textFree();
 
-		std::basic_string<char> ASC_To_UTF8(const std::basic_string<char>& _str);
-
-		std::basic_string<char> UTF8_To_ASC(const std::basic_string<char>& _str);
-
-		std::basic_string<char> UTF8_To_SJ(const std::basic_string<unsigned short>& _str);
-
-		std::basic_string<unsigned short> SJ_To_UTF8(const std::basic_string<char>& _str);
+		void setString(const char* _Str);
+		void setString(const wchar_t* _Str);
 
 	private:
 
+		char* text = nullptr;
 
-		static std::string localName[(unsigned char)LocalizeName::Count];
-
-		StringCode CodeType;
-
-
-		static ChStd::Bool InitFlgs;
 	};
 
+
+	using String = StringObject;
+	using Str = StringObject;
 };
 
 #endif

@@ -24,9 +24,9 @@ std::string FileObject::GetText()const
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-std::string FileObject::GetTextLine(const unsigned int _Index)const
+std::string FileObject::GetTextLine(const size_t _Index)const
 {
-	int Tmp = _Index + 1;
+	size_t Tmp = _Index + 1;
 	if (Tmp >= FileText.size())return "";
 
 	return FileText[Tmp];
@@ -80,7 +80,9 @@ void FileObject::SetTextLine(
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-unsigned long FileObject::FindLine(const std::string& _FindStr, const size_t _StartPos = 0)const
+unsigned long FileObject::FindLine(
+	const std::string& _FindStr
+	, const size_t _StartPos)const
 {
 
 	std::string Str = GetText();

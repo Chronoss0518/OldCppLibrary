@@ -25,11 +25,11 @@
 #include"CPP/ChBaseObject/ChBaseObject.h"
 #include"CPP/ChBaseObject/ChObjectManager.h"
 #include"CPP/ChMultiThread/ChMultiThread.h"
-#include"CPP/ChModel/ChModel.h"
+//#include"CPP/ChModel/ChModel.h"
 #include"CPP/ChTexture/ChBaseTexture.h"
 #include"CPP/ChNetWork/ChNetWork.h"
 
-#include"CPP/ChModelCreater/ChCMXFileMesh.h"
+//#include"CPP/ChModelCreater/ChCMXFileMesh.h"
 
 #include"BaseSystem/ChBaseSystem/ChBaseSystem.h"
 

@@ -145,7 +145,7 @@ void ChAnimationSupporter9::CreateFunction()
 		{
 			ChFIO::File File;
 			File.FileOpen(_FileName);
-			Datas = File.FileRead();
+			File.FileRead(Datas);
 			File.FileClose();
 		}
 

@@ -242,7 +242,7 @@ void PngTex9::OpenFile(const std::string& _FileName)
 
 	std::string TmpStr;
 
-	TmpStr = File.FileRead();
+	File.FileRead(TmpStr);
 
 	File.FileClose();
 
@@ -307,7 +307,7 @@ void JpegTex::OpenFile(const std::string& _FileName)
 	File.FileOpen(_FileName , std::ios::binary | std::ios::in | std::ios::out);
 
 	std::string TmpStr;
-	TmpStr = File.FileRead();
+	File.FileRead(TmpStr);
 
 	File.FileClose();
 

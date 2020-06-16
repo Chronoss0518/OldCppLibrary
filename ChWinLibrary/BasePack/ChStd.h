@@ -404,10 +404,11 @@ namespace ChStd
 		return 0;
 	}
 
+	//指定したアドレス先を値0で初期化する//
 	template<class T>
 	static inline void All0Memory(T* _Val)
 	{
-		void *Tmp = _Val;
+		void* Tmp = static_cast<void*>(_Val);
 
 		for (unsigned long i = 0; i < sizeof(T); i++)
 		{
@@ -415,21 +416,34 @@ namespace ChStd
 		}
 	}
 
-	static inline void RemoveToESChar(std::string& _Str)
+	static inline std::string StrReplase(
+		const std::string& _Base
+		, const std::string _Before
+		, const std::string _After = ""
+	)
 	{
+		if (_Base.find(_Before) == _Base.npos)return _Base;
+
+		std::string Out = "";
+
 		size_t TmpPos = 0;
-		while ((TmpPos = _Str.find("\t")) != _Str.npos)
+		size_t TestPos = 0;
+
+		while (true)
 		{
-			_Str.replace(TmpPos, TmpPos + 1, "");
+			TestPos = _Base.find(_Before, TmpPos);
+
+			if (TestPos == _Base.npos)break;
+			
+			Out += _Base.substr(TmpPos, TestPos - TmpPos);
+
+			Out += _After;
+
+			TmpPos = TestPos + _Before.length();
+
 		}
-		while ((TmpPos = _Str.find(" ")) != _Str.npos)
-		{
-			_Str.replace(TmpPos, TmpPos + 1, "");
-		}
-		while ((TmpPos = _Str.find("\n")) != _Str.npos)
-		{
-			_Str.replace(TmpPos, TmpPos + 1, "");
-		}
+
+		return Out;
 	}
 
 	static inline void RemoveToESAscii(char* _Str)

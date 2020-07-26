@@ -12,25 +12,18 @@ namespace ChCpp
 
 	public:
 
-		inline std::vector<ChPtr::Shared<Model::Frame>>& ModelDataIns()
-		{
-			return Model->ModelData;
-		}
+		///////////////////////////////////////////////////////////////////////////////////////
+		//GetFunction//
+		
+		inline ModelObject* GetModels() { return Model; }
 
 		///////////////////////////////////////////////////////////////////////////////////////
 
-		inline std::string& ModelNameIns()
-		{
-			return Model->ModelName;
-		}
+		inline virtual void CreateMesh(const std::string& _FilePath) = 0;
 
 		///////////////////////////////////////////////////////////////////////////////////////
 
-		inline virtual void CreateMesh(const std::string& _FilePath,ModelObject* _Model) {};
-
-		///////////////////////////////////////////////////////////////////////////////////////
-
-		inline virtual void OutMeshFile(const std::string& _FilePath,const ModelObject* _Model) {};
+		inline virtual void OutMeshFile(const std::string& _FilePath) = 0;
 
 		///////////////////////////////////////////////////////////////////////////////////////
 

@@ -27,8 +27,6 @@ void SoundManager8::Init(const HWND _hWin)
 
 	wf = SetWaveFormat();
 
-	ZeroMemory(&Tmp, sizeof(DSBUFFERDESC));
-
 	TmpB.dwSize = sizeof(DSBUFFERDESC);
 	TmpB.dwFlags = DSBCAPS_CTRLVOLUME | DSBCAPS_CTRL3D | DSBCAPS_PRIMARYBUFFER;
 	TmpB.dwBufferBytes = 0;

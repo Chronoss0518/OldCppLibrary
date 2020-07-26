@@ -726,6 +726,13 @@ using ChLMat = ChLMatrix;
 
 namespace ChMath
 {
+
+	static inline std::string ConvertNum10to64(unsigned long _Num)
+	{  
+		return "";
+	}
+
+
 	//‰~Žü—¦//
 	static const float Pi = 3.1415f;
 

@@ -37,7 +37,6 @@ extern "C++" {
 #include"../BasePack/ChPtr.h"
 #include"../BasePack/ChFIO.h"
 
-
 #include"../BasePack/ChMath.h"
 
 #include"CPP/ChClassParts/ChCPInitializePack.h"

@@ -15,7 +15,8 @@
 
 #include"BaseIncluder/ChBase.h"
 
-#include"CPP/ChStringObject/ChStringObject.h"
+
+#include"CPP/ChModel/ChModel.h"
 #include"CPP/ChScript/ChScript.h"
 #include"CPP/ChMemoryManager/ChMemoryManager.h"
 #include"CPP/ChBitBool/ChBitBool.h"

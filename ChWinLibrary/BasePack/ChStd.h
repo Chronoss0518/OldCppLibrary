@@ -446,41 +446,34 @@ namespace ChStd
 		return Out;
 	}
 
-	static inline void RemoveToESAscii(char* _Str)
+	static inline char* RemoveToWhiteSpaceChars(const char const* _Str)
 	{
+
+		char* str = nullptr;
+
+		char* Tmp = (char*)malloc(sizeof(char) * LONG_MAX);
 
 		unsigned long Count = 0;
 
-		do
+		const char WhiteSpaceInterfaceChar = 32;
+		const char DelCharNum = 127;
+
+		for (unsigned long i = 0; i < std::strlen(_Str); i++)
 		{
-			if (_Str[Count] == '\t')_Str[Count] = -1;
-			if (_Str[Count] == ' ')_Str[Count] = -1;
-			if (_Str[Count] == '\n')_Str[Count] = -1;
-			
-			Count++;
-		} while (_Str[Count] != '\0');
+			Count = std::strlen(Tmp);
+			if (_Str[i] < WhiteSpaceInterfaceChar)continue;
+			if (_Str[i] == DelCharNum)continue;
 
-		unsigned long TestCount = 0;
-		Count = 0;
-
-		while (_Str[TestCount] != '\0')
-		{
-			if (_Str[TestCount] == -1)
-			{
-				TestCount++;
-				continue;
-			}
-
-			_Str[Count] = _Str[TestCount];
-
-			TestCount++;
-			Count++;
-
+			Tmp[Count] = _Str[i];
 
 		}
 
-	}
+		std::strcpy(str, Tmp);
 
+		std::free(Tmp);
+
+		return str;
+	}
 	
 }
 

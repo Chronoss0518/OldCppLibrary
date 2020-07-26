@@ -1,16 +1,36 @@
 #ifndef Ch_CPP_Model_h
 #define Ch_CPP_Model_h
 
-#include"../ChModelCreater/ChModelCreater.h"
-#include"../ChModelCreater/ChAnimationCreater.h"
-
-
 namespace ChCpp
 {
-
-	 typedef class ModelObject :public  ChCpp::ChCp::InitPack
+	class ModelAnimator
 	{
-	public:
+	protected:
+
+		float Speed = 0.1f;
+
+		unsigned long AllAnimationCount;
+
+		struct AniDatas
+		{
+			ChVec3 Pos;
+			ChQua Rot;
+			ChVec3 Scal;
+		};
+
+		struct AnimationData
+		{
+			AniDatas Start;
+			AniDatas End;
+			unsigned long AnimationFrameCount;
+		};
+
+		std::vector<ChPtr::Shared<AnimationData>>Animation;
+
+	};
+
+	struct BaseModel
+	{
 
 		///////////////////////////////////////////////////////////////////////////////////////
 		//MeshDataStruct//
@@ -29,8 +49,7 @@ namespace ChCpp
 			ChVec4 Specular = ChVec4(1.0f, 1.0f, 1.0f, 1.0f);
 			float AmbientPow = 0.0f;
 			float SpePow = 1.0f;
-			std::string TextureName = "";
-			std::string NormalTexName = "";
+			std::vector<std::string>TextureName;
 		};
 
 		struct SurFace
@@ -69,146 +88,21 @@ namespace ChCpp
 			ChPtr::Shared<Mesh>Meshs;
 			std::string Parent;
 
-			~Frame() { Meshs = nullptr; }
+			~Frame()
+			{
+				Meshs = nullptr;
+				ChildFrames.clear();
+			}
+
+			std::vector<ChPtr::Shared<Frame>>ChildFrames;
+
 		};
 
-		///////////////////////////////////////////////////////////////////////////////////////
-		//Operator//
-
-		inline const ChPtr::Shared<Frame> operator[](unsigned int _Num)const
-		{
-			if (*this)return nullptr;
-			if (ModelData.size() <= 0)return nullptr;
-			if (ModelData.size() <= _Num)return nullptr;
-
-			return ModelData[_Num];
-		}
-
-		inline Frame& operator[](unsigned int _Num)
-		{
-			if (*this)return Non;
-			if (ModelData.size() <= 0)return Non;
-			if (ModelData.size() <= _Num)return Non;
-
-
-			return *ModelData[_Num];
-		}
-
-		///////////////////////////////////////////////////////////////////////////////////////
-		//ConstructerDestructer//
-
-		inline virtual ~ModelObject(){}
-
-		///////////////////////////////////////////////////////////////////////////////////////
-		//InitAndRelease//
-
-		inline void Init() {};
-
-		virtual void Release();
-
-		///////////////////////////////////////////////////////////////////////////////////////
-		//GetFunction//
-
-
-		///////////////////////////////////////////////////////////////////////////////////////
-		//SetFunction//
-
-		//ユーザーが独自のモデルを読み込む際に利用できる。//
-		//ChCpp::ModelCreaterを継承する必要がある//
-		template<class T>
-		inline void SetMyModelCreater
-		(const typename std::enable_if
-			<std::is_base_of<ModelCreater, T>::value, std::string&>::type
-			_ModelName)
-		{
-
-			if (CreaterList.find(_ModelName) != CreaterList.end())return;
-
-			CreaterList[_ModelName] =
-				[](const std::string& _FineName)->ChPtr::Shared<ModelCreater>
-			{
-				return ChPtr::Make_S<T>();
-			};
-
-			return;
-
-		}
-			
-
-		///////////////////////////////////////////////////////////////////////////////////////
-		//InsFunction//
-
-		///////////////////////////////////////////////////////////////////////////////////////
-		
-		template<class T>
-		auto CreateModel(const std::string& _FilePath)->typename std::enable_if<
-			std::is_base_of<ModelCreater,T>::value,void>::type
-		{
-
-		}
-
-		///////////////////////////////////////////////////////////////////////////////////////
-
-		template<class T>
-		auto OutModelFile(const std::string& _FilePath)->typename std::enable_if<
-			std::is_base_of<ModelCreater, T>::value, void>::type
-		{
-
-		}
-
-		friend ModelCreater;
-		friend AnimationCreater;
-
-	protected:
-
-		std::vector<ChPtr::Shared<Frame>>ModelData;
+		ChPtr::Shared<Frame>ModelData = nullptr;
 		std::string ModelName;
 
-		std::vector<std::string>AnimatorNames;
-
-	private:
-
-		static Frame Non;
-
-		using Animation = std::map<std::string, ChPtr::Shared<ModelAnimator>>;
-
-		static	std::map<
-			ChPtr::Shared<ModelObject>
-			, Animation>
-			AnimatorList;
-
-
-	}Model;
-
-
-	 class ModelAnimator
-	 {
-	 protected:
-
-		 float Speed = 0.1f;
-
-		 unsigned long long AllAnimationCount;
-
-		 struct AniDatas
-		 {
-			 ChVec3 Pos;
-			 ChQua Rot;
-			 ChVec3 Scal;
-		 };
-
-		 struct AnimationData
-		 {
-			 AniDatas Start;
-			 AniDatas End;
-			 unsigned long AnimationFrameCount;
-		 };
-
-		 std::vector<ChPtr::Shared<AnimationData>>Animation;
-
-	 };
-
+	};
 
 
 }
-
 #endif

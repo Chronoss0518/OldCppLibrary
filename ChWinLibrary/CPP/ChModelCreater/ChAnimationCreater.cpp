@@ -1,6 +1,7 @@
 #include"../../BaseIncluder/ChBase.h"
 
 #include"../ChModel/ChModel.h"
+#include"../ChModel/ChModelObject.h"
 #include"ChAnimationCreater.h"
 
 using namespace ChCpp;

@@ -54,7 +54,6 @@ namespace ChPtr
 	template<class C>
 	static inline auto NotNullCheck(const C _Class)->typename
 		std::enable_if<std::is_pointer<C>::value, ChStd::Bool>::type
-
 	{
 		if (_Class != NULL && _Class != nullptr)return ChStd::True;
 		return ChStd::False;

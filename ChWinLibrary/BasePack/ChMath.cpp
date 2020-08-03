@@ -197,18 +197,27 @@ void ChVec4::Deserialize(
 	const std::string& _Str
 	, const size_t _FPos
 	, const std::string& _CutChar
-	, const std::string& _EndChar)
+	, const std::string& _EndChar
+	, const unsigned int _Digit)
 {
 
 	std::string TmpStr = _Str;
 
 	size_t TmpFPos = _FPos;
 
-	size_t Tmp = _FPos;
-
-	size_t EPos = TmpStr.find(_EndChar, Tmp);
+	size_t EPos = TmpStr.find(_EndChar, TmpFPos);
 
 	if (EPos == TmpStr.npos)EPos = TmpStr.size();
+
+	TmpStr = TmpStr.substr(TmpFPos, EPos - TmpFPos);
+
+	TmpStr = ChStd::RemoveToWhiteSpaceChars(TmpStr);
+
+	TmpFPos = 0;
+
+	EPos = TmpStr.length();
+
+	size_t Tmp = TmpFPos;
 
 	for (unsigned char i = 0; i < 4; i++)
 	{
@@ -220,6 +229,9 @@ void ChVec4::Deserialize(
 			std::string Num = TmpStr.substr(Tmp, TmpFPos - Tmp);
 
 			Val[i] = (float)std::atof(Num.c_str());
+
+			Val[i] = ChMath::Round(Val[i], _Digit);
+
 			Tmp += Num.length();
 			Tmp += 1;
 
@@ -546,18 +558,27 @@ void ChVec3::Deserialize(
 	const std::string& _Str
 	, const size_t _FPos
 	, const std::string& _CutChar
-	, const std::string& _EndChar)
+	, const std::string& _EndChar
+	, const unsigned int _Digit)
 {
 
 	std::string TmpStr = _Str;
 
 	size_t TmpFPos = _FPos;
 
-	size_t Tmp = _FPos;
-
-	size_t EPos = TmpStr.find(_EndChar, Tmp);
+	size_t EPos = TmpStr.find(_EndChar, TmpFPos);
 
 	if (EPos == TmpStr.npos)EPos = TmpStr.size();
+
+	TmpStr = TmpStr.substr(TmpFPos, EPos - TmpFPos);
+
+	TmpStr = ChStd::RemoveToWhiteSpaceChars(TmpStr);
+
+	TmpFPos = 0;
+
+	EPos = TmpStr.length();
+
+	size_t Tmp = TmpFPos;
 
 	for (unsigned char i = 0; i < 3; i++)
 	{
@@ -568,7 +589,10 @@ void ChVec3::Deserialize(
 
 			std::string Num = TmpStr.substr(Tmp, TmpFPos - Tmp);
 
-			Val[i] = (float)std::atof(Num.c_str());
+			Val[i] = (float)std::atof((Num).c_str());
+
+			Val[i] = ChMath::Round(Val[i], _Digit);
+
 			Tmp += Num.length();
 			Tmp += 1;
 
@@ -885,18 +909,27 @@ void ChVec2::Deserialize(
 	const std::string& _Str
 	, const size_t _FPos
 	, const std::string& _CutChar
-	, const std::string& _EndChar)
+	, const std::string& _EndChar
+	, const unsigned int _Digit)
 {
 
 	std::string TmpStr = _Str;
 
 	size_t TmpFPos = _FPos;
 
-	size_t Tmp = _FPos;
-
-	size_t EPos = TmpStr.find(_EndChar, Tmp);
+	size_t EPos = TmpStr.find(_EndChar, TmpFPos);
 
 	if (EPos == TmpStr.npos)EPos = TmpStr.size();
+
+	TmpStr = TmpStr.substr(TmpFPos, EPos - TmpFPos);
+
+	TmpStr = ChStd::RemoveToWhiteSpaceChars(TmpStr);
+
+	TmpFPos = 0;
+
+	EPos = TmpStr.length();
+
+	size_t Tmp = TmpFPos;
 
 	for (unsigned char i = 0; i < 2; i++)
 	{
@@ -908,6 +941,9 @@ void ChVec2::Deserialize(
 			std::string Num = TmpStr.substr(Tmp, TmpFPos - Tmp);
 
 			Val[i] = (float)std::atof(Num.c_str());
+
+			Val[i] = ChMath::Round(Val[i], _Digit);
+
 			Tmp += Num.length();
 			Tmp += 1;
 
@@ -1082,18 +1118,27 @@ void ChQua::Deserialize(
 	const std::string& _Str
 	, const size_t _FPos
 	, const std::string& _CutChar
-	, const std::string& _EndChar)
+	, const std::string& _EndChar
+	, const unsigned int _Digit)
 {
 
 	std::string TmpStr = _Str;
 
 	size_t TmpFPos = _FPos;
 
-	size_t Tmp = _FPos;
-
-	size_t EPos = TmpStr.find(_EndChar, Tmp);
+	size_t EPos = TmpStr.find(_EndChar, TmpFPos);
 
 	if (EPos == TmpStr.npos)EPos = TmpStr.size();
+
+	TmpStr = TmpStr.substr(TmpFPos, EPos - TmpFPos);
+
+	TmpStr = ChStd::RemoveToWhiteSpaceChars(TmpStr);
+
+	TmpFPos = 0;
+
+	EPos = TmpStr.length();
+
+	size_t Tmp = TmpFPos;
 
 	for (unsigned char i = 0; i < 4; i++)
 	{
@@ -1105,6 +1150,9 @@ void ChQua::Deserialize(
 			std::string Num = TmpStr.substr(Tmp, TmpFPos - Tmp);
 
 			Val[i] = (float)std::atof(Num.c_str());
+
+			Val[i] = ChMath::Round(Val[i], _Digit);
+
 			Tmp += Num.length();
 			Tmp += 1;
 
@@ -1195,22 +1243,58 @@ std::string ChLMatrix::Serialize(
 
 ///////////////////////////////////////////////////////////////////////////////////
 
+std::string ChLMatrix::SerializeUpper(
+	const std::string& _CutChar
+	, const std::string& _EndChar
+	, const std::string& _CutTo4Char)
+{
+	std::string Tmp = "";
+	for (unsigned char i = 0; i < 4; i++)
+	{
+		for (unsigned char j = 0; j < 4; j++)
+		{
+			if (i == 3 && j == 3)break;
+			Tmp += std::to_string(m[i][j]);
+			Tmp += _CutChar;
+
+			if (j < 3)continue;
+			Tmp += _CutTo4Char;
+		}
+	}
+
+	Tmp += std::to_string(m[3][3]);
+	Tmp += _EndChar;
+
+	return Tmp;
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
 void ChLMatrix::Deserialize(
 	const std::string& _Str
 	, const size_t _FPos
 	, const std::string& _CutChar
-	, const std::string& _EndChar)
+	, const std::string& _EndChar
+	, const unsigned int _Digit)
 {
 
 	std::string TmpStr = _Str;
 
 	size_t TmpFPos = _FPos;
 
-	size_t Tmp = _FPos;
-
-	size_t EPos = TmpStr.find(_EndChar, Tmp);
+	size_t EPos = TmpStr.find(_EndChar, TmpFPos);
 
 	if (EPos == TmpStr.npos)EPos = TmpStr.size();
+
+	TmpStr = TmpStr.substr(TmpFPos, EPos - TmpFPos);
+
+	TmpStr = ChStd::RemoveToWhiteSpaceChars(TmpStr);
+
+	TmpFPos = 0;
+
+	EPos = TmpStr.length();
+
+	size_t Tmp = TmpFPos;
 
 	for (unsigned char i = 0; i < 4; i++)
 	{
@@ -1224,6 +1308,7 @@ void ChLMatrix::Deserialize(
 				std::string Num = TmpStr.substr(Tmp, TmpFPos - Tmp);
 
 				m[i][j] = (float)std::atof(Num.c_str());
+
 				Tmp += Num.length();
 				Tmp += 1;
 
@@ -1237,6 +1322,8 @@ void ChLMatrix::Deserialize(
 
 }
 
+///////////////////////////////////////////////////////////////////////////////////
+
 ChRMatrix ChLMatrix::ConvertAxis()
 {
 	ChRMatrix Tmp;
@@ -1245,6 +1332,32 @@ ChRMatrix ChLMatrix::ConvertAxis()
 	return Tmp;
 }
 
+///////////////////////////////////////////////////////////////////////////////////
+//Math Function//
+///////////////////////////////////////////////////////////////////////////////////
+
+float ChMath::Round(const float& _Val, const unsigned int _Digit)
+{
+	float Out = _Val * std::powf(10.0f, static_cast<float>(_Digit - 1));
+	Out = std::round(Out);
+	Out = Out * std::powf(0.1f, static_cast<float>(_Digit - 1));
+
+
+	return Out;
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
+double ChMath::Round(const double& _Val, const unsigned int _Digit)
+{
+	double Out = _Val * std::powl(10, static_cast<double>(_Digit - 1));
+	Out = std::round(Out);
+	Out = Out * std::powl(0.1 , static_cast<double>(_Digit - 1));
+
+
+	return Out;
+
+}
 
 ///////////////////////////////////////////////////////////////////////////////////
 //Degree Method//

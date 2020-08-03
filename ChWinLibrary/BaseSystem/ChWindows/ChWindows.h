@@ -1,4 +1,4 @@
-#ifdef _WIN32
+#ifdef _WINDOWS_
 
 #ifndef Ch_Game_Windows_h
 #define Ch_Game_Windows_h

@@ -192,7 +192,8 @@ struct ChVector4 : public ChMath::ChVector4Base
 		const std::string& _Str
 		, const size_t _FPos = 0
 		, const std::string& _CutChar = ","
-		, const std::string& _EndChar = ";");
+		, const std::string& _EndChar = ";"
+		, const unsigned int _Digit = 6);
 
 	///////////////////////////////////////////////////////////////////////////////////
 	//GetFunction//
@@ -316,10 +317,15 @@ struct ChVector3 : public ChMath::ChVector3Base
 	//SerializeDeserialize//
 
 	std::string Serialize(
-		const std::string& _CutChar = ",", const std::string& _EndChar = ";");
+		const std::string& _CutChar = ","
+		, const std::string& _EndChar = ";");
 
 	void Deserialize(
-		const std::string& _Str, const size_t _FPos = 0, const std::string& _CutChar = ",", const std::string& _EndChar = ";");
+		const std::string& _Str
+		, const size_t _FPos = 0
+		, const std::string& _CutChar = ","
+		, const std::string& _EndChar = ";"
+		, const unsigned int _Digit = 6);
 
 	///////////////////////////////////////////////////////////////////////////////////
 	//GetFunction//
@@ -425,10 +431,15 @@ struct ChVector2 : public ChMath::ChVector2Base
 	//SerializeDeserialize//
 
 	std::string Serialize(
-		const std::string& _CutChar = ",", const std::string& _EndChar = ";");
+		const std::string& _CutChar = ","
+		, const std::string& _EndChar = ";");
 
 	void Deserialize(
-		const std::string& _Str, const size_t _FPos = 0, const std::string& _CutChar = ",", const std::string& _EndChar = ";");
+		const std::string& _Str
+		, const size_t _FPos = 0
+		, const std::string& _CutChar = ","
+		, const std::string& _EndChar = ";"
+		, const unsigned int _Digit = 6);
 
 	///////////////////////////////////////////////////////////////////////////////////
 	//GetFunction//
@@ -540,11 +551,15 @@ struct ChQuaternion : public ChMath::ChQuaternionBase
 	//SerializeDeserialize//
 
 	std::string Serialize(
-		const std::string& _CutChar = ",", const std::string& _EndChar = ";");
+		const std::string& _CutChar = ","
+		, const std::string& _EndChar = ";");
 
 	void Deserialize(
-		const std::string& _Str, const size_t _FPos = 0,
-		const std::string& _CutChar = ",", const std::string& _EndChar = ";");
+		const std::string& _Str
+		, const size_t _FPos = 0,
+		const std::string& _CutChar = ","
+		, const std::string& _EndChar = ";"
+		, const unsigned int _Digit = 6);
 
 	///////////////////////////////////////////////////////////////////////////////////
 	//GetFunction//
@@ -611,6 +626,12 @@ struct ChLMatrix : public ChMath::ChLMatrixBase
 				m[i][j] = 0;
 			}
 		}
+
+		_11 = 1.0f;
+		_22 = 1.0f;
+		_33 = 1.0f;
+		_44 = 1.0f;
+
 	}
 
 	inline ChLMatrix(const ChLMatrix& _Mat) { *this = _Mat; }
@@ -628,10 +649,20 @@ struct ChLMatrix : public ChMath::ChLMatrixBase
 	//SerializeDeserialize//
 
 	std::string Serialize(
-		const std::string& _CutChar = ",", const std::string& _EndChar = ";");
+		const std::string& _CutChar = ","
+		, const std::string& _EndChar = ";");
+
+	std::string SerializeUpper(
+		const std::string& _CutChar = ","
+		, const std::string& _EndChar = ";"
+		, const std::string& _CutTo4Char = "\n");
 
 	void Deserialize(
-		const std::string& _Str, const size_t _FPos = 0, const std::string& _CutChar = ",", const std::string& _EndChar = ";");
+		const std::string& _Str
+		, const size_t _FPos = 0
+		, const std::string& _CutChar = ","
+		, const std::string& _EndChar = ";"
+		, const unsigned int _Digit = 6);
 
 	///////////////////////////////////////////////////////////////////////////////////
 	//GetFunction//
@@ -683,6 +714,11 @@ struct ChRMatrix : public ChMath::ChRMatrixBase
 				m[i][j] = 0;
 			}
 		}
+
+		_11 = 1.0f;
+		_22 = 1.0f;
+		_33 = 1.0f;
+		_44 = 1.0f;
 	}
 
 	inline ChRMatrix(const ChRMatrix& _Mat) { *this = _Mat; }
@@ -697,10 +733,20 @@ struct ChRMatrix : public ChMath::ChRMatrixBase
 	//SerializeDeserialize//
 
 	std::string Serialize(
-		const std::string& _CutChar = ",", const std::string& _EndChar = ";");
+		const std::string& _CutChar = ","
+		, const std::string& _EndChar = ";");
+
+	std::string SerializeUpper(
+		const std::string& _CutChar = ","
+		, const std::string& _EndChar = ";"
+		, const std::string& _CutTo4Char = "\n");
 
 	void Deserialize(
-		const std::string& _Str, const size_t _FPos = 0, const std::string& _CutChar = ",", const std::string& _EndChar = ";");
+		const std::string& _Str
+		, const size_t _FPos = 0
+		, const std::string& _CutChar = ","
+		, const std::string& _EndChar = ";"
+		, const unsigned int _Digit = 6);
 
 	///////////////////////////////////////////////////////////////////////////////////
 	//GetFunction//
@@ -731,6 +777,9 @@ namespace ChMath
 	{  
 		return "";
 	}
+
+	float Round(const float& _Val, const unsigned int _Digit);
+	double Round(const double& _Val, const unsigned int _Digit);
 
 
 	//‰~Žü—¦//

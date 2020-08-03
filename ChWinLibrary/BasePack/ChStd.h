@@ -446,35 +446,116 @@ namespace ChStd
 		return Out;
 	}
 
-	static inline char* RemoveToWhiteSpaceChars(const char const* _Str)
+	static inline std::string RemoveToWhiteSpaceChars(const std::string& _Str)
 	{
 
-		char* str = nullptr;
-
-		char* Tmp = (char*)malloc(sizeof(char) * LONG_MAX);
+		std::string Tmp = "";
 
 		unsigned long Count = 0;
 
 		const char WhiteSpaceInterfaceChar = 32;
 		const char DelCharNum = 127;
 
-		for (unsigned long i = 0; i < std::strlen(_Str); i++)
+		for (unsigned long i = 0; i < _Str.length(); i++)
 		{
-			Count = std::strlen(Tmp);
-			if (_Str[i] < WhiteSpaceInterfaceChar)continue;
+			Count = Tmp.length();
+			if (_Str[i] <= WhiteSpaceInterfaceChar)continue;
 			if (_Str[i] == DelCharNum)continue;
 
-			Tmp[Count] = _Str[i];
+			Tmp = Tmp +  _Str[i];
 
 		}
 
-		std::strcpy(str, Tmp);
+		std::string str;
 
-		std::free(Tmp);
+		str = Tmp;
+
 
 		return str;
 	}
-	
+
+	static inline std::wstring RemoveToWhiteSpaceChars(const std::wstring& _Str)
+	{
+
+		std::wstring Tmp = L"";
+
+		unsigned long Count = 0;
+
+		const char WhiteSpaceInterfaceChar = 32;
+		const char DelCharNum = 127;
+
+		for (unsigned long i = 0; i < _Str.length(); i++)
+		{
+			Count = Tmp.length();
+			if (_Str[i] < WhiteSpaceInterfaceChar)continue;
+			if (_Str[i] == DelCharNum)continue;
+
+			Tmp = Tmp + _Str[i];
+
+		}
+
+		std::wstring str;
+
+		str = Tmp;
+
+
+		return str;
+	}
+
+	static inline std::string RemoveToChars(const std::string& _Str,const char _RempveChars)
+	{
+
+		std::string Tmp = "";
+
+		unsigned long Count = 0;
+
+		const char WhiteSpaceInterfaceChar = 32;
+		const char DelCharNum = 127;
+
+		for (unsigned long i = 0; i < _Str.length(); i++)
+		{
+			Count = Tmp.length();
+			if (_Str[i] == _RempveChars)continue;
+
+			Tmp = Tmp + _Str[i];
+
+		}
+
+		std::string str;
+
+		str = Tmp;
+
+
+		return str;
+	}
+
+	static inline std::wstring RemoveToChars(const std::wstring& _Str, const wchar_t _RempveChars)
+	{
+
+		std::wstring Tmp = L"";
+
+		unsigned long Count = 0;
+
+		const char WhiteSpaceInterfaceChar = 32;
+		const char DelCharNum = 127;
+
+		for (unsigned long i = 0; i < _Str.length(); i++)
+		{
+			Count = Tmp.length();
+			if (_Str[i] == _RempveChars)continue;
+
+			Tmp = Tmp + _Str[i];
+
+		}
+
+		std::wstring str;
+
+		str = Tmp;
+
+
+		return str;
+	}
+
 }
 
 #endif

@@ -9,6 +9,7 @@ namespace ChCpp
 	{
 	protected:
 
+		//モデルデータの読み込み口//
 		void CreateMesh(const std::string& _FilePath)override;
 
 		///////////////////////////////////////////////////////////////////////////////////////
@@ -18,15 +19,34 @@ namespace ChCpp
 		///////////////////////////////////////////////////////////////////////////////////////
 		//SetFunction//
 
-		void SetFrame(size_t& _TextPos, const std::string& _Text);
+		void SetFrame(
+			ChPtr::Shared<BaseModel::Frame> _Frames
+			, size_t& _TextPos
+			, const std::string& _Text);
 
-		void SetMesh(size_t& _TextPos, ChPtr::Shared<BaseModel::Frame> _Frames, const std::string& _Text);
+		void SetMesh(
+			ChPtr::Shared<BaseModel::Frame> _Frames
+			, size_t& _TextPos
+			, const std::string& _Text);
 
-		void SetVertex(size_t& _TextPos, ChPtr::Shared<BaseModel::Mesh> _Meshs, const std::string& _Text);
+		void SetVertex(
+			ChPtr::Shared<BaseModel::Mesh> _Meshs
+			, size_t& _TextPos
+			, const std::string& _Text);
 
-		void SetFace(size_t& _TextPos, const std::string& _Text);
+		void SetFace(
+			ChPtr::Shared<BaseModel::SurFace> _Meshs
+			, size_t& _TextPos
+			, const std::string& _Text);
 
-		void SetMaterial(size_t& _TextPos, const std::string& _Text);
+		void SetMaterial(
+			ChPtr::Shared<BaseModel::SurFace> _Meshs
+			, size_t& _TextPos
+			, const std::string& _Text);
+
+		///////////////////////////////////////////////////////////////////////////////////////
+
+		ChStd::Bool SuccesFlgs = false;
 
 	};
 

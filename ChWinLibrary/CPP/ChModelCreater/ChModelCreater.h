@@ -15,7 +15,7 @@ namespace ChCpp
 		///////////////////////////////////////////////////////////////////////////////////////
 		//GetFunction//
 		
-		inline ModelObject* GetModels() { return Model; }
+		inline BaseModel* GetModels() { return Model; }
 
 		///////////////////////////////////////////////////////////////////////////////////////
 
@@ -27,14 +27,13 @@ namespace ChCpp
 
 		///////////////////////////////////////////////////////////////////////////////////////
 
-		friend ModelObject;
+		friend BaseModel;
 
-	private:
+	protected:
 
-		inline void Init(ModelObject* _Model);
+		BaseModel* Model;
 
-		ModelObject* Model;
-
+		inline void Init(BaseModel* _Model);
 	};
 }
 

@@ -26,13 +26,13 @@ namespace ChCpp
 
 		///////////////////////////////////////////////////////////////////////////////////////
 
-		friend ModelObject;
+		friend BaseModel;
 
 	private:
 
-		void Init(ModelObject* _Model);
+		void Init(BaseModel* _Model);
 
-		ModelObject* Model;
+		BaseModel* Model;
 
 	};
 }

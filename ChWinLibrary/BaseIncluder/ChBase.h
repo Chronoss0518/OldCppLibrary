@@ -5,6 +5,7 @@
 #include<cstdarg>
 #include<cstring>
 #include<ctime>
+#include<cmath>
 
 #include<float.h>
 #include<limits.h>

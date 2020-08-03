@@ -10,7 +10,7 @@ using namespace ChCpp;
 //ModelAniCreater Method//
 ///////////////////////////////////////////////////////////////////////////////////////
 
-void AnimationCreater::Init(ModelObject* _Model)
+void AnimationCreater::Init(BaseModel* _Model)
 {
 	Model = _Model;
 }

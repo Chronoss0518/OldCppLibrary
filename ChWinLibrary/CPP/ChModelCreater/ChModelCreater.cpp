@@ -8,7 +8,7 @@
 
 using namespace ChCpp;
 
-void ChCpp::ModelCreater::Init(ModelObject *_Model)
+void ChCpp::ModelCreater::Init(BaseModel *_Model)
 {
 	Model = _Model;
 }
@@ -47,7 +47,7 @@ void ChCpp::CMXFile::CreateMesh(const std::string& _FilePath)
 
 	{
 		std::string Tmp = "template Frame";
-		size_t TmpLen = Text.find(Tmp);
+		size_t TmpLen = Text.find(Tmp,TextPos);
 
 		if (TmpLen != Tmp.npos) {
 			TextPos = TmpLen;
@@ -55,9 +55,16 @@ void ChCpp::CMXFile::CreateMesh(const std::string& _FilePath)
 		}
 	}
 
-	
+	size_t TmpLen = Text.find("Frame", TextPos);
 
-	
+	if (TmpLen == Text.npos)return;
+
+	ChPtr::Shared<BaseModel> OutModels = nullptr;
+
+	if (!SuccesFlgs)return;
+
+	Model->ModelData = OutModels;
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -69,8 +76,42 @@ void ChCpp::CMXFile::OutMeshFile(const std::string& _FilePath)
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-void ChCpp::CMXFile::SetFrame(size_t& _TextPos, const std::string& _Text)
+void ChCpp::CMXFile::SetFrame(
+	ChPtr::Shared<BaseModel::Frame> _Frames
+	, size_t& _TextPos
+	, const std::string& _Text)
 {
+
+	size_t TmpLen = _Text.find("Frame", _TextPos);
+
+	std::string FrameTag = "Frame";
+
+	_TextPos = TmpLen;
+	_TextPos += FrameTag.length();
+
+	TmpLen = _Text.find("{", _TextPos);
+
+	if (TmpLen == _Text.npos)return;
+
+	TmpLen -= 1;
+
+	_Frames = ChPtr::Make_S<BaseModel::Frame>();
+
+	_Frames->MyName = ChStd::RemoveToWhiteSpaceChars(_Text.substr(_TextPos, TmpLen - _TextPos));
+
+	_TextPos = TmpLen;
+
+	while (1)
+	{
+		TmpLen = _Text.find("{", _TextPos);
+
+		if (_Text.npos == TmpLen)return;
+
+
+	}
+
+
+	//_Frames->BaseMat.Deserialize();
 
 
 
@@ -78,16 +119,9 @@ void ChCpp::CMXFile::SetFrame(size_t& _TextPos, const std::string& _Text)
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-void ChCpp::CMXFile::SetMesh(size_t& _TextPos, ChPtr::Shared<BaseModel::Frame> _Frames, const std::string& _Text)
-{
-
-}
-
-///////////////////////////////////////////////////////////////////////////////////////
-
-void ChCpp::CMXFile::SetVertex(
-	size_t& _TextPos
-	, ChPtr::Shared<BaseModel::Mesh> _Meshs
+void ChCpp::CMXFile::SetMesh(
+	ChPtr::Shared<BaseModel::Frame> _Frames
+	, size_t& _TextPos
 	, const std::string& _Text)
 {
 
@@ -95,14 +129,30 @@ void ChCpp::CMXFile::SetVertex(
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-void ChCpp::CMXFile::SetFace(size_t& _TextPos, const std::string& _Text)
+void ChCpp::CMXFile::SetVertex(
+	ChPtr::Shared<BaseModel::Mesh> _Meshs
+	, size_t& _TextPos
+	, const std::string& _Text)
 {
 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-void ChCpp::CMXFile::SetMaterial(size_t& _TextPos, const std::string& _Text)
+void ChCpp::CMXFile::SetFace(
+	ChPtr::Shared<BaseModel::SurFace> _Meshs
+	, size_t& _TextPos
+	, const std::string& _Text)
+{
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+void ChCpp::CMXFile::SetMaterial(
+	ChPtr::Shared<BaseModel::SurFace> _Meshs
+	, size_t& _TextPos
+	, const std::string& _Text)
 {
 
 }

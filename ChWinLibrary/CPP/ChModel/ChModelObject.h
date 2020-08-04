@@ -1,6 +1,7 @@
 #ifndef Ch_CPP_MObj_h
 #define Ch_CPP_MObj_h
 
+#include"../ChModel/ChModel.h"
 #include"../ChModelCreater/ChModelCreater.h"
 #include"../ChModelCreater/ChAnimationCreater.h"
 
@@ -42,7 +43,9 @@ namespace ChCpp
 		auto CreateModel(const std::string& _FilePath)->typename std::enable_if<
 			std::is_base_of<ModelCreater, T>::value, void>::type
 		{
-			ModelCreater* creater = new T();
+			ChPtr::Shared<ModelCreater> creater;
+			creater = ChPtr::Make_S<T>();
+
 			creater->Init(this);
 
 			creater->CreateMesh(_FilePath);
@@ -62,7 +65,7 @@ namespace ChCpp
 
 	protected:
 
-		ChPtr::Shared<BaseModel>Model;
+		ChPtr::Shared<BaseModel>Model = nullptr;
 
 		std::vector<std::string>AnimatorNames;
 

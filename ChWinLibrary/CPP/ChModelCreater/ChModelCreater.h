@@ -12,10 +12,6 @@ namespace ChCpp
 
 	public:
 
-		///////////////////////////////////////////////////////////////////////////////////////
-		//GetFunction//
-		
-		inline BaseModel* GetModels() { return Model; }
 
 		///////////////////////////////////////////////////////////////////////////////////////
 
@@ -27,13 +23,16 @@ namespace ChCpp
 
 		///////////////////////////////////////////////////////////////////////////////////////
 
-		friend BaseModel;
+		friend ModelObject;
 
 	protected:
+		
+		void Init(ModelObject * _Model);
 
-		BaseModel* Model;
+		void SetModel(ChPtr::Shared<BaseModel> _Models);
 
-		inline void Init(BaseModel* _Model);
+		ModelObject* Model;
+
 	};
 }
 

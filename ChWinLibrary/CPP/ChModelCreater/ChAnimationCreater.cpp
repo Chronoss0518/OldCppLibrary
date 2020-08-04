@@ -1,6 +1,5 @@
 #include"../../BaseIncluder/ChBase.h"
 
-#include"../ChModel/ChModel.h"
 #include"../ChModel/ChModelObject.h"
 #include"ChAnimationCreater.h"
 
@@ -10,7 +9,7 @@ using namespace ChCpp;
 //ModelAniCreater Method//
 ///////////////////////////////////////////////////////////////////////////////////////
 
-void AnimationCreater::Init(BaseModel* _Model)
+void AnimationCreater::Init(ModelObject* _Model)
 {
 	Model = _Model;
 }
@@ -19,5 +18,12 @@ void AnimationCreater::Init(BaseModel* _Model)
 
 std::string& AnimationCreater::ModelNameIns()
 {
-	return Model->ModelName;
+	return Model->Model->ModelName;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+void AnimationCreater::SetModel(ChPtr::Shared<BaseModel> _Models)
+{
+	Model->Model = _Models;
 }

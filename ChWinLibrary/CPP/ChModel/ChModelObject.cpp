@@ -3,7 +3,6 @@
 
 #include"../ChTexture/ChBaseTexture.h"
 
-#include"ChModel.h"
 #include"ChModelObject.h"
 
 using namespace ChCpp;

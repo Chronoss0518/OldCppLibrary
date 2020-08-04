@@ -64,12 +64,20 @@ namespace ChCpp
 			}
 		};
 
+		struct WeightData
+		{
+			ChLMat OffsetMat;
+
+			std::map<unsigned long, float> VertexDatas;
+		};
+
 		struct Mesh
 		{
 			std::vector<ChPtr::Shared<VertexData>>VertexList;
 			std::vector<ChPtr::Shared<Material>>MaterialList;
 			std::map<std::string, unsigned long> MaterialNo;
 			std::vector<ChPtr::Shared<SurFace>>FaceList;
+			std::map<std::string, ChPtr::Shared<WeightData>>SkinWeightDatas;
 
 			inline ~Mesh()
 			{
@@ -87,14 +95,13 @@ namespace ChCpp
 			std::string MyName;
 			ChPtr::Shared<Mesh>Meshs;
 			std::string Parent;
+			std::vector<ChPtr::Shared<Frame>>ChildFrames;
 
 			~Frame()
 			{
 				Meshs = nullptr;
 				ChildFrames.clear();
 			}
-
-			std::vector<ChPtr::Shared<Frame>>ChildFrames;
 
 		};
 

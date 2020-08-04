@@ -27,14 +27,14 @@ namespace ChPtr
 
 	//SharedPtr用ダウンキャスト//
 	template<class C, class C2>
-	static inline Shared<C> SharedSafeCast(const Shared<C2> _SPtr)
+	static inline Shared<C> SharedSafeCast(Shared<C2> _SPtr)
 	{
 		return std::dynamic_pointer_cast<C, C2>(_SPtr);
 	}
 
 	//*Ptr用ダウンキャスト//
 	template<class C, class C2>
-	static inline C* SafeCast(const C2*_Ptr)
+	static inline C* SafeCast(C2*_Ptr)
 	{
 		auto Ptr = const_cast<C2*>(_Ptr);
 

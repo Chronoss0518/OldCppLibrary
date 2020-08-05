@@ -57,19 +57,37 @@ namespace ChCpp
 		void SetVector3s(
 			std::vector<ChVec3>& _Vector3s
 			, size_t& _TextPos
-			, const std::string& _Text);
+			, const std::string& _Text
+			, const std::string _EndChars = ";;"
+			, const std::string _CutChars = ",");
 
 		void SetValues(
 			std::vector<std::vector<unsigned long>>& _Values
 			, size_t& _TextPos
-			, const std::string& _Text);
+			, const std::string& _Text
+			, const std::string _EndChars = ";;"
+			, const std::string _CutChars = ",");
+
+		void SetNums(
+			std::vector<unsigned long>& _Values
+			, size_t& _TextPos
+			, const std::string& _Text
+			, const std::string _EndChars = ";;"
+			, const std::string _CutChars = ",");
+
+		void SetFloats(
+			std::vector<float>& _Values
+			, size_t& _TextPos
+			, const std::string& _Text
+			, const std::string _EndChars = ";;"
+			, const std::string _CutChars = ",");
 
 		///////////////////////////////////////////////////////////////////////////////////////
 		//GetFunction//
 
 		std::string GetFrameTags()
 		{
-			static std::string Tmp = "Frame ";
+			std::string Tmp = "Frame ";
 
 			return Tmp;
 		}
@@ -77,35 +95,35 @@ namespace ChCpp
 
 		std::string GetFrameTransformMatrixTags()
 		{
-			static std::string Tmp = "FrameTransformMatrix ";
+			std::string Tmp = "FrameTransformMatrix ";
 
 			return Tmp;
 		}
 
 		std::string GetMeshTags()
 		{
-			static std::string Tmp = "Mesh ";
+			std::string Tmp = "Mesh ";
 
 			return Tmp;
 		}
 
 		std::string GetNormalTags()
 		{
-			static std::string Tmp = "MeshNormals ";
+			std::string Tmp = "MeshNormals ";
 
 			return Tmp;
 		}
 
 		std::string GetMaterialTags()
 		{
-			static std::string Tmp = "MeshMaterialList ";
+			std::string Tmp = "MeshMaterialList ";
 
 			return Tmp;
 		}
 
 		std::string GetSkinWeightsTags()
 		{
-			static std::string Tmp = "SkinWeights ";
+			std::string Tmp = "SkinWeights ";
 
 			return Tmp;
 		}

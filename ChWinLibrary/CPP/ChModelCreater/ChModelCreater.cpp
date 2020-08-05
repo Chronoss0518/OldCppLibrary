@@ -197,7 +197,6 @@ void ChCpp::CMXFile::SetMesh(
 	size_t TmpLen = _Text.find(";", _TextPos);
 	if (IsException(TmpLen))return;
 
-	_TextPos = TmpLen + 1;
 
 	while (1)
 	{
@@ -245,6 +244,7 @@ void ChCpp::CMXFile::SetMesh(
 	}
 
 
+	_TextPos = TmpLen + 1;
 
 	_Frames->Meshs = Meshs;
 
@@ -296,6 +296,9 @@ void ChCpp::CMXFile::SetVertexNormal(
 
 	if (exceptionFlg)return;
 
+	_TextPos = _Text.find(GetNormalTags(), _TextPos)
+		+ GetNormalTags().length();
+
 	std::vector<ChVec3>Normals;
 
 	std::map<unsigned long, unsigned long>VertexCount;
@@ -325,10 +328,38 @@ void ChCpp::CMXFile::SetVertexNormal(
 
 	SetValues(Values, _TextPos, _Text);
 
-
 	if (exceptionFlg)return;
 
+	unsigned long FaseNo = 0;
 
+	for (auto Value : Values)
+	{
+
+		if (Value.size() != _Meshs->FaceList[FaseNo]->VertexNo.size())
+		{
+			exceptionFlg = true;
+			return;
+		}
+
+		for (unsigned long i = 0; i < Value.size(); i++)
+		{
+			if (VertexCount.find(_Meshs->FaceList[FaseNo]->VertexNo[i])
+				== VertexCount.end())
+				VertexCount[_Meshs->FaceList[FaseNo]->VertexNo[i]] = 0;
+			unsigned long VerNo = _Meshs->FaceList[FaseNo]->VertexNo[i];
+			VertexCount[VerNo] += 1;
+			_Meshs->VertexList[VerNo]->Normal += Normals[Value[i]];
+		}
+
+		FaseNo++;
+
+	}
+
+
+	for (unsigned long i = 0;i< _Meshs->VertexList.size();i++)
+	{
+		_Meshs->VertexList[i]->Normal /= VertexCount[i];
+	}
 
 
 }
@@ -341,7 +372,7 @@ void ChCpp::CMXFile::SetFace(
 	, const std::string& _Text)
 {
 	if (exceptionFlg)return;
-	
+
 	{
 		size_t TmpLen = _Text.find(";", _TextPos);
 		if (IsException(TmpLen))return;
@@ -383,7 +414,16 @@ void ChCpp::CMXFile::SetMaterial(
 {
 	if (exceptionFlg)return;
 
+	{
+		size_t TmpLen = _Text.find(";", _TextPos);
+		if (IsException(TmpLen))return;
 
+		_TextPos = TmpLen + 1;
+	}
+
+	std::vector<unsigned long> lValues;
+
+	SetNums(lValues, _TextPos, _Text);
 
 
 }
@@ -404,12 +444,14 @@ void ChCpp::CMXFile::SetWeight(
 void ChCpp::CMXFile::SetVector3s(
 	std::vector<ChVec3>& _Vector3s
 	, size_t& _TextPos
-	, const std::string& _Text)
+	, const std::string& _Text
+	, const std::string _EndChars
+	, const std::string _CutChars)
 {
 
 	if (exceptionFlg)return;
 
-	size_t TmpLen = _Text.find(";;", _TextPos);
+	size_t TmpLen = _Text.find(_EndChars, _TextPos);
 	if (IsException(TmpLen))return;
 
 	std::string TmpText = _Text.substr(_TextPos, TmpLen - _TextPos);
@@ -424,7 +466,7 @@ void ChCpp::CMXFile::SetVector3s(
 	{
 		ChVec3 Normal;
 
-		Normal.Deserialize(TmpText, TmpSPos, ";", ";,");
+		Normal.Deserialize(TmpText, TmpSPos, _CutChars, ";,");
 
 		TmpSPos = TmpEPos + 2;
 
@@ -436,13 +478,13 @@ void ChCpp::CMXFile::SetVector3s(
 
 	ChVec3 Normal;
 
-	Normal.Deserialize(TmpText, TmpSPos, ";", ";;");
+	Normal.Deserialize(TmpText, TmpSPos, _CutChars, _EndChars);
 
 	TmpEPos = TmpText.find(";,", TmpSPos);
 
 	_Vector3s.push_back(Normal);
 
-	_TextPos = TmpLen + 2;
+	_TextPos = TmpLen + _EndChars.length();
 
 
 }
@@ -452,7 +494,9 @@ void ChCpp::CMXFile::SetVector3s(
 void ChCpp::CMXFile::SetValues(
 	std::vector<std::vector<unsigned long>>& _Values
 	, size_t& _TextPos
-	, const std::string& _Text)
+	, const std::string& _Text
+	, const std::string _EndChars
+	, const std::string _CutChars)
 {
 
 	if (exceptionFlg)return;
@@ -494,7 +538,7 @@ void ChCpp::CMXFile::SetValues(
 			std::string TmpStr = TmpText.substr(TmpSPos + 1, Tmp - (TmpSPos + 1));
 
 			long VerTexNo = std::atol(TmpStr.c_str());
-			
+
 			TmpValues.push_back(VerTexNo);
 
 
@@ -534,5 +578,37 @@ void ChCpp::CMXFile::SetValues(
 
 
 	_Values.push_back(TmpValues);
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+void ChCpp::CMXFile::SetNums(
+	std::vector<unsigned long>& _Values
+	, size_t& _TextPos
+	, const std::string& _Text
+	, const std::string _EndChars
+	, const std::string _CutChars)
+{
+
+	if (exceptionFlg)return;
+
+
+
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+void ChCpp::CMXFile::SetFloats(
+	std::vector<float>& _Values
+	, size_t& _TextPos
+	, const std::string& _Text
+	, const std::string _EndChars
+	, const std::string _CutChars)
+{
+
+	if (exceptionFlg)return;
+
 
 }

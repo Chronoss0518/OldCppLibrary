@@ -25,8 +25,6 @@ namespace ChSystem
 
 	//Windowsで作成されたWindとWindowsに関する入出力などを管理した、//
 	//WIndows全体の管理クラス//
-	//※SingletonClass//
-	//※改装中(使用可能ではあるが継承不可)//
 	class Windows :public BaseSystem
 	{
 	public:

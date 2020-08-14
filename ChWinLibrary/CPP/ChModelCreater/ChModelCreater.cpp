@@ -168,7 +168,14 @@ void ChCpp::CMXFile::SetFrame(
 			continue;
 		}
 
-		break;
+
+		TestPos = _Text.find("{", _TextPos);
+		if (TestPos >= TmpLen)
+		{
+			break;
+		}
+
+		_TextPos = TestPos + 1;
 	}
 
 	_TextPos = TmpLen;
@@ -223,7 +230,7 @@ void ChCpp::CMXFile::SetMesh(
 		if (TestPos < TmpLen)
 		{
 
-			SetMaterial(Meshs, _TextPos, _Text);
+			SetMaterials(Meshs, _TextPos, _Text);
 
 			continue;
 		}
@@ -238,8 +245,15 @@ void ChCpp::CMXFile::SetMesh(
 			continue;
 		}
 
-		break;
 
+
+		TestPos = _Text.find("{", _TextPos);
+		if (TestPos >= TmpLen)
+		{
+			break;
+		}
+
+		_TextPos = TestPos + 1;
 
 	}
 
@@ -330,6 +344,12 @@ void ChCpp::CMXFile::SetVertexNormal(
 
 	if (exceptionFlg)return;
 
+
+	size_t TmpLen = _Text.find("}", _TextPos);
+	if (IsException(TmpLen))return;
+
+	_TextPos = TmpLen + 1;
+
 	unsigned long FaseNo = 0;
 
 	for (auto Value : Values)
@@ -356,7 +376,7 @@ void ChCpp::CMXFile::SetVertexNormal(
 	}
 
 
-	for (unsigned long i = 0;i< _Meshs->VertexList.size();i++)
+	for (unsigned long i = 0; i < _Meshs->VertexList.size(); i++)
 	{
 		_Meshs->VertexList[i]->Normal /= VertexCount[i];
 	}
@@ -407,6 +427,52 @@ void ChCpp::CMXFile::SetFace(
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
+void ChCpp::CMXFile::SetMaterials(
+	ChPtr::Shared<BaseModel::Mesh>& _Meshs
+	, size_t& _TextPos
+	, const std::string& _Text)
+{
+	if (exceptionFlg)return;
+
+	{
+		size_t TmpLen = _Text.find(";", _TextPos);
+		if (IsException(TmpLen))return;
+
+		_TextPos = TmpLen + 1;
+	}
+
+	std::vector<unsigned long> lValues;
+
+	SetNums(lValues, _TextPos, _Text,";",",");
+	
+	if (lValues.size() != _Meshs->FaceList.size())
+	{
+		exceptionFlg = true;
+		return;
+	}
+
+	{
+		auto& Faces = _Meshs->FaceList;
+
+		for (unsigned long i = 0; i < _Meshs->FaceList.size(); i++)
+		{
+			Faces[i]->Materials = lValues[i];
+		}
+	}
+
+
+	//MaterialSet//
+	while (1)
+	{
+
+	}
+
+
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+
 void ChCpp::CMXFile::SetMaterial(
 	ChPtr::Shared<BaseModel::Mesh>& _Meshs
 	, size_t& _TextPos
@@ -423,7 +489,30 @@ void ChCpp::CMXFile::SetMaterial(
 
 	std::vector<unsigned long> lValues;
 
-	SetNums(lValues, _TextPos, _Text);
+	SetNums(lValues, _TextPos, _Text, ";", ",");
+
+	if (lValues.size() != _Meshs->FaceList.size())
+	{
+		exceptionFlg = true;
+		return;
+	}
+
+	{
+		auto& Faces = _Meshs->FaceList;
+
+		for (unsigned long i = 0; i < _Meshs->FaceList.size(); i++)
+		{
+			Faces[i]->Materials = lValues[i];
+		}
+	}
+
+
+	//MaterialSet//
+	while (1)
+	{
+
+	}
+
 
 
 }
@@ -464,25 +553,25 @@ void ChCpp::CMXFile::SetVector3s(
 
 	while (TmpEPos <= TmpLen)
 	{
-		ChVec3 Normal;
+		ChVec3 Vec;
 
-		Normal.Deserialize(TmpText, TmpSPos, _CutChars, ";,");
+		Vec.Deserialize(TmpText, TmpSPos, _CutChars, ";,");
 
 		TmpSPos = TmpEPos + 2;
 
 		TmpEPos = TmpText.find(";,", TmpSPos);
 
-		_Vector3s.push_back(Normal);
+		_Vector3s.push_back(Vec);
 
 	}
 
-	ChVec3 Normal;
+	ChVec3 Vec;
 
-	Normal.Deserialize(TmpText, TmpSPos, _CutChars, _EndChars);
+	Vec.Deserialize(TmpText, TmpSPos, _CutChars, _EndChars);
 
 	TmpEPos = TmpText.find(";,", TmpSPos);
 
-	_Vector3s.push_back(Normal);
+	_Vector3s.push_back(Vec);
 
 	_TextPos = TmpLen + _EndChars.length();
 
@@ -506,14 +595,14 @@ void ChCpp::CMXFile::SetValues(
 
 	_TextPos = TmpLen;
 
-	TmpLen = _Text.find(";;", TmpLen + 1);
+	TmpLen = _Text.find(_EndChars, TmpLen + 1);
 	if (IsException(TmpLen))return;
 
 	std::string TmpText = _Text.substr(_TextPos, TmpLen - _TextPos);
 
 	TmpText = ChStd::RemoveToWhiteSpaceChars(TmpText);
 
-	_TextPos = TmpLen + 2;
+	_TextPos = TmpLen + _EndChars.length();
 
 	TmpLen = TmpText.length();
 
@@ -533,13 +622,13 @@ void ChCpp::CMXFile::SetValues(
 		while (TmpSPos <= TmpEPos)
 		{
 
-			size_t Tmp = TmpText.find(",", TmpSPos + 1);
+			size_t Tmp = TmpText.find(_CutChars, TmpSPos + 1);
 
 			std::string TmpStr = TmpText.substr(TmpSPos + 1, Tmp - (TmpSPos + 1));
 
-			long VerTexNo = std::atol(TmpStr.c_str());
+			long Num = std::atol(TmpStr.c_str());
 
-			TmpValues.push_back(VerTexNo);
+			TmpValues.push_back(Num);
 
 
 			TmpSPos = Tmp;
@@ -562,13 +651,13 @@ void ChCpp::CMXFile::SetValues(
 	while (TmpSPos <= TmpEPos)
 	{
 
-		size_t Tmp = TmpText.find(",", TmpSPos + 1);
+		size_t Tmp = TmpText.find(_CutChars, TmpSPos + 1);
 
 		std::string TmpStr = TmpText.substr(TmpSPos + 1, Tmp - (TmpSPos + 1));
 
-		long VerTexNo = std::atol(TmpStr.c_str());
+		long Num = std::atol(TmpStr.c_str());
 
-		TmpValues.push_back(VerTexNo);
+		TmpValues.push_back(Num);
 
 
 		TmpSPos = Tmp;
@@ -593,6 +682,52 @@ void ChCpp::CMXFile::SetNums(
 
 	if (exceptionFlg)return;
 
+	size_t TmpLen = _Text.find(";", _TextPos);
+	if (IsException(TmpLen))return;
+
+	_TextPos = TmpLen;
+
+	TmpLen = _Text.find(_EndChars, TmpLen + 1);
+	if (IsException(TmpLen))return;
+
+	std::string TmpText = _Text.substr(_TextPos + 1, TmpLen - _TextPos);
+
+	TmpText = ChStd::RemoveToWhiteSpaceChars(TmpText);
+
+	_TextPos = TmpLen + _EndChars.length();
+
+	TmpLen = TmpText.length();
+
+
+	size_t TmpPos = 0;
+
+	size_t Test = TmpText.find(_CutChars, TmpPos);;
+
+
+	while (Test <= TmpLen)
+	{
+
+
+		std::string TmpStr = TmpText.substr(TmpPos, Test - TmpPos - 1);
+
+		long Tmp = std::atol(TmpStr.c_str());
+
+		_Values.push_back(Tmp);
+
+		TmpPos = Test + 1;
+
+		Test = TmpText.find(_CutChars, TmpPos);
+
+	}
+
+
+	std::string TmpStr = TmpText.substr(TmpPos + 1, TmpLen - TmpPos - 1);
+
+	long Tmp = std::atol(TmpStr.c_str());
+
+	_Values.push_back(Tmp);
+
+
 
 
 
@@ -609,6 +744,52 @@ void ChCpp::CMXFile::SetFloats(
 {
 
 	if (exceptionFlg)return;
+
+	size_t TmpLen = _Text.find(";", _TextPos);
+	if (IsException(TmpLen))return;
+
+	_TextPos = TmpLen;
+
+	TmpLen = _Text.find(_EndChars, TmpLen + 1);
+	if (IsException(TmpLen))return;
+
+	std::string TmpText = _Text.substr(_TextPos + 1, TmpLen - _TextPos);
+
+	TmpText = ChStd::RemoveToWhiteSpaceChars(TmpText);
+
+	_TextPos = TmpLen + _EndChars.length();
+
+	TmpLen = TmpText.length();
+
+
+	size_t TmpPos = 0;
+
+	size_t Test = TmpText.find(_CutChars, TmpPos);;
+
+
+	while (Test <= TmpLen)
+	{
+
+
+		std::string TmpStr = TmpText.substr(TmpPos, Test - TmpPos - 1);
+
+		float Tmp = std::atof(TmpStr.c_str());
+
+		_Values.push_back(Tmp);
+
+		TmpPos = Test + 1;
+
+		Test = TmpText.find(_CutChars, TmpPos);
+
+	}
+
+
+	std::string TmpStr = TmpText.substr(TmpPos + 1, TmpLen - TmpPos - 1);
+
+	float Tmp = std::atof(TmpStr.c_str());
+
+	_Values.push_back(Tmp);
+
 
 
 }

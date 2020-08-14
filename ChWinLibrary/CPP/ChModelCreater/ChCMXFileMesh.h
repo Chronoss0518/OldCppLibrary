@@ -44,8 +44,13 @@ namespace ChCpp
 			, size_t& _TextPos
 			, const std::string& _Text);
 
-		void SetMaterial(
+		void SetMaterials(
 			ChPtr::Shared<BaseModel::Mesh> &_Meshs
+			, size_t& _TextPos
+			, const std::string& _Text);
+
+		void SetMaterial(
+			ChPtr::Shared<BaseModel::Mesh>& _Meshs
 			, size_t& _TextPos
 			, const std::string& _Text);
 

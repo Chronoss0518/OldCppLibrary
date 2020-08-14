@@ -3,11 +3,6 @@
 
 namespace ChFIO
 {
-
-	static const std::string Key_Stop = "St;";
-	static const std::string Key_Loop = "Lp:";
-	static const std::string Key_Vec = "Vec:";
-
 	class File
 	{
 
@@ -183,6 +178,7 @@ namespace ChFIO
 
 
 	}
+
 }
 
 

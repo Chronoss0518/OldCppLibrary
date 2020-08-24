@@ -9,6 +9,12 @@ namespace ChCpp
 	{
 	protected:
 
+		struct TemplateRange
+		{
+			size_t Begin;
+			size_t End;
+		};
+
 		//モデルデータの読み込み口//
 		void CreateMesh(const std::string& _FilePath)override;
 
@@ -19,118 +25,46 @@ namespace ChCpp
 		///////////////////////////////////////////////////////////////////////////////////////
 		//SetFunction//
 
-		void SetFrame(
-			ChPtr::Shared<BaseModel::Frame> &_Frames
-			, size_t& _TextPos
-			, const std::string& _Text);
 
-		void SetMesh(
-			ChPtr::Shared<BaseModel::Frame> &_Frames
-			, size_t& _TextPos
-			, const std::string& _Text);
-
-		void SetVertexPos(
-			ChPtr::Shared<BaseModel::Mesh>& _Meshs
-			, size_t& _TextPos
-			, const std::string& _Text);
-
-		void SetVertexNormal(
-			ChPtr::Shared<BaseModel::Mesh>& _Meshs
-			, size_t& _TextPos
-			, const std::string& _Text);
-
-		void SetFace(
-			ChPtr::Shared<BaseModel::Mesh> &_Meshs
-			, size_t& _TextPos
-			, const std::string& _Text);
-
-		void SetMaterials(
-			ChPtr::Shared<BaseModel::Mesh> &_Meshs
-			, size_t& _TextPos
-			, const std::string& _Text);
-
-		void SetMaterial(
-			ChPtr::Shared<BaseModel::Mesh>& _Meshs
-			, size_t& _TextPos
-			, const std::string& _Text);
-
-		void SetWeight(
-			ChPtr::Shared<BaseModel::Mesh>& _Meshs
-			, size_t& _TextPos
-			, const std::string& _Text);
-
-		void SetVector3s(
-			std::vector<ChVec3>& _Vector3s
-			, size_t& _TextPos
-			, const std::string& _Text
-			, const std::string _EndChars = ";;"
-			, const std::string _CutChars = ",");
-
-		void SetValues(
-			std::vector<std::vector<unsigned long>>& _Values
-			, size_t& _TextPos
-			, const std::string& _Text
-			, const std::string _EndChars = ";;"
-			, const std::string _CutChars = ",");
-
-		void SetNums(
-			std::vector<unsigned long>& _Values
-			, size_t& _TextPos
-			, const std::string& _Text
-			, const std::string _EndChars = ";;"
-			, const std::string _CutChars = ",");
-
-		void SetFloats(
-			std::vector<float>& _Values
-			, size_t& _TextPos
-			, const std::string& _Text
-			, const std::string _EndChars = ";;"
-			, const std::string _CutChars = ",");
+		
 
 		///////////////////////////////////////////////////////////////////////////////////////
 		//GetFunction//
 
 		std::string GetFrameTags()
 		{
-			std::string Tmp = "Frame ";
-
-			return Tmp;
+			return "Frame ";
 		}
 
 
 		std::string GetFrameTransformMatrixTags()
 		{
-			std::string Tmp = "FrameTransformMatrix ";
-
-			return Tmp;
+			return "FrameTransformMatrix ";
 		}
 
 		std::string GetMeshTags()
 		{
-			std::string Tmp = "Mesh ";
-
-			return Tmp;
+			return "Mesh ";
 		}
 
 		std::string GetNormalTags()
 		{
-			std::string Tmp = "MeshNormals ";
-
-			return Tmp;
+			return "MeshNormals ";
 		}
 
 		std::string GetMaterialTags()
 		{
-			std::string Tmp = "MeshMaterialList ";
-
-			return Tmp;
+			return "MeshMaterialList ";
 		}
 
 		std::string GetSkinWeightsTags()
 		{
-			std::string Tmp = "SkinWeights ";
+			return "SkinWeights ";
+		}
 
-			return Tmp;
+		std::string GetUVTags()
+		{
+			return "MeshTextureCoords ";
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////
@@ -146,6 +80,12 @@ namespace ChCpp
 
 			return  false;
 		}
+
+		///////////////////////////////////////////////////////////////////////////////////////
+
+		void ThroughTemplate(
+			size_t& _TextPos
+			, const std::string& _Text);
 
 		///////////////////////////////////////////////////////////////////////////////////////
 

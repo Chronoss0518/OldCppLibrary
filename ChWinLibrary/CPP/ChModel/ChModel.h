@@ -55,15 +55,21 @@ namespace ChCpp
 		struct SurFace
 		{
 
+			struct SurFaceVertex
+			{
+				size_t VertexNo;
+				ChVec2 UVPos;
+			};
+
 			const unsigned long VertexRotations[2][3] = { {0,1,2},{0,2,3} };
 
-			std::vector<unsigned long>VertexNo;
+			std::vector<ChPtr::Shared<SurFaceVertex>>VertexData;
 			unsigned long Materials;
 			ChVec3 Normal;
-
+			
 			inline ~SurFace()
 			{
-				VertexNo.clear();
+				VertexData.clear();
 			}
 		};
 
@@ -97,7 +103,7 @@ namespace ChCpp
 			ChLMatrix BaseMat;
 			std::string MyName;
 			ChPtr::Shared<Mesh>Meshs;
-			std::string Parent;
+			ChPtr::Shared<Frame>Parent;
 			std::vector<ChPtr::Shared<Frame>>ChildFrames;
 
 			~Frame()

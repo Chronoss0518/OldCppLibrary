@@ -2,11 +2,8 @@
 #ifndef Ch_D3D11_DXCo_h
 #define Ch_D3D11_DXCo_h
 
-
 namespace ChD3D11
 {
-
-	enum class CULL { NONE, CW, CCW };
 
 	//Direct3D9を利用するために作られたクラス//
 	//D3DXも内蔵されている//
@@ -23,8 +20,6 @@ namespace ChD3D11
 			, const unsigned short _ScrW
 			, const unsigned short _ScrH);
 
-		void CreateIndexBuffer();
-
 		void Release();
 
 		///////////////////////////////////////////////////////////////////////////////////
@@ -38,13 +33,13 @@ namespace ChD3D11
 		//Direct3D11をつかさどるデバイスの取得//
 		inline const ID3D11Device* const GetDevice()
 		{
-			return device;
+			return Device;
 		}
 
 		//描画をつかさどるデバイスの取得//
 		inline const ID3D11DeviceContext* const GetDC()
 		{
-			return dContext;
+			return DContext;
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////
@@ -53,9 +48,9 @@ namespace ChD3D11
 		//デバイスが存在するかしないかの確認//
 		inline ChStd::Bool IsInstanse()
 		{
-			if (ChPtr::NullCheck(device))return false;
-			if (ChPtr::NullCheck(dContext))return false;
-			if (ChPtr::NullCheck(window))return false;
+			if (ChPtr::NullCheck(Device))return false;
+			if (ChPtr::NullCheck(DContext))return false;
+			if (ChPtr::NullCheck(Window))return false;
 			return true;
 
 		}
@@ -74,13 +69,13 @@ namespace ChD3D11
 		///////////////////////////////////////////////////////////////////////////////////
 
 		//基本オブジェクトをつかさどるデバイス//
-		ID3D11Device* device = nullptr;
+		ID3D11Device* Device = nullptr;
 
 		//描画用デバイス//
-		ID3D11DeviceContext* dContext = nullptr;
+		ID3D11DeviceContext* DContext = nullptr;
 
 		//保持するWindowデータ//
-		IDXGISwapChain* window;
+		IDXGISwapChain* Window;
 
 		ChStd::Bool DFlg = false;
 
@@ -113,7 +108,7 @@ namespace ChD3D11
 
 	const static std::function<DirectX3D11&()> D3D11API = DirectX3D11::GetInstans;
 
-	const static std::function<const ID3D11Device* const()> D3D11Device
+	const static std::function<const ID3D11Device*()> D3D11Device
 		= []()->const ID3D11Device* const
 	{
 		return DirectX3D11::GetInstans().GetDevice();

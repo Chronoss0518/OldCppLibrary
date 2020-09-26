@@ -3,24 +3,15 @@
 
 #include"../ChVertexData11.h"
 
-
-namespace ChMesh
+namespace ChCpp
 {
-	typedef class BaseMesh9 Mesh9;
-}
-
-namespace ChTex
-{
-	typedef class BaseTexture9 Texture9;
-
-	class RenderTargetList9;
-	class RenderTargetManager9;
+	class ModelObject;
 }
 
 namespace ChD3D11
 {
-
-
+	class Texture11;
+	enum class CULL { NONE, CW, CCW };
 
 	//※LightはShader内のBaseLightとPointLightを利用してください//
 	//独自で構築しているShaderクラス//
@@ -32,7 +23,7 @@ namespace ChD3D11
 		struct LambertLight
 		{
 			ChStd::COLOR1f Dif = ChStd::COLOR1f(1.0f, 1.0f, 1.0f, 1.0f);
-			ChVec3_11 Dir = ChVec3_9(0.0f, -1.0f, 0.0f);
+			ChVec3_11 Dir = ChVec3_11(0.0f, -1.0f, 0.0f);
 			float AmbPow = 0.3f;
 		};
 
@@ -42,7 +33,7 @@ namespace ChD3D11
 
 			ChVec3 Dif = ChVec3(1.0f);
 			float Len = 1.0f;
-			ChVec3_11 Pos = ChVec3_9();
+			ChVec3_11 Pos = ChVec3_11();
 			bool Flg;
 		};
 
@@ -51,6 +42,7 @@ namespace ChD3D11
 			ChStd::COLOR1f Dif;
 			ChVec3 SpeCol;
 			float SpePow;
+			ChVec4 Amb;
 		};
 
 	public:
@@ -127,7 +119,6 @@ namespace ChD3D11
 		inline void SetCullMode(const CULL _CULL)
 		{
 			Cull = _CULL;
-			Device->SetRenderState(D3DRS_CULLMODE, ChStd::EnumCast(_CULL));
 		}
 
 		//霧効果を使用するか否かのフラグ//
@@ -152,7 +143,7 @@ namespace ChD3D11
 			UseMyLightTex = _Flg;
 		}
 
-		inline void SetCamPos(const ChVec3_9& _Pos) { CamPos = _Pos; }
+		inline void SetCamPos(const ChVec3_11& _Pos) { CamPos = _Pos; }
 
 		///////////////////////////////////////////////////////////////////////////////////
 		//GetFunction//
@@ -199,7 +190,7 @@ namespace ChD3D11
 		//描画開始前に呼ぶ関数//
 		//ChTex::RenderTargetManager9::SetRT//
 		//ChTex::RenderTargetList9::SetRTとは併用できません//
-		void DrawStart(const D3DCOLOR& _BackColor = D3DCOLOR_ARGB(255, 255, 255, 255));
+		void DrawStart(const ChStd::COLOR1f& _BackColor = ChStd::COLOR1f(255, 255, 255, 255));
 
 		///////////////////////////////////////////////////////////////////////////////////
 
@@ -212,33 +203,33 @@ namespace ChD3D11
 
 		//Mesh描画用関数//
 		void DrawMesh(
-			const ChPtr::Shared<ChMesh::Mesh9> _Mesh
-			, const ChMat_9& _Mat = ChMat_9());
+			const ChPtr::Shared<ChCpp::ModelObject> _Mesh
+			, const ChMat_11& _Mat = ChMat_11());
 
 		///////////////////////////////////////////////////////////////////////////////////
 
 		//Mesh描画用関数//
 		void DrawMeshContour(
-			const ChPtr::Shared<ChMesh::Mesh9> _Mesh
+			const ChPtr::Shared<ChCpp::ModelObject> _Mesh
 			, const ChStd::COLOR1f& _Color
-			, const ChMat_9& _Mat = ChMat_9()
+			, const ChMat_11& _Mat = ChMat_11()
 			, const float _Size = 1.0f);
 
 		///////////////////////////////////////////////////////////////////////////////////
 
 		//板ポリゴン描画//
 		void DrawPolygonBoard(
-			const ChPtr::Shared<ChTex::Texture9>& _Tex
+			const ChPtr::Shared<ChD3D11::Texture11>& _Tex
 			, const VertexData& _Vertex
-			, const ChMat_9& _Mat = ChMat_9()
+			, const ChMat_11& _Mat = ChMat_11()
 			, const unsigned int _TriangleCount = 2);
 
 		///////////////////////////////////////////////////////////////////////////////////
 
 		//スプライト描画//
 		void DrawSprite(
-			const ChPtr::Shared<ChTex::Texture9>& _Tex
-			, const ChMat_9& _Mat = ChMat_9()
+			const ChPtr::Shared<ChD3D11::Texture11>& _Tex
+			, const ChMat_11& _Mat = ChMat_11()
 			, const SpriteData& _SpData = SpriteData(ChStd::FPOINT(0.0f, 0.0f), WindSize));
 
 		///////////////////////////////////////////////////////////////////////////////////
@@ -247,8 +238,6 @@ namespace ChD3D11
 
 		///////////////////////////////////////////////////////////////////////////////////
 
-		friend ChTex::RenderTargetList9;
-		friend ChTex::RenderTargetManager9;
 
 	protected:
 
@@ -258,7 +247,7 @@ namespace ChD3D11
 		///////////////////////////////////////////////////////////////////////////////////
 
 		//描画データの初期化//
-		void SetDrawDatas(const D3DCOLOR&
+		void SetDrawDatas(const ChStd::COLOR1f&
 			_BackColor);
 
 		///////////////////////////////////////////////////////////////////////////////////
@@ -267,7 +256,7 @@ namespace ChD3D11
 		{
 
 			ChVec3 Dif = ChVec3(1.0f);
-			ChVec3_9 Pos = ChVec3_9();
+			ChVec3_11 Pos = ChVec3_11();
 			float Len = 1.0f;
 		};
 
@@ -291,7 +280,7 @@ namespace ChD3D11
 		///////////////////////////////////////////////////////////////////////////////////
 
 		//標準マテリアルから自身の使うマテリアル型への変更//
-		Material SetMateData(D3DMATERIAL9& _Mate);
+		Material SetMateData(Material& _Mate);
 
 		///////////////////////////////////////////////////////////////////////////////////
 
@@ -310,9 +299,6 @@ namespace ChD3D11
 		ID3D11VertexShader* PoVTex = nullptr;
 		ID3D11PixelShader* BPTex = nullptr;
 
-		LPD3DXCONSTANTTABLE PixelCnstant = nullptr;
-		LPD3DXCONSTANTTABLE VertexCnstant = nullptr;
-
 		ChStd::Bool AllCreateFlg = false;
 
 		//頂点情報変更用//
@@ -320,16 +306,16 @@ namespace ChD3D11
 		D3D11_INPUT_ELEMENT_DESC* MVerDec = nullptr;
 
 		//モデルの画像がない場合にセットする//
-		ChPtr::Shared<ChTex::BaseTexture9>WhiteTex = nullptr;
+		ChPtr::Shared<ChD3D11::Texture11>WhiteTex = nullptr;
 
 		//モデルの法線マップがない場合に使用する画像//
-		ChPtr::Shared<ChTex::BaseTexture9>NormalTex = nullptr;
+		ChPtr::Shared<ChD3D11::Texture11>NormalTex = nullptr;
 
 		//ライトの強さを表す画像情報//
-		ChPtr::Shared<ChTex::BaseTexture9>LightEffectTex = nullptr;
+		ChPtr::Shared<ChD3D11::Texture11>LightEffectTex = nullptr;
 
 		//ひとつ前の描画保存用//
-		ChPtr::Shared<ChTex::Texture9>BeforeTex = nullptr;
+		ChPtr::Shared<ChD3D11::Texture11>BeforeTex = nullptr;
 
 		ChStd::Bool LightUseFlg = false;
 
@@ -339,18 +325,15 @@ namespace ChD3D11
 		//専用ポイントライト//
 		PointLights PosLight = PointLights();
 
-		ChVec3_11 CamPos = ChVec3_9();
+		ChVec3_11 CamPos = ChVec3_11();
 
 		ID3D11Device* Device = nullptr;
 		ID3D11DeviceContext* DC = nullptr;
 
-		//Device初期化用パラメータ//
-		D3DPRESENT_PARAMETERS Param{ 0 };
-
-		LPDIRECT3DCUBETEXTURE9 AmbTex = nullptr;
+		//AmbTex = nullptr;
 
 		//ライトの強さを設定する画像//
-		ChPtr::Shared<ChTex::Texture9>MyLightTex = nullptr;
+		ChPtr::Shared<ChD3D11::Texture11>MyLightTex = nullptr;
 
 		ChStd::Bool UseMyLightTex = false;
 

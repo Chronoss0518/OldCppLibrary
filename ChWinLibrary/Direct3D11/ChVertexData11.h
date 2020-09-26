@@ -11,6 +11,15 @@ namespace ChD3D11
 
 		struct Vertex
 		{
+			Vertex() {}
+
+			Vertex(ChVec3 _Pos, ChVec4 _Col, ChVec2 _UV)
+			{
+				Pos = _Pos;
+				Col = _Col;
+				UV = _UV;
+			}
+
 			ChVec3_11 Pos;
 			ChVec4 Col;
 			ChVec2 UV;
@@ -49,16 +58,7 @@ namespace ChD3D11
 			Ver[3] = _v4;
 		}
 
-		union
-		{
-
-			struct
-			{
-				Vertex _1, _2, _3, _4;
-			};
-
-			Vertex Ver[4];
-		};
+		Vertex Ver[4];
 
 
 	};
@@ -107,13 +107,13 @@ namespace ChD3D11
 		//SetFunction//
 
 		VertexData SpData = VertexData(
-			{ ChVec3_11(0.0f,0.0f,0.0f),{1.0f,1.0f,1.0f,1.0f},ChVec2(0.0f,0.0f) }
+			VertexData::Vertex(ChVec3(0.0f,0.0f,0.0f),ChVec4(1.0f,1.0f,1.0f,1.0f),ChVec2(0.0f,0.0f))
 			,
-			{ ChVec3_11(1280.0f,0.0f,0.0f),{1.0f,1.0f,1.0f,1.0f},ChVec2(1.0f,0.0f) }
+				VertexData::Vertex(ChVec3(1280.0f,0.0f,0.0f),ChVec4(1.0f,1.0f,1.0f,1.0f),ChVec2(1.0f,0.0f))
 			,
-			{ ChVec3_11(1280.0f,720.0f,0.0f),{1.0f,1.0f,1.0f,1.0f},ChVec2(1.0f,1.0f) }
+				VertexData::Vertex(ChVec3(1280.0f,720.0f,0.0f),ChVec4(1.0f,1.0f,1.0f,1.0f),ChVec2(1.0f,1.0f))
 			,
-			{ ChVec3_11(0.0f,720.0f,0.0f),{1.0f,1.0f,1.0f,1.0f},ChVec2(0.0f,1.0f) }
+				VertexData::Vertex(ChVec3(0.0f,720.0f,0.0f),ChVec4(1.0f,1.0f,1.0f,1.0f),ChVec2(0.0f,1.0f))
 		);
 
 	};

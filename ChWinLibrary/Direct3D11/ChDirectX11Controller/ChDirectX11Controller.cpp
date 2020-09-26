@@ -34,7 +34,7 @@ void DirectX3D11::Release()
 {
 
 	if (ChPtr::NotNullCheck(Device))Device->Release(); Device = nullptr;
-	if (ChPtr::NotNullCheck(DeviceContext))DeviceContext->Release(); DeviceContext = nullptr;
+	if (ChPtr::NotNullCheck(DContext))DContext->Release(); DContext = nullptr;
 	if (ChPtr::NotNullCheck(Window))Window->Release(); Window = nullptr;
 
 	SetInitFlg(false);
@@ -95,7 +95,7 @@ void DirectX3D11::CreateDevice(
 		, &Window
 		, &Device
 		, &Lv
-		, &DeviceContext
+		, &DContext
 	);
 
 

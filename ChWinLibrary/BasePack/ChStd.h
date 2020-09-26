@@ -397,13 +397,6 @@ namespace ChStd
 		return static_cast<typename std::underlying_type<Enum>::type>(_Enum);
 	}
 
-	template<typename Enum>
-	static inline auto EnumCast(Enum _Enum)->typename std::enable_if
-		<!std::is_enum<Enum>::value, int>::type
-	{
-		return 0;
-	}
-
 	//指定したアドレス先を値0で初期化する//
 	template<class T>
 	static inline void All0Memory(T* _Val)
@@ -690,6 +683,20 @@ namespace ChStd
 
 		return static_cast<BaseType>(Tmp);
 
+	}
+
+
+	using convert_t = std::codecvt_utf8<wchar_t>;
+	static std::wstring_convert<convert_t, wchar_t> strconverter;
+
+	inline std::wstring ToWString(const std::string _Str)
+	{
+		return strconverter.from_bytes(_Str);
+	}
+
+	inline std::string ToString(const std::wstring _Str)
+	{
+		return strconverter.to_bytes(_Str);
 	}
 
 }

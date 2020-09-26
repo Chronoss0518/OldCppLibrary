@@ -72,14 +72,12 @@ namespace ChCpp
 
 	private:
 
-		using Animation = std::map<std::string, ChPtr::Shared<ModelAnimator>>;
+		using FrameName = std::string;
+		using  AnimationName = std::string;
 
-		static	std::map<
-			std::string
-			, Animation>
-			AnimatorList;
+		using Animation = std::map<AnimationName, ChPtr::Shared<ModelAnimator>>;
 
-
+		static	std::map<FrameName, Animation>AnimatorList;
 
 	};
 

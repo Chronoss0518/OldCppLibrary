@@ -4,7 +4,6 @@
 #ifdef _WINDEF_
 
 #include<D3D11.h>
-#include<D3DX11.h>
 #include<direct.h>
 #include<DirectXCollision.h>
 #include<d3dcompiler.h>

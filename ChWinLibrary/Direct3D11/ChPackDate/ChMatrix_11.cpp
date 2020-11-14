@@ -1,10 +1,6 @@
 #include<Windows.h>
 #include"../../BaseIncluder/ChBase.h"
 
-#ifndef _XM_NO_INTRINSICS_
-#define _XM_NO_INTRINSICS_
-#endif
-
 #include"../../BaseIncluder/ChD3D11I.h"
 
 #include"ChMatrix_11.h"
@@ -86,7 +82,7 @@ ChMatrix_11 ChMatrix_11::operator*(const DirectX::XMFLOAT4X4& _cm)const
 	TmpMat1 = DirectX::XMLoadFloat4x4(&_cm);
 	TmpMat2 = *this;
 
-	TmpMat = TmpMat1 * TmpMat2;
+	TmpMat = DirectX::XMMatrixMultiply(TmpMat1, TmpMat2);
 
 	
 
@@ -185,6 +181,7 @@ ChMatrix_11::operator DirectX::XMMATRIX()const
 {
 	DirectX::XMMATRIX TmpMat;
 	TmpMat = DirectX::XMLoadFloat4x4(this);
+
 	return TmpMat;
 }
 
@@ -308,8 +305,8 @@ void ChMatrix_11::RotYPR(const DirectX::XMFLOAT3& _Vec)
 	ChMatrix_11 TmpMat;
 
 	TmpMat = DirectX::XMMatrixRotationRollPitchYaw(
-		ChMath::ToRadian(_Vec.y)
-		, ChMath::ToRadian(_Vec.x)
+		ChMath::ToRadian(_Vec.x)
+		, ChMath::ToRadian(_Vec.y)
 		, ChMath::ToRadian(_Vec.z));
 
 	*this = TmpMat * *this;
@@ -398,6 +395,45 @@ void ChMatrix_11::Scaling(
 	ChMatrix_11 TmpMat;
 	TmpMat = DirectX::XMMatrixScaling(_x, _y, _z);
 	*this = TmpMat * *this;
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
+void ChMatrix_11::CreateViewMat(const ChVec3& _Pos, const ChVec3& _Dir, const ChVec3& _Up)
+{
+
+	ChVec3_11 Pos;
+	Pos = _Pos;
+
+	ChVec3_11 Up;
+	Up = _Up;
+
+	ChVec3_11 Dir;
+	Dir = _Dir;
+
+	*this = DirectX::XMMatrixLookAtLH(Pos, (Dir + Pos), Up);
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
+void ChMatrix_11::CreateViewMatLookTarget(
+	const ChVec3& _Pos
+	, const ChVec3& _TargetPos
+	, const ChVec3& _Up)
+{
+
+	ChVec3_11 Pos;
+	Pos = _Pos;
+
+	ChVec3_11 Up;
+	Up = _Up;
+
+	ChVec3_11 TargetPos;
+	TargetPos = _TargetPos;
+
+	*this = DirectX::XMMatrixLookAtLH(Pos, TargetPos, Up);
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////

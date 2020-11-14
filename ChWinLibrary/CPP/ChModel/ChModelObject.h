@@ -28,7 +28,10 @@ namespace ChCpp
 		///////////////////////////////////////////////////////////////////////////////////////
 		//GetFunction//
 
-
+		ChPtr::Shared<ModelFrame> GetModel()const
+		{
+			return Model;
+		}
 
 		///////////////////////////////////////////////////////////////////////////////////////
 		//SetFunction//
@@ -49,7 +52,7 @@ namespace ChCpp
 
 			creater->Init(this);
 
-			creater->CreateMesh(_FilePath);
+			creater->CreateModel(_FilePath);
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////
@@ -66,7 +69,7 @@ namespace ChCpp
 
 	protected:
 
-		ChPtr::Shared<BaseModel>Model = nullptr;
+		ChPtr::Shared<ModelFrame>Model = nullptr;
 
 		std::vector<std::string>AnimatorNames;
 

@@ -170,6 +170,42 @@ public:
 
 	///////////////////////////////////////////////////////////////////////////////////
 
+	void CreateViewMat(const ChVec3& _Pos,const ChVec3& _Dir,const ChVec3& _Up);
+
+	///////////////////////////////////////////////////////////////////////////////////
+
+	void CreateViewMatLookTarget(const ChVec3& _Pos, const ChVec3& _TargetPos, const ChVec3& _Up);
+
+	///////////////////////////////////////////////////////////////////////////////////
+
+	inline void CreateProjectionMat(
+		const float _LookAngleRadian
+		, const float _WindWidth
+		, const float _WindHeight
+		, const float _NearZ
+		, const float _FarZ)
+	{
+		*this = DirectX::XMMatrixPerspectiveFovLH(
+			_LookAngleRadian
+			, _WindWidth/ _WindHeight
+			, _NearZ
+			, _FarZ);
+
+
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////
+
+	//ç¿ïWånïœä∑//
+	inline ChMatrix_11 Transpose() const
+	{
+		ChMatrix_11 Tmp;
+
+		Tmp = DirectX::XMMatrixTranspose(*this);
+
+		return Tmp;
+	}
+
 private:
 
 }ChMat_11;

@@ -7,13 +7,13 @@
 
 void ChCpp::ModelCreater::Init(ModelObject* _Model)
 {
-	Model = _Model;
+	OModel = _Model;
 }
 
 
-void ChCpp::ModelCreater::SetModel(ChPtr::Shared<BaseModel> _Models)
+void ChCpp::ModelCreater::SetModel(ChPtr::Shared<ModelFrame> _Models)
 {
-	Model->Model = _Models;
+	OModel->Model = _Models;
 }
 
 
@@ -21,7 +21,7 @@ void ChCpp::ModelCreater::SetModel(ChPtr::Shared<BaseModel> _Models)
 //ChXFileMesh Method//
 ///////////////////////////////////////////////////////////////////////////////////////
 
-void ChCpp::CMXFile::CreateMesh(const std::string& _FilePath)
+void ChCpp::CMXFile::CreateModel(const std::string& _FilePath)
 {
 	if (_FilePath.size() <= 0)return;
 	if (_FilePath.rfind(".") == std::string::npos)return;
@@ -69,25 +69,26 @@ void ChCpp::CMXFile::CreateMesh(const std::string& _FilePath)
 
 	LoadToTemplates(Templates, TextPos, Text);
 
-	ChPtr::Shared<XFrame>XModel = nullptr;
+	auto XModel = ChPtr::Make_S<XFileModelFrame>();
 
 	for (auto&& Temp : Templates->Nest)
 	{
 
-		SetFrame(XModel, Temp, Text);
+		SetFrame(XModel->ModelData, Temp, Text);
+
+		SetMesh(XModel->ModelData, Temp, Text);
 
 	}
 
 	if (exceptionFlg)return;
 
-	ChPtr::Shared<BaseModel> OutModels = nullptr;
+	ChPtr::Shared<ModelFrame> OutModels = nullptr;
 
-	OutModels = ChPtr::Make_S<BaseModel>();
+	OutModels = ChPtr::Make_S<ModelFrame>();
 
 	OutModels->ModelName = _FilePath;
-	OutModels->ModelData = ChPtr::Make_S<BaseModel::Frame>();
 
-	XModelToChModel(OutModels, XModel);
+	XFrameToChFrame(OutModels->ModelData, XModel->ModelData);
 
 	SetModel(OutModels);
 
@@ -95,7 +96,7 @@ void ChCpp::CMXFile::CreateMesh(const std::string& _FilePath)
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-void ChCpp::CMXFile::OutMeshFile(const std::string& _FilePath)
+void ChCpp::CMXFile::OutModelFile(const std::string& _FilePath)
 {
 
 }
@@ -103,7 +104,7 @@ void ChCpp::CMXFile::OutMeshFile(const std::string& _FilePath)
 /////////////////////////////////////////////////////////////////////////////////////
 
 ChStd::Bool ChCpp::CMXFile::SetFrame(
-	ChPtr::Shared<XFrame>& _Frames
+	ChPtr::Shared<XFileModelFrame::XFrame>& _Frames
 	, const ChPtr::Shared<TemplateRange>& _TargetTemplate
 	, const std::string& _Text)
 {
@@ -116,7 +117,7 @@ ChStd::Bool ChCpp::CMXFile::SetFrame(
 
 	FramePos += FrameTags.length();
 
-	auto TmpFrame = ChPtr::Make_S<XFrame>();
+	auto TmpFrame = ChPtr::Make_S<XFileModelFrame::XFrame>();
 
 	TmpFrame->FName = _Text.substr(FramePos, _TargetTemplate->Bigen - FramePos);
 
@@ -128,7 +129,7 @@ ChStd::Bool ChCpp::CMXFile::SetFrame(
 		if (SetFremeTransformMatrix(TmpFrame, Temp, _Text)) continue;
 
 		{
-			ChPtr::Shared<XFrame> Obj = nullptr;
+			ChPtr::Shared<XFileModelFrame::XFrame> Obj = nullptr;
 
 			if (SetFrame(Obj, Temp, _Text))
 			{
@@ -152,7 +153,7 @@ ChStd::Bool ChCpp::CMXFile::SetFrame(
 ///////////////////////////////////////////////////////////////////////////////////////
 
 ChStd::Bool ChCpp::CMXFile::SetFremeTransformMatrix(
-	ChPtr::Shared<XFrame>& _Frames
+	ChPtr::Shared<XFileModelFrame::XFrame>& _Frames
 	, const ChPtr::Shared<TemplateRange>& _TargetTemplate
 	, const std::string& _Text)
 {
@@ -178,7 +179,7 @@ ChStd::Bool ChCpp::CMXFile::SetFremeTransformMatrix(
 ///////////////////////////////////////////////////////////////////////////////////////
 
 ChStd::Bool ChCpp::CMXFile::SetMesh(
-	ChPtr::Shared<XFrame>& _Frames
+	ChPtr::Shared<XFileModelFrame::XFrame>& _Frames
 	, const ChPtr::Shared<TemplateRange>& _TargetTemplate
 	, const std::string& _Text)
 {
@@ -186,11 +187,17 @@ ChStd::Bool ChCpp::CMXFile::SetMesh(
 
 	if (!IsTags(MeshTags, _TargetTemplate, _Text))return false;
 
+	if (_Frames == nullptr)
+	{
+		_Frames = ChPtr::Make_S<XFileModelFrame::XFrame>();
+		_Frames->FName = "Root";
+	}
+
 	size_t TmpPos = _TargetTemplate->Bigen;
 
 	TmpPos += 1;
 
-	auto Meshs = ChPtr::Make_S<XMesh>();
+	auto Meshs = ChPtr::Make_S<XFileModelFrame::XMesh>();
 
 	{
 
@@ -199,7 +206,7 @@ ChStd::Bool ChCpp::CMXFile::SetMesh(
 
 		for (auto&& Poss : Values)
 		{
-			auto Vertex = ChPtr::Make_S<XVertex>();
+			auto Vertex = ChPtr::Make_S<XFileModelFrame::XVertex>();
 
 			Vertex->Pos = Poss->value;
 
@@ -217,7 +224,7 @@ ChStd::Bool ChCpp::CMXFile::SetMesh(
 
 		for (auto&& Poss : Values)
 		{
-			auto Face = ChPtr::Make_S<XFace>();
+			auto Face = ChPtr::Make_S<XFileModelFrame::XFace>();
 
 			for (auto&& No : Poss->value)
 			{
@@ -240,6 +247,8 @@ ChStd::Bool ChCpp::CMXFile::SetMesh(
 
 		if (SetMeshMaterialList(_Frames, Temp, _Text)) continue;
 
+		if (SetSkinWeights(_Frames, Temp, _Text)) continue;
+
 	}
 	return true;
 
@@ -248,7 +257,7 @@ ChStd::Bool ChCpp::CMXFile::SetMesh(
 ///////////////////////////////////////////////////////////////////////////////////////
 
 ChStd::Bool ChCpp::CMXFile::SetMeshNormal(
-	ChPtr::Shared<XFrame>& _Frames
+	ChPtr::Shared<XFileModelFrame::XFrame>& _Frames
 	, const ChPtr::Shared<TemplateRange>& _TargetTemplate
 	, const std::string& _Text)
 {
@@ -296,7 +305,7 @@ ChStd::Bool ChCpp::CMXFile::SetMeshNormal(
 ///////////////////////////////////////////////////////////////////////////////////////
 
 ChStd::Bool ChCpp::CMXFile::SetMeshTextureCoords(
-	ChPtr::Shared<XFrame>& _Frames
+	ChPtr::Shared<XFileModelFrame::XFrame>& _Frames
 	, const ChPtr::Shared<TemplateRange>& _TargetTemplate
 	, const std::string& _Text)
 {
@@ -327,7 +336,7 @@ ChStd::Bool ChCpp::CMXFile::SetMeshTextureCoords(
 ///////////////////////////////////////////////////////////////////////////////////////
 
 ChStd::Bool ChCpp::CMXFile::SetMeshMaterialList(
-	ChPtr::Shared<XFrame>& _Frames
+	ChPtr::Shared<XFileModelFrame::XFrame>& _Frames
 	, const ChPtr::Shared<TemplateRange>& _TargetTemplate
 	, const std::string& _Text)
 {
@@ -366,7 +375,7 @@ ChStd::Bool ChCpp::CMXFile::SetMeshMaterialList(
 ///////////////////////////////////////////////////////////////////////////////////////
 
 ChStd::Bool ChCpp::CMXFile::SetMaterial(
-	ChPtr::Shared<XFrame>& _Frames
+	ChPtr::Shared<XFileModelFrame::XFrame>& _Frames
 	, const ChPtr::Shared<TemplateRange>& _TargetTemplate
 	, const std::string& _Text)
 {
@@ -457,7 +466,7 @@ ChStd::Bool ChCpp::CMXFile::SetMaterial(
 
 	}
 
-	auto Mate = ChPtr::Make_S<XMaterial>();
+	auto Mate = ChPtr::Make_S<XFileModelFrame::XMaterial>();
 
 	Mate->MaterialName = MaterialName;
 	Mate->Diffuse = Diffuse.value;
@@ -485,6 +494,82 @@ ChStd::Bool ChCpp::CMXFile::SetMaterial(
 	}
 
 	_Frames->Meshs->MaterialList.push_back(Mate);
+
+	return true;
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+ChStd::Bool ChCpp::CMXFile::SetSkinWeights(
+	ChPtr::Shared<XFileModelFrame::XFrame>& _Frames
+	, const ChPtr::Shared<TemplateRange>& _TargetTemplate
+	, const std::string& _Text)
+{
+
+	if (exceptionFlg)return false;
+
+	if (!IsTags(SkinWeightsTag, _TargetTemplate, _Text))return false;
+
+	size_t TmpPos = _TargetTemplate->Bigen;
+
+	TmpPos += 1;
+
+	std::string BoneName;
+
+	{
+		size_t TmpStart = _Text.find("\"",TmpPos);
+
+		size_t TmpEnd = _Text.find("\";",TmpPos);
+
+		if (TmpStart > _TargetTemplate->End
+			|| TmpEnd > _TargetTemplate->End)return true;
+
+
+		BoneName = _Text.substr(TmpStart + 1, TmpEnd - TmpStart - 1);
+
+		TmpPos = TmpEnd + 2;
+	}
+
+	TmpPos = _Text.find(";", TmpPos);
+	TmpPos += 1;
+
+
+	auto VertexNo = GetArrayValuesNC<XDWORD>(_Text, TmpPos, ",", ";");
+
+	TmpPos = _Text.find(";", TmpPos);
+	TmpPos += 1;
+
+	auto WeightPow = GetArrayValuesNC<XFLOAT>(_Text, TmpPos, ",", ";");
+
+	TmpPos = _Text.find(";", TmpPos);
+	TmpPos += 1;
+
+	ChLMat TmpOffMat;
+
+	TmpOffMat.Deserialize(_Text, TmpPos, ",", ";;");
+
+	auto SkinWeight = ChPtr::Make_S<XFileModelFrame::XSkinWeights>();
+
+	SkinWeight->BoneOffset = TmpOffMat;
+
+	SkinWeight->TargetFrameName = BoneName;
+
+	{
+
+		size_t WeightingCount = VertexNo.size();
+
+		if (WeightingCount > WeightPow.size())WeightingCount = WeightPow.size();
+
+		for (unsigned long i = 0; i < WeightingCount; i++)
+		{
+			SkinWeight->WeitPow[VertexNo[i]->value] = WeightPow[i]->value;
+		}
+
+	}
+
+	_Frames->SkinWeightDatas.push_back(SkinWeight);
+
 
 	return true;
 
@@ -644,40 +729,13 @@ void ChCpp::CMXFile::SetToTemplate(
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-void ChCpp::CMXFile::XModelToChModel(
-	ChPtr::Shared<BaseModel>& _ChModel
-	, const ChPtr::Shared<XFrame>& _XModel)
-{
-
-	_ChModel->ModelData->MyName = _XModel->FName;
-	_ChModel->ModelData->BaseMat = _XModel->frameMatrix;
-
-	for (auto&& frame : _XModel->Next)
-	{
-		ChPtr::Shared<BaseModel::Frame>chFrame = nullptr;
-
-		XFrameToChFrame(chFrame, frame);
-
-		_ChModel->ModelData->ChildFrames.push_back(chFrame);
-
-		chFrame->Parent = _ChModel->ModelData;
-
-	}
-
-
-
-
-}
-
-///////////////////////////////////////////////////////////////////////////////////////
-
 void ChCpp::CMXFile::XFrameToChFrame(
-	ChPtr::Shared<BaseModel::Frame>& _ChFrame
-	, const ChPtr::Shared<XFrame>& _XFrame)
+	ChPtr::Shared<ModelFrame::Frame>& _ChFrame
+	, const ChPtr::Shared<XFileModelFrame::XFrame>& _XFrame)
 {
 
 
-	_ChFrame = ChPtr::Make_S<BaseModel::Frame>();
+	_ChFrame = ChPtr::Make_S<ModelFrame::Frame>();
 
 	_ChFrame->BaseMat = _XFrame->frameMatrix;
 	_ChFrame->MyName = _XFrame->FName;
@@ -685,7 +743,7 @@ void ChCpp::CMXFile::XFrameToChFrame(
 
 	for (auto&& Frame : _XFrame->Next)
 	{
-		ChPtr::Shared<BaseModel::Frame> ChFrame = nullptr;
+		ChPtr::Shared<ModelFrame::Frame> ChFrame = nullptr;
 
 		XFrameToChFrame(ChFrame, Frame);
 
@@ -696,8 +754,9 @@ void ChCpp::CMXFile::XFrameToChFrame(
 
 	std::map<unsigned long, unsigned long>SummarizeVertex;
 
-	auto Meshs = ChPtr::Make_S<BaseModel::Mesh>();
+	auto Meshs = ChPtr::Make_S<ModelFrame::Mesh>();
 
+	if (_XFrame->Meshs == nullptr)return;
 	//SetVertexList//
 	{
 		auto& XVertexList = _XFrame->Meshs->VertexList;
@@ -713,7 +772,7 @@ void ChCpp::CMXFile::XFrameToChFrame(
 
 				ChVec3 Tmp = ChVertexList[j]->Pos - XVertexList[i]->Pos;
 
-				if (Tmp.Len() > 0.0000001f)continue;
+				if (Tmp.Len() > 0.00000001f)continue;
 
 				SummarizeVertex[i] = j;
 
@@ -727,9 +786,9 @@ void ChCpp::CMXFile::XFrameToChFrame(
 
 			if (LookFlg)continue;
 
-			SummarizeVertex[i] = i;
+			SummarizeVertex[i] = ChVertexList.size();
 
-			auto ChVertex = ChPtr::Make_S<BaseModel::VertexData>();
+			auto ChVertex = ChPtr::Make_S<ModelFrame::VertexData>();
 
 			ChVertex->Pos = XVertexList[i]->Pos;
 			ChVertex->Normal += XVertexList[i]->Normal;
@@ -753,31 +812,58 @@ void ChCpp::CMXFile::XFrameToChFrame(
 
 		auto& ChFaceList = Meshs->FaceList;
 
-		for (unsigned long i = 0; i < XFaceList.size(); i++)
+		for (auto&& XFace : XFaceList)
 		{
-			auto ChFace = ChPtr::Make_S<BaseModel::SurFace>();
+			unsigned long Counters[3];
+			Counters[0] = 0;
+			Counters[1] = 1;
+			Counters[2] = XFace->VertexNos.size() - 1;
 
-			for (unsigned long j = 0; j < XFaceList[i]->VertexNos.size(); j++)
+			ChStd::Bool UpperFlg = true;
+
+			for (unsigned long i = 0; i < XFace->VertexNos.size() - 2; i++)
 			{
+				auto ChFace = ChPtr::Make_S<ModelFrame::SurFace>();
 
-				auto ChVertexDatas = ChPtr::Make_S<BaseModel::SurFace::SurFaceVertex>();
+				for (unsigned long j = 0; j < 3; j++)
+				{
 
-				unsigned long VertexNo = SummarizeVertex[XFaceList[i]->VertexNos[j]];
+					auto ChVertexData = ChPtr::Make_S<ModelFrame::SurFace::SurFaceVertex>();
 
-				ChVertexDatas->VertexNo = VertexNo;
-				ChVertexDatas->UVPos = XVertexList[XFaceList[i]->VertexNos[j]]->UVPos;
+					unsigned long VertexNo = SummarizeVertex[XFace->VertexNos[Counters[j]]];
 
-				ChFace->VertexData.push_back(ChVertexDatas);
+					ChVertexData->VertexNo = VertexNo;
+					ChVertexData->UVPos = XVertexList[XFace->VertexNos[Counters[j]]]->UVPos;
+
+
+					ChFace->VertexData[2 - j].UVPos = ChVertexData->UVPos;
+					ChFace->VertexData[2 - j].VertexNo = ChVertexData->VertexNo;
+				}
+
+
+				if (UpperFlg)
+				{
+					Counters[0] = Counters[1];
+					Counters[1] = Counters[2] - 1;
+				}else
+				{
+					Counters[2] = Counters[1];
+					Counters[1] = Counters[0] + 1;
+				}
+
+				UpperFlg = !UpperFlg;
+
+				ChFace->Materials = XFace->MateNo;
+
+				ChFaceList.push_back(ChFace);
 			}
-
-			ChFace->Materials = XFaceList[i]->MateNo;
-
-			ChFaceList.push_back(ChFace);
 		}
+
 
 	}
 
 	//SetMaterial//
+
 	{
 		auto& ChMateList = Meshs->MaterialList;
 		auto& ChMateNos = Meshs->MaterialNo;
@@ -786,7 +872,7 @@ void ChCpp::CMXFile::XFrameToChFrame(
 
 		for (auto&& XMate : _XFrame->Meshs->MaterialList)
 		{
-			auto ChMate = ChPtr::Make_S<BaseModel::Material>();
+			auto ChMate = ChPtr::Make_S<ModelFrame::Material>();
 
 			ChMate->Diffuse = XMate->Diffuse;
 			ChMate->MaterialName = XMate->MaterialName;
@@ -809,6 +895,6 @@ void ChCpp::CMXFile::XFrameToChFrame(
 
 	}
 
-	_ChFrame->Meshs = Meshs;
+_ChFrame->Meshs = Meshs;
 
 }

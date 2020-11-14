@@ -51,12 +51,12 @@ namespace ChSystem
 		//GetFunction//
 
 		//Windハンドルの取得//
-		inline const HWND GethWnd(void) const { return hWnd; }
+		inline HWND GethWnd(void) const { return hWnd; }
 
 		//メッセージの値を返す関数//
 		inline const LPMSG GetReturnMassage(void) const { return const_cast<const LPMSG>(&msg); }
 
-		unsigned long GetTime() { return timeGetTime(); }
+		unsigned long GetNowTime()override { return timeGetTime(); }
 
 		///////////////////////////////////////////////////////////////////////////////////
 		//IsFunction//

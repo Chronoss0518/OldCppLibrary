@@ -1372,6 +1372,113 @@ ChRMatrix ChLMatrix::ConvertAxis()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
+//ChUIMatrix Method//
+///////////////////////////////////////////////////////////////////////////////////
+
+std::string ChUIMatrix::Serialize(
+	const std::string& _CutChar
+	, const std::string& _EndChar)
+{
+
+	std::string Tmp = "";
+	for (unsigned char i = 0; i < 4; i++)
+	{
+		for (unsigned char j = 0; j < 4; j++)
+		{
+			if (i == 3 && j == 3)break;
+			Tmp += std::to_string(m[i][j]);
+			Tmp += _CutChar;
+		}
+	}
+
+	Tmp += std::to_string(m[3][3]);
+	Tmp += _EndChar;
+
+	return Tmp;
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
+std::string ChUIMatrix::SerializeUpper(
+	const std::string& _CutChar
+	, const std::string& _EndChar
+	, const std::string& _CutTo4Char)
+{
+
+	std::string Tmp = "";
+	for (unsigned char i = 0; i < 4; i++)
+	{
+		for (unsigned char j = 0; j < 4; j++)
+		{
+			if (i == 3 && j == 3)break;
+			Tmp += std::to_string(m[i][j]);
+			Tmp += _CutChar;
+
+			if (j < 3)continue;
+			Tmp += _CutTo4Char;
+		}
+	}
+
+	Tmp += std::to_string(m[3][3]);
+	Tmp += _EndChar;
+
+	return Tmp;
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
+void ChUIMatrix::Deserialize(
+	const std::string& _Str
+	, const size_t _FPos
+	, const std::string& _CutChar
+	, const std::string& _EndChar)
+{
+
+	std::string TmpStr = _Str;
+
+	size_t TmpFPos = _FPos;
+
+	size_t EPos = TmpStr.find(_EndChar, TmpFPos);
+
+	if (EPos == TmpStr.npos)EPos = TmpStr.size() - 1;
+
+	TmpStr = TmpStr.substr(TmpFPos, EPos - TmpFPos);
+
+	TmpStr = ChStd::RemoveToWhiteSpaceChars(TmpStr);
+
+	TmpFPos = 0;
+
+	EPos = TmpStr.length();
+
+	size_t Tmp = TmpFPos;
+
+	for (unsigned char i = 0; i < 4; i++)
+	{
+		for (unsigned char j = 0; j < 4; j++)
+		{
+			size_t Test = TmpStr.find(_CutChar, Tmp);
+
+			if (Test > EPos)Test = EPos;
+
+			{
+				TmpFPos = Test;
+
+				std::string Num = TmpStr.substr(Tmp, TmpFPos - Tmp);
+
+				m[i][j] = (unsigned long)std::atoll(Num.c_str());
+
+				Tmp = Test + 1;
+
+			}
+
+			if (Test >= EPos)return;
+		}
+
+	}
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////
 //Math Function//
 ///////////////////////////////////////////////////////////////////////////////////
 

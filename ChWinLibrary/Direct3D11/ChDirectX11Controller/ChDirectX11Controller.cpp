@@ -7,13 +7,18 @@
 using namespace ChD3D11;
 
 void DirectX3D11::Init(
-	const HWND _hWnd
-	, const bool _FullScreenFlg
+	HWND _hWnd
+	, const ChStd::Bool _FullScreenFlg
 	, const unsigned short _ScrW
-	, const unsigned short _ScrH)
+	, const unsigned short _ScrH
+	, const unsigned short _ScrX
+	, const unsigned short _ScrY)
 {
+	if (ChPtr::NullCheck(_hWnd))return;
 
+	
 	CreateDevice(_hWnd, _ScrW, _ScrH);
+
 
 	if (!IsInstanse())
 	{
@@ -25,7 +30,6 @@ void DirectX3D11::Init(
 
 	SetInitFlg(true);
 
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -33,9 +37,13 @@ void DirectX3D11::Init(
 void DirectX3D11::Release()
 {
 
-	if (ChPtr::NotNullCheck(Device))Device->Release(); Device = nullptr;
-	if (ChPtr::NotNullCheck(DContext))DContext->Release(); DContext = nullptr;
-	if (ChPtr::NotNullCheck(Window))Window->Release(); Window = nullptr;
+	if (ChPtr::NotNullCheck(Device)) { Device->Release(); Device = nullptr; }
+	if (ChPtr::NotNullCheck(DContext))
+	{
+		DContext->ClearState();  DContext->Release(); DContext = nullptr;
+	}
+
+	if (ChPtr::NotNullCheck(Window)) { Window->Release(); Window = nullptr; }
 
 	SetInitFlg(false);
 }
@@ -43,13 +51,10 @@ void DirectX3D11::Release()
 ///////////////////////////////////////////////////////////////////////////////////
 
 void DirectX3D11::CreateDevice(
-	const HWND _hWnd
+	HWND _hWnd
 	, const unsigned short _ScrW
 	, const unsigned short _ScrH)
 {
-
-	//ウィンドウ設定//
-
 
 	DXGI_SWAP_CHAIN_DESC scd;
 
@@ -61,8 +66,8 @@ void DirectX3D11::CreateDevice(
 	scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 
 	//塗り替える時間//
-	scd.BufferDesc.RefreshRate.Numerator = 60;
-	scd.BufferDesc.RefreshRate.Denominator = 1;
+	//scd.BufferDesc.RefreshRate.Numerator = 0;
+	//scd.BufferDesc.RefreshRate.Denominator = 0;
 
 	//画面出力//
 	scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
@@ -78,27 +83,26 @@ void DirectX3D11::CreateDevice(
 
 	scd.Windowed = true;
 
-
 	//DirectXの機能設定//
-	D3D_FEATURE_LEVEL Lv = D3D_FEATURE_LEVEL_11_0;
+	D3D_FEATURE_LEVEL Lv[] = { D3D_FEATURE_LEVEL_11_0 };
+	D3D_FEATURE_LEVEL RLv;
 
 	D3D11CreateDeviceAndSwapChain
 	(
-		nullptr
+		NULL
 		, D3D_DRIVER_TYPE_HARDWARE
-		, nullptr
-		, 0
-		, &Lv
+		, NULL
+		, D3D11_CREATE_DEVICE_DEBUG
+		//,0
+		, Lv
 		, 1
 		, D3D11_SDK_VERSION
 		, &scd
 		, &Window
 		, &Device
-		, &Lv
+		, &RLv
 		, &DContext
 	);
-
-
 
 
 }

@@ -2,7 +2,6 @@
 //外部行列
 //--------------------------
 
-float EasingValue = 0.0f;
 
 //--------------------------
 //共通データ
@@ -14,49 +13,7 @@ float EasingValue = 0.0f;
 //ライトデータ
 //--------------------------
 
-struct Light
-{
-	float4 Dif;
-	float3 Dir;
-	float AmbPow;
-};
-
-struct PLight
-{
-	float3 Pos;
-	float4 Dif;
-	float Len;
-	bool Flg;
-};
-
-cbuffer LightData :register(b8)
-{
-	float3 CamPos = float3(0.0f, 0.0f, 0.0f);
-
-	bool LightUseFlg = false;
-
-	Light light = {
-		float4(1.0f,1.0f,1.0f,1.0f)
-		,float3(0.0f,-1.0f,0.0f)
-		,0.3f
-	};
-
-	int PlightCnt = 10;
-
-	PLight pLight[10];
-
-};
-
-
-	//未実装
-texture2D LightPowMap :register(t3);
-
-//画像から1ピクセルの色を取得するための物//
-sampler LightSmp = sampler_state {
-	Filter = MIN_MAG_MIP_LINEAR;
-	AddressU = Clamp;
-	AddressV = Clamp;
-};
+#include"../ShaderParts/Light.hlsli"
 
 //--------------------------
 //BaseShader
@@ -66,38 +23,62 @@ float4 LightCol(VS_OUT _Base, float4 _Color);
 
 float4 PLightCol(PLight plight, VS_OUT _Base, float4 _Color);
 
-float3 LamLightCol(float3 _Dif, float _Pow);
-
-float3 SpeLightCol(float3 _Dir, float3 _ModelPos, float3 _Normal);
-
-float3 AmbLightCol();
+struct RenderDatas
+{
+	float4 Main : SV_Target0;
+	float4 Temperature :SV_Target1;
+	float4 NightVision :SV_Target2;
+};
 
 
 //ピクセルシェダ(PixelShader)//
 //通常描画//
-float4 main(VS_OUT In) :SV_Target
+float4 main(VS_OUT In) :SV_Target0
 {
 	//カメラの前方にあるかの判定//
 
-clip(In.ProPos.x > 1.0f && In.ProPos.x < -1.0f ? -1.0f : 1.0f);
-clip(In.ProPos.y > 1.0f && In.ProPos.y < -1.0f ? -1.0f : 1.0f);
-clip(In.ProPos.z > 1.0f && In.ProPos.z < 0.0f ? -1.0f : 1.0f);
+	float X = In.ProPos.x / In.ProPos.w;
+	float Y = In.ProPos.y / In.ProPos.w;
+	float Z = In.ProPos.z / In.ProPos.w;
+	//float X = In.Pos.x;
+	//float Y = In.Pos.y;
+	//float Z = In.Pos.z;
 
-	float4 Color = float4(0.0f,0.0f,0.0f,0.0f);
+	clip(X >= -1.0f && X <= 1.0f ? 1.0f : -1.0f);
+	clip(Y >= -1.0f && Y <= 1.0f ? 1.0f : -1.0f);
+	clip(Z >= 0.0f && Z <= 1.0f ? 1.0f : -1.0f);
 
-	Color = Mate.Dif * ModelTex.Sample(ModelSmp, In.UV);
+//RenderDatas RDColor;
 
-	clip(Color.a < 1.0f ? -1 : 1);
+	float4 Color = In.Color;
 
-	Color = LightCol(In, Color);
+	//Color = Dif * ModelTex.Sample(ModelSmp, In.UV) * Color;
 
-	for (int i = 0; i < 10; i++)
-	{
-		if (!LightUseFlg)break;
+	Color = ModelTex.Sample(ModelSmp, In.UV);
 
-		Color = PLightCol(pLight[i], In , Color);
+	//clip(Color.a < 0.001f ? -1 : 1);
 
-	}
+	//Color = LightCol(In, Color);
+
+	//for (int i = 0; i < 10; i++)
+	//{
+	//	if (!LightUseFlg)break;
+
+	//	Color = PLightCol(pLight[i], In , Color);
+
+	//}
+
+	//float4 Temperature = float4(0.0f, 0.0f, 0.0f, 0.0f);
+	//
+	//RDColor.Main = Color;
+	//RDColor.Temperature = Temperature;
+
+	//float4 NightVision = float4(0.5f, 0.5f, 1.0f, 1.0f) * (length(Color) * 1.5f);
+
+	//NightVision.a = 1.0f;
+
+	//RDColor.NightVision = NightVision;
+
 
 	return Color;
 
@@ -121,7 +102,7 @@ float4 LightCol(VS_OUT _Base, float4 _Color)
 
 	Col.rgb *= (LamLightCol(light.Dif.rgb, TmpPow) + AmbLightCol());
 
-	Col.rgb += SpeLightCol(light.Dir, _Base.UsePos.xyz, _Base.Normal);
+	Col.rgb += SpeLightCol(light.Dir, _Base.UsePos.xyz, _Base.Normal,SpeCol);
 
 	//Col.rgb += AmbLightCol();
 
@@ -162,44 +143,7 @@ float4 PLightCol(PLight plight, VS_OUT _Base, float4 _Color)
 
 	Col.rgb *= LamLightCol(plight.Dif.rgb, Dot) * Par;
 
-	Col.rgb += SpeLightCol(TmpVec, _Base.UsePos.xyz, _Base.Normal) * Par;
+	Col.rgb += SpeLightCol(TmpVec, _Base.UsePos.xyz, _Base.Normal,SpeCol) * Par;
 
 	return Col;
-}
-
-float3 LamLightCol(float3 _Dif, float _Pow)
-{
-
-	float3 TmpLightCol = _Dif;
-
-	TmpLightCol *= _Pow;
-
-	return TmpLightCol;
-}
-
-float3 SpeLightCol(float3 _Dir, float3 _ModelPos,float3 _Normal)
-{
-
-	float3 TmpVec = normalize(CamPos - _ModelPos);//ピクセルからのカメラ方向
-
-	TmpVec = normalize(-_Dir + TmpVec);
-
-	float LCDot = dot(TmpVec, _Normal);
-
-	float Pow = saturate(LCDot);
-
-	float3 TmpLightCol = Mate.SpeCol.rgb * pow(Pow, Mate.SpePow);
-
-	return TmpLightCol;
-}
-
-float3 AmbLightCol()
-{
-
-	float3 TmpLightCol = light.Dif.rgb;
-
-	TmpLightCol *= light.AmbPow;
-
-	return TmpLightCol;
-
 }

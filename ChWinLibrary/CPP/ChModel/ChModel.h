@@ -29,9 +29,8 @@ namespace ChCpp
 
 	};
 
-	struct BaseModel
+	struct ModelFrame
 	{
-
 		///////////////////////////////////////////////////////////////////////////////////////
 		//MeshDataStruct//
 
@@ -39,6 +38,8 @@ namespace ChCpp
 		{
 			ChVec3 Pos;
 			ChVec3 Normal;
+			ChUIMat BoneNo;
+			ChLMat	BlendPow;
 		};
 
 		struct Material
@@ -60,23 +61,15 @@ namespace ChCpp
 				ChVec2 UVPos;
 			};
 
-			const unsigned long VertexRotations[2][3] = { {0,1,2},{0,2,3} };
 
-			std::vector<ChPtr::Shared<SurFaceVertex>>VertexData;
+			SurFaceVertex VertexData[3];
 			unsigned long Materials;
 			ChVec3 Normal;
 			
 			inline ~SurFace()
 			{
-				VertexData.clear();
+
 			}
-		};
-
-		struct WeightData
-		{
-			ChLMat OffsetMat;
-
-			std::map<unsigned long, float> VertexDatas;
 		};
 
 		struct Mesh
@@ -85,7 +78,6 @@ namespace ChCpp
 			std::vector<ChPtr::Shared<Material>>MaterialList;
 			std::map<std::string, unsigned long> MaterialNo;
 			std::vector<ChPtr::Shared<SurFace>>FaceList;
-			std::map<std::string, ChPtr::Shared<WeightData>>SkinWeightDatas;
 
 			inline ~Mesh()
 			{
@@ -112,6 +104,18 @@ namespace ChCpp
 			}
 
 		};
+
+
+		struct BoneTrees
+		{
+
+			ChLMat BaseMat;
+			ChPtr::Shared<BoneTrees> ParentBone = nullptr;
+			std::vector<ChPtr::Shared<BoneTrees>>ChildBones;
+		};
+
+		std::map<std::string, unsigned long>BoneNames;
+		std::vector<ChPtr::Shared<BoneTrees>>BoneList;
 
 		ChPtr::Shared<Frame>ModelData = nullptr;
 		std::string ModelName;

@@ -24,6 +24,7 @@ struct ChVector2;
 struct ChQuaternion;
 struct ChRMatrix;
 struct ChLMatrix;
+struct ChUIMatrix;
 
 namespace ChMath
 {
@@ -119,6 +120,23 @@ namespace ChMath
 
 
 	};
+
+	struct ChUIMatrixBase
+	{
+		union
+		{
+			struct
+			{
+				unsigned long _11, _12, _13, _14;
+				unsigned long _21, _22, _23, _24;
+				unsigned long _31, _32, _33, _34;
+				unsigned long _41, _42, _43, _44;
+			};
+
+			unsigned long m[4][4]{ {0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0} };
+		};
+	};
+
 } // namespace ChMath
 
 struct ChVector4 : public ChMath::ChVector4Base
@@ -780,6 +798,51 @@ struct ChRMatrix : public ChMath::ChRMatrixBase
 
 using ChRMat = ChRMatrix;
 using ChLMat = ChLMatrix;
+
+struct ChUIMatrix : public ChMath::ChUIMatrixBase
+{
+
+
+	///////////////////////////////////////////////////////////////////////////////////
+	//ConstructerDestructer//
+
+	inline ChUIMatrix()
+	{
+		for (unsigned char i = 0; i < 4; i++)
+		{
+			for (unsigned char j = 0; j < 4; j++)
+			{
+				m[i][j] = 0;
+			}
+		}
+
+	}
+
+	inline ChUIMatrix(const ChUIMatrix& _Mat) { *this = _Mat; }
+
+	///////////////////////////////////////////////////////////////////////////////////
+	//SerializeDeserialize//
+
+	std::string Serialize(
+		const std::string& _CutChar = ","
+		, const std::string& _EndChar = ";");
+
+	std::string SerializeUpper(
+		const std::string& _CutChar = ","
+		, const std::string& _EndChar = ";"
+		, const std::string& _CutTo4Char = "\n");
+
+	void Deserialize(
+		const std::string& _Str
+		, const size_t _FPos = 0
+		, const std::string& _CutChar = ","
+		, const std::string& _EndChar = ";");
+
+	///////////////////////////////////////////////////////////////////////////////////
+
+};
+
+using ChUIMat = ChUIMatrix;
 
 namespace ChMath
 {

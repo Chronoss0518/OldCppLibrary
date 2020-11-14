@@ -1,10 +1,6 @@
 #include<Windows.h>
 #include"../../BaseIncluder/ChBase.h"
 
-#ifndef _XM_NO_INTRINSICS_
-#define _XM_NO_INTRINSICS_
-#endif
-
 #include"../../BaseIncluder/ChD3D11I.h"
 
 #include"ChVector3_11.h"
@@ -348,7 +344,8 @@ void ChVector3_11::Normalize()
 		*this = ChVector3_11(0.0f, 0.0f, 1.0f);
 		return;
 	}
-	if (IsNormals() || !(TmpLen > 0.0f))return;
+
+	if (IsNormals())return;
 
 	DirectX::XMVECTOR TmpVec;
 	TmpVec = *this;

@@ -181,6 +181,8 @@ namespace ChSystem
 		//FPSˆ—
 		inline ChStd::Bool FPSProcess()
 		{
+			NowTime = BaseSystems->GetNowTime();
+
 			static unsigned long FPSTime;
 			if (NowTime - FPSTime < 1000 / FPS)return false;
 			FPSTime = NowTime;

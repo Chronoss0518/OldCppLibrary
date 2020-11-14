@@ -6,6 +6,7 @@ namespace ChCpp
 {
 
 	class ModelObject;
+	struct ModelFrame;
 
 	class ModelCreater
 	{
@@ -15,11 +16,11 @@ namespace ChCpp
 
 		///////////////////////////////////////////////////////////////////////////////////////
 
-		inline virtual void CreateMesh(const std::string& _FilePath) = 0;
+		inline virtual void CreateModel(const std::string& _FilePath) = 0;
 
 		///////////////////////////////////////////////////////////////////////////////////////
 
-		inline virtual void OutMeshFile(const std::string& _FilePath) = 0;
+		inline virtual void OutModelFile(const std::string& _FilePath) = 0;
 
 		///////////////////////////////////////////////////////////////////////////////////////
 
@@ -29,9 +30,9 @@ namespace ChCpp
 		
 		void Init(ModelObject * _Model);
 
-		void SetModel(ChPtr::Shared<BaseModel> _Models);
+		void SetModel(ChPtr::Shared<ModelFrame> _Models);
 
-		ModelObject* Model;
+		ModelObject* OModel;
 
 	};
 }

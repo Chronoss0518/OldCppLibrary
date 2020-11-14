@@ -5,8 +5,7 @@
 namespace ChD3D11
 {
 
-	//Direct3D9を利用するために作られたクラス//
-	//D3DXも内蔵されている//
+	//Direct3D11を利用するために作られたクラス//
 	class DirectX3D11:public ChCpp::ChCp::InitPack
 	{
 	public:
@@ -15,10 +14,12 @@ namespace ChD3D11
 		//InitAndReleas//
 
 		void Init(
-			const HWND _hWnd
-			, const bool _FullScreenFlg
+			HWND _hWnd
+			, const ChStd::Bool _FullScreenFlg
 			, const unsigned short _ScrW
-			, const unsigned short _ScrH);
+			, const unsigned short _ScrH
+			, const unsigned short _ScrX = 5
+			, const unsigned short _ScrY = 5);
 
 		void Release();
 
@@ -31,15 +32,20 @@ namespace ChD3D11
 		//GetFunction//
 
 		//Direct3D11をつかさどるデバイスの取得//
-		inline const ID3D11Device* const GetDevice()
+		inline ID3D11Device* const GetDevice()
 		{
 			return Device;
 		}
 
 		//描画をつかさどるデバイスの取得//
-		inline const ID3D11DeviceContext* const GetDC()
+		inline ID3D11DeviceContext* const GetDC()
 		{
 			return DContext;
+		}
+
+		inline IDXGISwapChain* const GetSC()
+		{
+			return Window;
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////
@@ -57,12 +63,12 @@ namespace ChD3D11
 
 		///////////////////////////////////////////////////////////////////////////////////
 
-	private:
+	protected:
 
 		///////////////////////////////////////////////////////////////////////////////////
 
 		void CreateDevice(
-			const HWND _hWnd
+			HWND _hWnd
 			, const unsigned short _ScrW
 			, const unsigned short _ScrH);
 
@@ -75,11 +81,9 @@ namespace ChD3D11
 		ID3D11DeviceContext* DContext = nullptr;
 
 		//保持するWindowデータ//
-		IDXGISwapChain* Window;
+		IDXGISwapChain* Window = nullptr;
 
 		ChStd::Bool DFlg = false;
-
-		
 
 		///////////////////////////////////////////////////////////////////////////////////
 		//SetSingleton
@@ -108,15 +112,15 @@ namespace ChD3D11
 
 	const static std::function<DirectX3D11&()> D3D11API = DirectX3D11::GetInstans;
 
-	const static std::function<const ID3D11Device*()> D3D11Device
-		= []()->const ID3D11Device* const
+	const static std::function<ID3D11Device*()> D3D11Device
+		= []()->ID3D11Device* 
 	{
 		return DirectX3D11::GetInstans().GetDevice();
 	};
 
 
-	const static std::function<const ID3D11DeviceContext* const()> D3D11DC
-		= []()->const ID3D11DeviceContext* const
+	const static std::function<ID3D11DeviceContext*()> D3D11DC
+		= []()->ID3D11DeviceContext*
 	{
 		return DirectX3D11::GetInstans().GetDC();
 	};

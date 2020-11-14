@@ -1,19 +1,4 @@
 
-//--------------------------
-//画像データ
-//--------------------------
-
-cbuffer TextureData :register(b7)
-{
-	texture2D Tex;
-	float4 BaseColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
-};
-
-sampler Smp = sampler_state {
-	Filter = MIN_MAG_MIP_LINEAR;
-	AddressU = Wrap;
-	AddressV = Wrap;
-};
 
 //--------------------------
 //共通データ
@@ -21,16 +6,24 @@ sampler Smp = sampler_state {
 
 #include"TShader.hlsli"
 
+//--------------------------
+//画像データ
+//--------------------------
+
+texture2D Tex : register(t0);
+
+sampler Smp :register(s0);
+
 //ピクセルシェダ(PixelShader)//
 //共用//
-float4 main(VS_OUT In) : SV_Target
+float4 main(VS_OUT In) : SV_Target0
 {
 	float4 Out = In.Color;
-	Out *= Tex.Sample(Smp, In.UV);;
+	Out *= Tex.Sample(Smp, In.UV);
 
-	Out *= BaseColor;
+	//Out = BaseColor;
 
-	clip(Out.a < 0.1f ? -1 : 1);
+	clip(Out.a < 0.01f ? -1 : 1);
 
 	return Out;
 

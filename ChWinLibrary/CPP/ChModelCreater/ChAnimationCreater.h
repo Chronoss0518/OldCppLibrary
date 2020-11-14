@@ -30,7 +30,7 @@ namespace ChCpp
 
 	protected:
 
-		void SetModel(ChPtr::Shared<BaseModel> _Models);
+		void SetModel(ChPtr::Shared<ModelFrame> _Models);
 
 	private:
 

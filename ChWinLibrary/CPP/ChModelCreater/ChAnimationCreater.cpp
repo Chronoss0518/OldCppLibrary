@@ -23,7 +23,7 @@ std::string& AnimationCreater::ModelNameIns()
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-void AnimationCreater::SetModel(ChPtr::Shared<BaseModel> _Models)
+void AnimationCreater::SetModel(ChPtr::Shared<ModelFrame> _Models)
 {
 	Model->Model = _Models;
 }

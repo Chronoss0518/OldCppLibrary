@@ -617,7 +617,14 @@ namespace ChStd
 		&& !std::is_same<bool,BaseType>::value,BaseType>::type
 
 	{
-		std::string UseText = _Text.substr(_StartPos,_EndPos - _StartPos);
+		size_t EndPos = _EndPos;
+
+		if (_Text.size() <= EndPos)
+		{
+			EndPos = _Text.size();
+		}
+
+		std::string UseText = _Text.substr(_StartPos, EndPos - _StartPos);
 
 		UseText = GetCharsToRangeCode(UseText, 0x30, 0x40);
 
@@ -636,7 +643,14 @@ namespace ChStd
 		std::is_floating_point<BaseType>::value, BaseType>::type
 
 	{
-		std::string UseText = _Text.substr(_StartPos, _EndPos - _StartPos);
+		size_t EndPos = _EndPos;
+
+		if (_Text.size() <= EndPos)
+		{
+			EndPos = _Text.size();
+		}
+
+		std::string UseText = _Text.substr(_StartPos, EndPos - _StartPos);
 
 		UseText = GetCharsToRangeCode(UseText, 0x30, 0x40);
 
@@ -656,7 +670,14 @@ namespace ChStd
 		&& !std::is_same<bool, BaseType>::value, BaseType>::type
 
 	{
-		std::string UseText = _Text.substr(_StartPos, _EndPos - _StartPos);
+		size_t EndPos = _EndPos;
+
+		if (_Text.size() <= EndPos)
+		{
+			EndPos = _Text.size();
+		}
+
+		std::string UseText = _Text.substr(_StartPos, EndPos - _StartPos);
 
 		UseText = GetCharsToRangeCode(UseText, 0x30, 0x40);
 
@@ -675,7 +696,14 @@ namespace ChStd
 		std::is_floating_point<BaseType>::value, BaseType>::type
 
 	{
-		std::string UseText = _Text.substr(_StartPos, _EndPos - _StartPos);
+		size_t EndPos = _EndPos;
+
+		if (_Text.size() <= EndPos)
+		{
+			EndPos = _Text.size();
+		}
+
+		std::string UseText = _Text.substr(_StartPos, EndPos - _StartPos);
 
 		UseText = GetCharsToRangeCode(UseText, 0x30, 0x40);
 

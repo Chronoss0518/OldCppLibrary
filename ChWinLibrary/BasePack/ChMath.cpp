@@ -227,7 +227,7 @@ void ChVec4::Deserialize(
 
 	TmpStr = TmpStr.substr(TmpFPos, EPos - TmpFPos);
 
-	TmpStr = ChStd::RemoveToWhiteSpaceChars(TmpStr);
+	TmpStr = ChStr::RemoveToWhiteSpaceChars(TmpStr);
 
 	TmpFPos = 0;
 
@@ -611,7 +611,7 @@ void ChVec3::Deserialize(
 
 	TmpStr = TmpStr.substr(TmpFPos, EPos - TmpFPos);
 
-	TmpStr = ChStd::RemoveToWhiteSpaceChars(TmpStr);
+	TmpStr = ChStr::RemoveToWhiteSpaceChars(TmpStr);
 
 	TmpFPos = 0;
 
@@ -962,7 +962,7 @@ void ChVec2::Deserialize(
 
 	TmpStr = TmpStr.substr(TmpFPos, EPos - TmpFPos);
 
-	TmpStr = ChStd::RemoveToWhiteSpaceChars(TmpStr);
+	TmpStr = ChStr::RemoveToWhiteSpaceChars(TmpStr);
 
 	TmpFPos = 0;
 
@@ -1171,7 +1171,7 @@ void ChQua::Deserialize(
 
 	TmpStr = TmpStr.substr(TmpFPos, EPos - TmpFPos);
 
-	TmpStr = ChStd::RemoveToWhiteSpaceChars(TmpStr);
+	TmpStr = ChStr::RemoveToWhiteSpaceChars(TmpStr);
 
 	TmpFPos = 0;
 
@@ -1327,7 +1327,7 @@ void ChLMatrix::Deserialize(
 
 	TmpStr = TmpStr.substr(TmpFPos, EPos - TmpFPos);
 
-	TmpStr = ChStd::RemoveToWhiteSpaceChars(TmpStr);
+	TmpStr = ChStr::RemoveToWhiteSpaceChars(TmpStr);
 
 	TmpFPos = 0;
 
@@ -1444,7 +1444,7 @@ void ChUIMatrix::Deserialize(
 
 	TmpStr = TmpStr.substr(TmpFPos, EPos - TmpFPos);
 
-	TmpStr = ChStd::RemoveToWhiteSpaceChars(TmpStr);
+	TmpStr = ChStr::RemoveToWhiteSpaceChars(TmpStr);
 
 	TmpFPos = 0;
 

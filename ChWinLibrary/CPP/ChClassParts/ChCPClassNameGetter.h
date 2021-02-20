@@ -9,7 +9,6 @@ namespace ChCpp
 	{
 		//継承して利用する//
 		//自身のクラスネーム及びクラス自身の型を取得できる//
-		template<class T>
 		class ClassNameGetter
 		{
 		public:
@@ -17,22 +16,30 @@ namespace ChCpp
 			///////////////////////////////////////////////////////////////////////////////////
 			//GetFunction//
 
+			template<class T>
 			inline std::string GetName() 
 			{
-				std::string Tmp = typeid(T).name;
+				std::string Tmp;
 				
-					size_t TmpNum = Tmp.find(" ", 0);
-					TmpNum = TmpNum == std::string::npos ? 0 : TmpNum;
-				
+#ifdef __GNUC__
 
-				Tmp = &Tmp[TmpNum];
+				Tmp = typeid(T).name();
+
+#else
+
+				Tmp = typeid(T).raw_name();
+
+#endif
 				return Tmp;
 			}
 
+		protected:
+
+			ClassNameGetter(){}
+
 		};
 
-		template<class T>
-		using CNGetter = ClassNameGetter<T>;
+		using CNGetter = ClassNameGetter;
 
 	}
 }

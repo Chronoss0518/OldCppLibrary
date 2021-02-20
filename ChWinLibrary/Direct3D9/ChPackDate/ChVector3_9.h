@@ -21,7 +21,9 @@ public:
 
 		D3DXMatrixRotationQuaternion(&TmpMat, &_cm);
 
-		D3DXVec3TransformNormal(this, &D3DXVECTOR3(0.0f, 0.0f, 1.0f), &TmpMat);
+		auto Tmp = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
+
+		D3DXVec3TransformNormal(this, &Tmp, &TmpMat);
 
 		return *this;
 	}
@@ -118,8 +120,8 @@ public:
 
 	inline ChStd::Bool CheckNormals() {
 
-		if (fabsf(this->x) + fabsf(this->y) + fabsf(this->z) == 1.0f)return ChStd::True;
-		return ChStd::False;
+		if (fabsf(this->x) + fabsf(this->y) + fabsf(this->z) == 1.0f)return true;
+		return false;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////
@@ -128,9 +130,9 @@ public:
 
 		if (fabsf(this->x) == 0.0f
 			&& fabsf(this->y) == 0.0f
-			&& fabsf(this->z) == 0.0f)return ChStd::True;
+			&& fabsf(this->z) == 0.0f)return true;
 
-		return ChStd::False;
+		return false;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////

@@ -26,7 +26,7 @@ void DrawFont::Init(const LPDIRECT3DDEVICE9 _Dv)
 		, FontW
 		, FW_REGULAR
 		, NULL
-		, ChStd::False
+		, false
 		, SHIFTJIS_CHARSET
 		, OUT_DEFAULT_PRECIS
 		, PROOF_QUALITY, FIXED_PITCH | FF_MODERN, FontType.c_str(), &LpFont);
@@ -47,10 +47,16 @@ void DrawFont::Draw(
 	std::string _DrawStr
 	, const long _x
 	, const long _y
-	, ChStd::COLOR255 _Col)
+	, ChVec4 _Col)
 {
+
+	auto col = D3DCOLOR_ARGB(
+		static_cast<unsigned char>(_Col.a * 255),
+		static_cast<unsigned char>(_Col.r * 255),
+		static_cast<unsigned char>(_Col.g * 255),
+		static_cast<unsigned char>(_Col.b * 255));
 
 	RECT rc = { _x, _y,_x + FontW, _y + FontH };
 	LpFont->DrawText(NULL, _DrawStr.c_str(), _DrawStr.length(), &rc, DT_LEFT | DT_NOCLIP
-		, D3DCOLOR_ARGB(_Col.a, _Col.r, _Col.g, _Col.b));
+		, col);
 }

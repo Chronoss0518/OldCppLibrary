@@ -54,7 +54,7 @@ std::string ChWin::TextBox::GetText()
 	std::string Text = "";
 
 	if (SelectFlg)return Text;
-	char Tmp[1500];
+	char Tmp[1500] = "\0";
 
 	SendMessage(HIns, WM_GETTEXT, (WPARAM)1500, (LPARAM)Tmp);
 

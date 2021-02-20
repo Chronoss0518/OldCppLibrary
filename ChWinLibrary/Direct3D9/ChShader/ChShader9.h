@@ -23,14 +23,14 @@ namespace ChD3D9
 
 	//※LightはShader内のBaseLightとPointLightを利用してください//
 	//独自で構築しているShaderクラス//
-	class ShaderController:public ChCpp::ChCp::InitPack
+	class ShaderController:public ChCpp::ChCp::Initializer
 	{
 
 	protected:
 
 		struct LambertLight
 		{
-			ChStd::COLOR1f Dif = ChStd::COLOR1f(1.0f, 1.0f, 1.0f, 1.0f);
+			ChVec4 Dif = ChVec4(1.0f, 1.0f, 1.0f, 1.0f);
 			ChVec3_9 Dir = ChVec3_9(0.0f, -1.0f, 0.0f);
 			float AmbPow = 0.3f;
 		};
@@ -47,7 +47,7 @@ namespace ChD3D9
 
 		struct Material
 		{
-			ChStd::COLOR1f Dif;
+			ChVec4 Dif;
 			ChVec3 SpeCol;
 			float SpePow;
 		};
@@ -140,7 +140,7 @@ namespace ChD3D9
 			WindSize.h = _h;
 		}
 
-		inline void SetWindSize(const ChStd::FPOINT& _Size)
+		inline void SetWindSize(const ChVec4& _Size)
 		{
 			WindSize = _Size;
 		}
@@ -176,7 +176,7 @@ namespace ChD3D9
 			return Cull;
 		}
 
-		inline ChStd::FPOINT GetWindSize()
+		inline ChVec2 GetWindSize()
 		{
 			return WindSize;
 		}
@@ -220,7 +220,7 @@ namespace ChD3D9
 		//Mesh描画用関数//
 		void DrawMeshContour(
 			const ChPtr::Shared<ChMesh::Mesh9> _Mesh
-			, const ChStd::COLOR1f& _Color
+			, const ChVec4& _Color
 			, const ChMat_9& _Mat = ChMat_9()
 			, const float _Size = 1.0f);
 
@@ -239,7 +239,7 @@ namespace ChD3D9
 		void DrawSprite(
 			const ChPtr::Shared<ChTex::Texture9>& _Tex
 			, const ChMat_9& _Mat = ChMat_9()
-			, const SpriteData&_SpData = SpriteData(ChStd::FPOINT(0.0f, 0.0f), WindSize));
+			, const SpriteData&_SpData = SpriteData(ChVec2(0.0f, 0.0f), WindSize));
 
 		///////////////////////////////////////////////////////////////////////////////////
 
@@ -364,7 +364,7 @@ namespace ChD3D9
 		ChStd::Bool FogFlg = false;
 
 		//ウィンドサイズ//
-		static ChStd::FPOINT WindSize;
+		static ChVec2 WindSize;
 
 		//カリングタイプ//
 		CULL Cull = CULL::NONE;

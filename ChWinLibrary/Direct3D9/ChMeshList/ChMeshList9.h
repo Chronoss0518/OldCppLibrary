@@ -37,7 +37,7 @@ namespace ChMesh
 
 	//SmpXFile専用のenum classを作って、SetSmpXFileの第二引数に入れる。//
 	//以降第二引数に入れた数字を使ってSmpXFileを操作する。//
-	typedef class MeshList9:public ChCpp::ChCp::InitPack
+	typedef class MeshList9:public ChCpp::ChCp::Initializer
 	{
 	public:
 

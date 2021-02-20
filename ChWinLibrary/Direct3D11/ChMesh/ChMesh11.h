@@ -2,7 +2,7 @@
 #define Ch_D3D11_Model_h
 
 #include"../../CPP/ChModel/ChModelObject.h"
-#include"../ChShaderStructures.h"
+#include"../ChShaderStructures11.h"
 
 namespace ChD3D11
 {
@@ -33,7 +33,7 @@ namespace ChD3D11
 		///////////////////////////////////////////////////////////////////////////////////////
 		//InitAndRelease//
 
-		void Init(const ID3D11Device* _Device);
+		void Init(ID3D11Device* _Device);
 
 		void Init();
 
@@ -88,6 +88,12 @@ namespace ChD3D11
 		ChPtr::Shared<FrameData11> ModelData = nullptr;
 
 		ChMat_11* BoneList = nullptr;
+
+
+	private:
+
+		ChPtr::Shared<Texture11>WhiteTex = nullptr;
+		ChPtr::Shared<Texture11>NormalTex = nullptr;
 
 	};
 

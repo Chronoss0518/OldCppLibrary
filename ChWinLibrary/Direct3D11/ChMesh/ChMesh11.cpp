@@ -14,11 +14,19 @@ namespace ChD3D11
 	///////////////////////////////////////////////////////////////////////////////////////
 
 	void Mesh11::Init(
-		const ID3D11Device* _Device)
+		ID3D11Device* _Device)
 	{
+		if (_Device == nullptr)return;
+
 		Release();
 
-		SetDevice(const_cast<ID3D11Device*>(_Device));
+		SetDevice(_Device);
+
+		NormalTex = ChPtr::Make_S<Texture11>();
+		WhiteTex = ChPtr::Make_S<Texture11>();
+
+		NormalTex->CreateColorTexture(_Device, ChVec4(0.5f, 1.0f, 0.5f, 1.0f), 1, 1);
+		WhiteTex->CreateColorTexture(_Device, ChVec4(1.0f), 1, 1);
 
 	}
 
@@ -28,9 +36,7 @@ namespace ChD3D11
 	{
 		if (!D3D11API().IsInit())return;
 
-		Release();
-
-		SetDevice(D3D11Device());
+		Init(D3D11Device());
 
 	}
 
@@ -83,13 +89,16 @@ namespace ChD3D11
 
 		if (_BaseModels.Meshs == nullptr)return;
 
+
+		_Frames->BaseMat = _BaseModels.BaseMat;
+
 		auto SurfaceList = CreateSurfaceList(_BaseModels);
 
 		unsigned long MateNum = _BaseModels.Meshs->MaterialList.size();
 
 		if (MateNum <= 0)
 		{
-			auto Mate = ChPtr::Shared<ChCpp::ModelFrame::Material>();
+			auto Mate = ChPtr::Make_S<ChCpp::ModelFrame::Material>();
 
 			_BaseModels.Meshs->MaterialList.push_back(Mate);
 
@@ -116,13 +125,13 @@ namespace ChD3D11
 			
 			auto Prim = ChPtr::Make_S<PrimitiveData11<PrimitiveVertex11>>();
 
-			Prim->VertexArray = new PrimitiveVertex11[Faces.size() * 3];
-
-			Prim->IndexArray = new unsigned long[Faces.size() * 3];
-
 			Prim->VertexNum = Faces.size() * 3;
 			Prim->IndexNum = Faces.size() * 3;
 
+
+			Prim->VertexArray = new PrimitiveVertex11[Prim->VertexNum];
+
+			Prim->IndexArray = new unsigned long[Prim->IndexNum];
 
 			unsigned long NowCount = 0;
 
@@ -165,21 +174,29 @@ namespace ChD3D11
 
 			Prim->Mate = ChPtr::Make_S<Material11>();
 
-			Prim->Mate->Ambient = ChVec4(MateList[i]->AmbientPow);
-			Prim->Mate->Diffuse = MateList[i]->Diffuse;
-			Prim->Mate->Specular = MateList[i]->Specular;
-			Prim->Mate->Specular.a = MateList[i]->SpePow;
+			Prim->Mate->Material.Ambient = ChVec4(MateList[i]->AmbientPow);
+			Prim->Mate->Material.Diffuse = MateList[i]->Diffuse;
+			Prim->Mate->Material.Specular = MateList[i]->Specular;
+			Prim->Mate->Material.Specular.a = MateList[i]->SpePow;
 			Prim->Mate->MaterialName = MateList[i]->MaterialName;
-			
+
+			Prim->Mate->Material.FrameMatrix = _BaseModels.BaseMat;
+
+			CreateContentBuffer<ShaderUseMaterial11>(&Prim->Mate->MBuffer);
+
 			for (auto TexName : MateList[i]->TextureNames)
 			{
 				auto Tex = ChPtr::Make_S<Texture11>();
 
-				Tex->CreateTexture(TexName);
+				Tex->CreateTexture(TexName,GetDevice());
 
 				Prim->Mate->TextureList.push_back(Tex);
 
 			}
+
+			if (Prim->Mate->TextureList.size() <= 0)Prim->Mate->TextureList.push_back(WhiteTex);
+			if (Prim->Mate->TextureList.size() <= 1)Prim->Mate->TextureList.push_back(NormalTex);
+
 
 			_Frames->PrimitiveDatas[MateList[i]->MaterialName] = Prim;
 
@@ -240,16 +257,34 @@ namespace ChD3D11
 		unsigned int Strides = sizeof(PrimitiveVertex11);
 		unsigned int Offsets = 0;
 
+
 		for (auto&& Frame : FrameList)
 		{
 			for (auto&& Prim : Frame->PrimitiveDatas)
 			{
+				Prim.second->Mate->Material.FrameMatrix = Prim.second->Mate->Material.FrameMatrix.Transpose();
 
 				_DC->IASetVertexBuffers(0, 1, &Prim.second->Vertexs, &Strides, &Offsets);
 				_DC->IASetIndexBuffer(Prim.second->Indexs, DXGI_FORMAT_R32_UINT, 0);
 
+				_DC->UpdateSubresource(Prim.second->Mate->MBuffer,0, nullptr, &Prim.second->Mate->Material, 0, 0);
+
+				for (unsigned long i = 0; i < Prim.second->Mate->TextureList.size(); i++)
+				{
+					ChPtr::Shared<Texture11> tex = Prim.second->Mate->TextureList[i];
+
+					tex->SetDrawData(_DC, i);
+
+					if (i - 1 >= 128)break;
+
+				}
+
+				_DC->VSSetConstantBuffers(2, 1, &Prim.second->Mate->MBuffer);
+				_DC->PSSetConstantBuffers(2, 1, &Prim.second->Mate->MBuffer);
 
 				_DC->DrawIndexed(Prim.second->IndexNum, 0, 0);
+
+				Prim.second->Mate->Material.FrameMatrix = Prim.second->Mate->Material.FrameMatrix.Transpose();
 
 			}
 		}

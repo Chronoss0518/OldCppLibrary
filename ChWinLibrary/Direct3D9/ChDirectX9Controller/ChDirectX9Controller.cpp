@@ -86,10 +86,10 @@ void DirectX3D9::Init(
 
 	// レンダリング・ステートを設定//
 	// Z バッファ有効化->前後関係の計算を正確にしてくれる//
-	ZBufferUseFlg(ChStd::True);
+	ZBufferUseFlg(true);
 
 	// アルファブレンディング有効化//
-	AlphaBlendUseFlg(ChStd::True);
+	AlphaBlendUseFlg(true);
 
 	// アルファブレンディング方法を設定//
 	AlphaBlendSetting();
@@ -104,7 +104,7 @@ void DirectX3D9::Init(
 	SetFilter(D3DTEXF_LINEAR, D3DTEXF_LINEAR, D3DTEXF_LINEAR);
 
 	// ライト
-	LightSetting(ChStd::True);
+	LightSetting(true);
 
 	SetBackBuffer();
 
@@ -143,12 +143,12 @@ ChStd::Bool DirectX3D9::CreateD3DXDevice(const HWND _hWnd
 				// 結局失敗した
 				MessageBox(NULL, "DirectX9が初期化できません。\n未対応のパソコンと思われます。", "ERROR", MB_OK | MB_ICONSTOP);
 
-				return ChStd::False;
+				return false;
 			}
 		}
 	}
 
-	return ChStd::True;
+	return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

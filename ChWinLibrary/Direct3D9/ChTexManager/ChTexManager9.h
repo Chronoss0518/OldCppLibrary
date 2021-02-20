@@ -8,7 +8,7 @@ namespace ChTex
 
 	//Texture専用のconst enumを作って、SetTextureの第二引数に入れる。
 	//以降第二引数に入れた数字を使ってTextureを操作する。
-	class TextureManager9:public ChCpp::ChCp::InitPack
+	class TextureManager9:public ChCpp::ChCp::Initializer
 	{
 	public:
 
@@ -35,7 +35,7 @@ namespace ChTex
 
 		//基本色の設定//
 		void SetBlendColor(
-			const ChStd::COLOR255& _Color
+			const ChVec4& _Color
 			, const std::string _DataName);
 
 		//画像の透明化設定//

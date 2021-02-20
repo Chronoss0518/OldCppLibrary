@@ -30,8 +30,6 @@ using SOCKET = int;
 namespace ChCpp
 {
 
-	class NetWork;
-
 	class IP_TCP :public NetWorkBase::InternetProtocol
 	{
 	public:

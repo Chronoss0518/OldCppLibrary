@@ -23,7 +23,7 @@ namespace ChTex
 		///////////////////////////////////////////////////////////////////////////////////
 		//SetFunction//
 
-		void SetBaseColor(const ChStd::COLOR255& _Col){ Col = _Col; }
+		void SetBaseColor(const ChVec4& _Col){ Col = _Col; }
 
 		void SetBaseColor(const D3DCOLOR& _Col) { Col = D3DColorToColor255(_Col); }
 
@@ -50,9 +50,16 @@ namespace ChTex
 
 		unsigned int GetOriginalHeight()const { return OHeight; }
 
-		ChStd::COLOR255 GetBaseColor()const { return Col; }
+		ChVec4 GetBaseColor()const { return Col; }
 
-		D3DCOLOR GetBaseColD3D()const { return D3DCOLOR_ARGB(Col.a, Col.r, Col.g, Col.b); }
+		D3DCOLOR GetBaseColD3D()const 
+		{
+			return D3DCOLOR_ARGB(
+				static_cast<unsigned char>(Col.a * 255)
+				, static_cast<unsigned char>(Col.r * 255)
+				, static_cast<unsigned char>(Col.g * 255)
+				, static_cast<unsigned char>(Col.b * 255));
+		}
 
 		///////////////////////////////////////////////////////////////////////////////////
 		//InsFunction//
@@ -71,12 +78,12 @@ namespace ChTex
 
 		unsigned int& InsOriginalHeight() { return OHeight; }
 
-		ChStd::COLOR255& InsBaseColor() { return Col; }
+		ChVec4& InsBaseColor() { return Col; }
 
 		///////////////////////////////////////////////////////////////////////////////////
 
 		//専用拡張子でのインポート//
-		static ChStd::COLOR255 D3DColorToColor255(const D3DCOLOR& _Col);
+		static ChVec4 D3DColorToColor255(const D3DCOLOR& _Col);
 
 		///////////////////////////////////////////////////////////////////////////////////
 		//CreateFucntion//
@@ -140,7 +147,7 @@ namespace ChTex
 		float ScalingY = 1.0f;
 		unsigned int OWidth;	//オリジナルサイズの横幅//
 		unsigned int OHeight;	//オリジナルサイズの縦幅//
-		ChStd::COLOR255 Col{ 255,255,255,255 };	//色彩基本色//
+		ChVec4 Col{ 1.0f,1.0f,1.0f,1.0f };	//色彩基本色//
 
 		///////////////////////////////////////////////////////////////////////////////////
 
@@ -155,7 +162,7 @@ namespace ChTex
 			, size_t& _FPos)
 		{
 			if (_FPos > _Str.size())return;
-			ChStd::StrBinaryToNum(_SetData, _Str, _FPos);
+			ChStr::StrBinaryToNum(_SetData, _Str, _FPos);
 			_FPos += sizeof(T);
 
 		}

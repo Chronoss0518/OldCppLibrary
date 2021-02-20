@@ -40,6 +40,10 @@ namespace ChMath
 			{
 				float r, g, b, a;
 			};
+			struct
+			{
+				float x, y, w, h;
+			};
 			float Val[4]{ 0, 0, 0, 0 };
 		};
 	};
@@ -67,6 +71,10 @@ namespace ChMath
 			struct
 			{
 				float x, y;
+			};
+			struct
+			{
+				float w, h;
 			};
 			float Val[2]{ 0, 0 };
 		};
@@ -157,6 +165,16 @@ struct ChVector4 : public ChMath::ChVector4Base
 	ChVector4 operator+(const ChVector4& _Vec) const;
 	ChVector4& operator*=(const ChVector4& _Vec);
 	ChVector4 operator*(const ChVector4& _Vec) const;
+
+	bool operator==(const ChVector4& _Vec)const
+	{
+		return (x == _Vec.x && y == _Vec.y && z == _Vec.z && w == _Vec.w);
+	}
+
+	bool operator!=(const ChVector4& _Vec)const
+	{
+		return (x != _Vec.x || y != _Vec.y || z != _Vec.z || w != _Vec.w);
+	}
 
 	operator const D3DXVECTOR4() const;
 	operator const D3DXVECTOR4* () const;
@@ -295,6 +313,16 @@ struct ChVector3 : public ChMath::ChVector3Base
 	ChVector3& operator*=(const ChVector3& _Vec);
 	ChVector3 operator*(const ChVector3& _Vec) const;
 
+	bool operator==(const ChVector3& _Vec)const
+	{
+		return (x == _Vec.x && y == _Vec.y && z == _Vec.z);
+	}
+
+	bool operator!=(const ChVector3& _Vec)const
+	{
+		return (x != _Vec.x || y != _Vec.y || z != _Vec.z);
+	}
+
 	operator const D3DXVECTOR3() const;
 	operator const D3DXVECTOR3* () const;
 
@@ -426,6 +454,16 @@ struct ChVector2 : public ChMath::ChVector2Base
 	ChVector2 operator+(const ChVector2& _Vec) const;
 	ChVector2& operator*=(const ChVector2& _Vec);
 	ChVector2 operator*(const ChVector2& _Vec) const;
+
+	bool operator==(const ChVector2& _Vec)const
+	{
+		return (x == _Vec.x && y == _Vec.y);
+	}
+
+	bool operator!=(const ChVector2& _Vec)const
+	{
+		return (x != _Vec.x || y != _Vec.y);
+	}
 
 	operator const D3DXVECTOR2() const;
 	operator const D3DXVECTOR2* () const;

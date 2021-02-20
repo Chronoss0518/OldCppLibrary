@@ -86,7 +86,9 @@ ChVec3& ChVec3::operator= (const D3DXQUATERNION& _Qua)
 
 	D3DXMatrixRotationQuaternion(&TmpMat, &_Qua);
 
-	D3DXVec3TransformNormal(&TmpVec, &D3DXVECTOR3(0.0f, 0.0f, 1.0f), &TmpMat);
+	auto Tmp = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
+
+	D3DXVec3TransformNormal(&TmpVec, &Tmp, &TmpMat);
 
 	*this = TmpVec;
 

@@ -12,22 +12,18 @@ namespace ChD3D11
 		ChVec4 Diffuse = ChVec4(1.0f, 1.0f, 1.0f, 1.0f);
 		ChVec4 Specular = ChVec4(1.0f, 1.0f, 1.0f, 1.0f);
 		ChVec4 Ambient = ChVec4(0.3f, 0.3f, 0.3f, 1.0f);
+		ChMat_11 FrameMatrix;
 	};
 
-	struct Material11 :public ShaderUseMaterial11
+	struct Material11
 	{
-		inline operator ShaderUseMaterial11()
-		{
-			Material11 Tmp;
-			Tmp.Diffuse = Diffuse;
-			Tmp.Specular = Specular;
-			return Tmp;
-		}
+		ShaderUseMaterial11 Material;
 
+
+		ConstantBuffer MBuffer = nullptr;
 		std::string MaterialName;
 		std::vector<ChPtr::Shared<Texture11>>TextureList;
 	};
-
 
 	struct Vertex11
 	{
@@ -99,6 +95,16 @@ namespace ChD3D11
 				IndexArray = nullptr;
 			}
 
+			if (Mate != nullptr)
+			{
+
+				if (ChPtr::NotNullCheck(Mate->MBuffer))
+				{
+					Mate->MBuffer->Release();
+					Mate->MBuffer = nullptr;
+				}
+			}
+
 		}
 
 		inline ~PrimitiveData11()
@@ -108,21 +114,17 @@ namespace ChD3D11
 	};
 
 	template<class Vertex = Vertex11>
-	class ShaderObject
+	class ShaderObject:public ChCpp::ChCp::Releaser
 	{
 	public:
 
 		///////////////////////////////////////////////////////////////////////////////////////
-		//ConstructerDestructer//
-
-		~ShaderObject(){ Release(); }
-
-		///////////////////////////////////////////////////////////////////////////////////////
 		//InitAndRelease//
 
-		virtual void Release() {};
+		virtual void Release()override {};
 
 		///////////////////////////////////////////////////////////////////////////////////////
+		//SetFunction//
 
 		virtual void SetDrawData(ID3D11DeviceContext* _CD) = 0;
 
@@ -173,12 +175,34 @@ namespace ChD3D11
 
 		}
 
+		template<class T>
+		void CreateContentBuffer(ConstantBuffer* _Buffer)
+		{
+
+			D3D11_BUFFER_DESC Desc;
+			ZeroMemory(&Desc, sizeof(D3D11_BUFFER_DESC));
+
+			Desc.ByteWidth = sizeof(T);
+			Desc.Usage = D3D11_USAGE_DEFAULT;
+			Desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+			Desc.CPUAccessFlags = 0;
+			Desc.MiscFlags = 0;
+			Desc.StructureByteStride = 0;
+
+			Device->CreateBuffer(&Desc, nullptr, _Buffer);
+		}
 
 	protected:
 
+		///////////////////////////////////////////////////////////////////////////////////
+
 		ID3D11Device* GetDevice() { return Device; }
 
+		///////////////////////////////////////////////////////////////////////////////////
+
 		void SetDevice(ID3D11Device* _Device) { Device = _Device; }
+
+		///////////////////////////////////////////////////////////////////////////////////
 
 	private:
 

@@ -57,13 +57,13 @@ namespace ChCpp
 
 			struct SurFaceVertex
 			{
-				size_t VertexNo;
+				size_t VertexNo = 0;
 				ChVec2 UVPos;
 			};
 
 
 			SurFaceVertex VertexData[3];
-			unsigned long Materials;
+			unsigned long Materials = 0;
 			ChVec3 Normal;
 			
 			inline ~SurFace()

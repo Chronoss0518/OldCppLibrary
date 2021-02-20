@@ -12,7 +12,7 @@ namespace ChTex
 	typedef class BaseTexture9 Texture9;
 
 	//レンダーターゲットを設定するクラス//
-	typedef class RenderTargetList9 :public ChCpp::ChCp::InitPack
+	typedef class RenderTargetList9 :public ChCpp::ChCp::Initializer
 	{
 	public:
 

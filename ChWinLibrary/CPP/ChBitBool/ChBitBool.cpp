@@ -45,7 +45,7 @@ void BitBool::SetBitFalse(const unsigned char _ArgsNum)
 
 ChStd::Bool BitBool::GetBitFlg(const unsigned char _ArgsNum)
 {
-	if (_ArgsNum >  Flg.size() * 8)return ChStd::False;
+	if (_ArgsNum >  Flg.size() * 8)return false;
 
 	return (Flg[static_cast<size_t>(_ArgsNum / 8)] & GetFlgNum(_ArgsNum)) > 0;
 }

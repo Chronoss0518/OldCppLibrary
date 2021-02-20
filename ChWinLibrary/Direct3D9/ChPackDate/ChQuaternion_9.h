@@ -14,7 +14,9 @@ public:
 
 		D3DXMatrixRotationQuaternion(&TmpMat, this);
 
-		D3DXVec3TransformNormal(&TmpVec, &D3DXVECTOR3(0.0f, 0.0f, 1.0f), &TmpMat);
+		auto Tmp = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
+
+		D3DXVec3TransformNormal(&TmpVec, &Tmp, &TmpMat);
 
 		return TmpVec;
 	}

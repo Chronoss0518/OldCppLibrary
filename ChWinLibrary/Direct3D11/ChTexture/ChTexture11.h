@@ -4,7 +4,7 @@
 namespace ChD3D11
 {
 
-	class Texture11
+	class Texture11:public ChCpp::ChCp::Releaser
 	{
 	public:
 
@@ -13,12 +13,10 @@ namespace ChD3D11
 
 		Texture11(){}
 
-		~Texture11() { Release(); }
-
 		///////////////////////////////////////////////////////////////////////////////////////
 		//InitAndRelease//
 
-		void Release();
+		void Release()override;
 
 		///////////////////////////////////////////////////////////////////////////////////////
 		//CreateFunction//
@@ -87,7 +85,7 @@ namespace ChD3D11
 		///////////////////////////////////////////////////////////////////////////////////////
 		//SetFunction//
 
-		inline void SetSumpler(D3D11_SAMPLER_DESC& _SDesc)
+		inline void SetSampler(D3D11_SAMPLER_DESC& _SDesc)
 		{
 			SDesc = _SDesc;
 			SDUpdateFlg = true;
@@ -135,13 +133,15 @@ namespace ChD3D11
 
 	protected:
 
+		void Init(ID3D11Device* _Device);
+
 		void CreateSRV();
 
 		void InitSampler();
 
 		void UpdateSampler();
 
-		ChStd::COLOR1f GetBitColor(
+		ChVec4 GetBitColor(
 			const unsigned int _Width
 			, const unsigned int _Height);
 
@@ -156,7 +156,11 @@ namespace ChD3D11
 		ID3D11Texture2D* BaseTex = nullptr;
 		ChVec4* PixellData = nullptr;
 		unsigned long TextureSize = 0;
+
 		ID3D11Device* Device = nullptr;
+
+		private:
+
 	};
 
 }

@@ -14,13 +14,13 @@
 
 using namespace ChD3D11;
 
-//ChStd::FPOINT ShaderController::WindSize = ChStd::FPOINT(1280.0f, 720.0f);
+//ChStd::FPOINT ShaderController11::WindSize = ChStd::FPOINT(1280.0f, 720.0f);
 
 ///////////////////////////////////////////////////////////////////////////////////////
-//ChShaderControllerメソッド
+//ChShaderController11メソッド
 ///////////////////////////////////////////////////////////////////////////////////////
 
-void ShaderController::InitShader()
+void ShaderController11::InitShader()
 {
 
 	{
@@ -103,7 +103,7 @@ void ShaderController::InitShader()
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-void ShaderController::Init(
+void ShaderController11::Init(
 	ID3D11Device* _Device
 	, ID3D11DeviceContext* _DC
 	, IDXGISwapChain* _SC
@@ -211,17 +211,34 @@ void ShaderController::Init(
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-void ShaderController::Release()
+void ShaderController11::Release()
 {
 	WhiteTex = nullptr;
 	NormalTex = nullptr;
 	LightEffectTex = nullptr;
 
-
 	if (ChPtr::NotNullCheck(BBTargetView))
 	{
 		BBTargetView->Release();
 		BBTargetView = nullptr;
+	}
+
+	if (ChPtr::NotNullCheck(BaseData))
+	{
+		BaseData->Release();
+		BaseData = nullptr;
+	}
+
+	if (ChPtr::NotNullCheck(CharaData))
+	{
+		CharaData->Release();
+		CharaData = nullptr;
+	}
+
+	if (ChPtr::NotNullCheck(PolygonData))
+	{
+		PolygonData->Release();
+		PolygonData = nullptr;
 	}
 
 	MyLightTex = nullptr;
@@ -231,7 +248,7 @@ void ShaderController::Release()
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-void ShaderController::SetRenderTarget(ChPtr::Shared<Texture11> _Tex)
+void ShaderController11::SetRenderTarget(ChPtr::Shared<Texture11> _Tex)
 {
 	if (!*this)return;
 	if (DrawFlg)return;
@@ -244,7 +261,7 @@ void ShaderController::SetRenderTarget(ChPtr::Shared<Texture11> _Tex)
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-void ShaderController::SetDrawDatas()
+void ShaderController11::SetDrawDatas()
 {
 
 	DC->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -284,7 +301,7 @@ void ShaderController::SetDrawDatas()
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-void ShaderController::IsLight(const ChStd::Bool _Flg)
+void ShaderController11::IsLight(const ChStd::Bool _Flg)
 {
 	LightUseFlg = _Flg;
 
@@ -292,7 +309,7 @@ void ShaderController::IsLight(const ChStd::Bool _Flg)
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-void ShaderController::DrawStart()
+void ShaderController11::DrawStart()
 {
 
 	if (!*this)return;
@@ -323,12 +340,12 @@ void ShaderController::DrawStart()
 	//Device->BeginScene();
 
 	SetDrawDatas();
-	
+
+	//BDObject.ProjMat = BDObject.ProjMat.Transpose();
+	//BDObject.ViewMat = BDObject.ViewMat.Transpose();
+
 	if (BDUpdateFlg)
 	{
-		//BDObject.ProjMat = BDObject.ProjMat.Transpose();
-		//BDObject.ViewMat = BDObject.ViewMat.Transpose();
-
 
 		DC->UpdateSubresource(BaseData, 0, nullptr, &BDObject, 0, 0);
 
@@ -348,7 +365,7 @@ void ShaderController::DrawStart()
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-void ShaderController::DrawEnd()
+void ShaderController11::DrawEnd()
 {
 
 	if (!*this)return;
@@ -371,7 +388,7 @@ void ShaderController::DrawEnd()
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-void ShaderController::Draw(
+void ShaderController11::Draw(
 	Mesh11& _Mesh
 	, const ChMat_11& _Mat)
 {
@@ -399,9 +416,9 @@ void ShaderController::Draw(
 ///////////////////////////////////////////////////////////////////////////////////
 
 //Mesh描画用関数//
-void ShaderController::DrawToons(
+void ShaderController11::DrawToons(
 	Mesh11& _Mesh
-	, const ChStd::COLOR1f& _Color
+	, const ChVec4& _Color
 	, const ChMat_11& _Mat
 	, const float _Size)
 {
@@ -423,7 +440,7 @@ void ShaderController::DrawToons(
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-void ShaderController::Draw(
+void ShaderController11::Draw(
 	ChPtr::Shared<ChD3D11::Texture11>& _Tex
 	, PolygonBoard11& _Polygon
 	, const ChMat_11& _Mat)
@@ -455,7 +472,7 @@ void ShaderController::Draw(
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-void ShaderController::Draw(
+void ShaderController11::Draw(
 	ChPtr::Shared<ChD3D11::Texture11>& _Tex
 	, Sprite11& _Sprite
 	, const ChMat_11& _Mat)
@@ -481,8 +498,6 @@ void ShaderController::Draw(
 	DC->VSSetConstantBuffers(1, 1, &PolygonData);
 	DC->PSSetConstantBuffers(1, 1, &PolygonData);
 
-
-
 	DrawTex->SetDrawData(DC, 0);
 
 	_Sprite.SetDrawData(DC);
@@ -491,21 +506,21 @@ void ShaderController::Draw(
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-void ShaderController::CreateLightPowTex(const std::string& _LightPowTexName)
+void ShaderController11::CreateLightPowTex(const std::string& _LightPowTexName)
 {
 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-void ShaderController::SetLightFunction()
+void ShaderController11::SetLightFunction()
 {
 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-void ShaderController::BaseDataUpdate()
+void ShaderController11::BaseDataUpdate()
 {
 
 

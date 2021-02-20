@@ -60,15 +60,15 @@ template D3DCOLOR BaseTexture9::GetColor(
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-ChStd::COLOR255 BaseTexture9::D3DColorToColor255(const D3DCOLOR& _Col)
+ChVec4 BaseTexture9::D3DColorToColor255(const D3DCOLOR& _Col)
 {
 
 	D3DCOLOR TmpCol = _Col;
-	ChStd::COLOR255 TmpCol2;
-	TmpCol2.a = (unsigned char)((TmpCol >> 24) & 0xff);
-	TmpCol2.r = (unsigned char)((TmpCol >> 16) & 0xff);
-	TmpCol2.g = (unsigned char)((TmpCol >> 8) & 0xff);
-	TmpCol2.b = (unsigned char)((TmpCol) & 0xff);
+	ChVec4 TmpCol2;
+	TmpCol2.a = static_cast<unsigned char>((TmpCol >> 24) & 0xff) / 255.0f;
+	TmpCol2.r = static_cast<unsigned char>((TmpCol >> 16) & 0xff) / 255.0f;
+	TmpCol2.g = static_cast<unsigned char>((TmpCol >> 8) & 0xff) / 255.0f;
+	TmpCol2.b = static_cast<unsigned char>((TmpCol) & 0xff) / 255.0f;
 	return TmpCol2;
 }
 

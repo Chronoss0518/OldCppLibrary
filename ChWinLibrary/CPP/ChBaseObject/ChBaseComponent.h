@@ -4,6 +4,8 @@
 
 #include"../ChBitBool/ChBitBool.h"
 
+#include"ChCPClass.h"
+
 namespace ChCpp
 {
 	class BaseObject;
@@ -122,18 +124,6 @@ namespace ChCpp
 
 
 	};
-
-	class TransformComponent :public ChCpp::BaseComponent
-	{
-	public:
-
-		ChVec3 Position;
-		ChQua Rotation;
-		ChVec3 Scalling;
-
-	};
-
-	using TransformCom = TransformComponent;
 
 }
 

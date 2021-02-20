@@ -9,21 +9,16 @@
 namespace ChCpp
 {
 
-	class ModelObject :public  ChCpp::ChCp::InitPack
+	class ModelObject :public  ChCpp::ChCp::Initializer,public ChCp::Releaser
 	{
 	public:
-
-		///////////////////////////////////////////////////////////////////////////////////////
-		//ConstructerDestructer//
-
-		inline virtual ~ModelObject() {}
 
 		///////////////////////////////////////////////////////////////////////////////////////
 		//InitAndRelease//
 
 		inline void Init() {};
 
-		virtual void Release();
+		virtual void Release()override;
 
 		///////////////////////////////////////////////////////////////////////////////////////
 		//GetFunction//
@@ -47,6 +42,7 @@ namespace ChCpp
 		auto CreateModel(const std::string& _FilePath)->typename std::enable_if<
 			std::is_base_of<ModelCreater, T>::value, void>::type
 		{
+
 			ChPtr::Shared<ModelCreater> creater;
 			creater = ChPtr::Make_S<T>();
 

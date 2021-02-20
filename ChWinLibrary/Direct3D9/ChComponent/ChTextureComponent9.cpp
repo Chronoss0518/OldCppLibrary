@@ -41,17 +41,17 @@ void ChSpriteTextureComponent9::Draw2D()
 
 	ChMat_9 TmpMat;
 
-	{
+	//{
 
-		auto Trans = LookObj()->GetTransform<ChTransformCom9>();
+	//	auto Trans = LookObj()->GetTransform<ChTransformCom9>();
 
-		if (nullptr != Trans)
-		{
+	//	if (nullptr != Trans)
+	//	{
 
-			TmpMat = Trans->GetMat();
-		}
+	//		TmpMat = Trans->GetMat();
+	//	}
 
-	}
+	//}
 
 	ChD3D9::Shader().DrawSprite(Texture, TmpMat,Ver);
 
@@ -69,13 +69,13 @@ void ChPolygonTextureComponent9::Draw3D()
 
 	{
 
-		auto Trans = LookObj()->GetTransform<ChTransformCom9>();
+		//auto Trans = LookObj()->GetTransform<ChTransformCom9>();
 
-		if (nullptr != Trans)
-		{
+		//if (nullptr != Trans)
+		//{
 
-			TmpMat = Trans->GetMat();
-		}
+		//	TmpMat = Trans->GetMat();
+		//}
 
 	}
 

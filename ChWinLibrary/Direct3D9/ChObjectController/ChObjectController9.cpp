@@ -139,8 +139,11 @@ void ChObjectController9::SimpleAnimetion(
 	D3DXQuaternionRotationMatrix(&TmpSQua, &_StartMat);
 	D3DXQuaternionRotationMatrix(&TmpEQua, &_EndMat);
 
-	D3DXVec3TransformCoord(&TmpSVec, &D3DXVECTOR3(0.0f, 0.0f, 0.0f), &_StartMat);
-	D3DXVec3TransformCoord(&TmpEVec, &D3DXVECTOR3(0.0f, 0.0f, 0.0f), &_EndMat);
+	
+	auto Tmp = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+	D3DXVec3TransformCoord(&TmpSVec, &Tmp, &_StartMat);
+	D3DXVec3TransformCoord(&TmpEVec, &Tmp, &_EndMat);
 
 	D3DXQuaternionSlerp(&TmpNQua, &TmpSQua, &TmpEQua, _NowTime);
 
@@ -182,8 +185,11 @@ ChStd::Bool ChObjectController9::LengthDecision(
 {
 	float TmpLen;
 	D3DXVECTOR3 TmpVec1, TmpVec2;
-	D3DXVec3TransformCoord(&TmpVec1, &D3DXVECTOR3(0.0f, 0.0f, 0.0f), &_Mat1);
-	D3DXVec3TransformCoord(&TmpVec2, &D3DXVECTOR3(0.0f, 0.0f, 0.0f), &_Mat2);
+	
+	auto Tmp = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+	D3DXVec3TransformCoord(&TmpVec1, &Tmp, &_Mat1);
+	D3DXVec3TransformCoord(&TmpVec2, &Tmp, &_Mat2);
 	switch (_MaskDirection) {
 	case 'x':
 		TmpVec1.x = 0.0f;
@@ -360,7 +366,9 @@ void ChObjectController9::LookObjectAxis(
 
 	D3DXVec3TransformCoord(&TmpVec, &TmpVec, &TmpMat);
 
-	D3DXVec3Cross(&TmpVec, &D3DXVECTOR3(0.0f, 0.0f, 1.0f), &TmpVec);
+	auto Tmp = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
+
+	D3DXVec3Cross(&TmpVec, &Tmp, &TmpVec);
 
 	_OutVec = TmpVec;
 

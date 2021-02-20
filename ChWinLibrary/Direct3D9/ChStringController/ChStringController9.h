@@ -12,7 +12,7 @@ namespace ChTex
 
 	typedef class BaseTexture9 Texture9;
 
-	typedef class StringController9:public ChCpp::ChCp::InitPack
+	typedef class StringController9:public ChCpp::ChCp::Initializer
 	{
 	public:
 
@@ -31,7 +31,7 @@ namespace ChTex
 		///////////////////////////////////////////////////////////////////////////////////
 		//SetFunction//
 
-		void SetStringColor(const ChStd::COLOR255& _Color);
+		void SetStringColor(const ChVec4& _Color);
 
 		void SetStringAlpha(const unsigned char _a);
 

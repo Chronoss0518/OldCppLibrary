@@ -24,7 +24,7 @@ namespace ChCpp
 				std::string MaterialName;
 
 				ChVec4 Diffuse;
-				float SpecularPower;
+				float SpecularPower = 0.0f;
 				ChVec3 Specular;
 				ChVec3 Ambient;
 
@@ -176,7 +176,7 @@ namespace ChCpp
 
 			unsigned long ArrayCount = 0;
 
-			ArrayCount = ChStd::GetIntegialFromText<unsigned long>(UseText, UseText.find("\n"),TmpPos);
+			ArrayCount = ChStr::GetIntegialFromText<unsigned long>(UseText, UseText.find("\n"),TmpPos);
 
 			if (ArrayCount <= 0)return Out;
 
@@ -323,7 +323,7 @@ namespace ChCpp
 
 				size_t Tmp = _Text.find(_EndChar, _Start);
 
-				value = ChStd::GetIntegialFromText<unsigned long>(_Text, _Start, Tmp);
+				value = ChStr::GetIntegialFromText<unsigned long>(_Text, _Start, Tmp);
 			}
 
 			std::string Serialise()override
@@ -332,7 +332,7 @@ namespace ChCpp
 				return "";
 			}
 
-			unsigned long value;
+			unsigned long value = 0;
 		};
 
 		struct XCHAR : public BaseType
@@ -345,7 +345,7 @@ namespace ChCpp
 
 				size_t Tmp = _Text.find(_EndChar, _Start);
 
-				value = ChStd::GetIntegialFromText<unsigned char>(_Text, _Start, Tmp);
+				value = ChStr::GetIntegialFromText<unsigned char>(_Text, _Start, Tmp);
 			}
 
 			std::string Serialise()override
@@ -367,7 +367,7 @@ namespace ChCpp
 
 				size_t Tmp = _Text.find(_EndChar, _Start);
 
-				value = ChStd::GetFloatingFromText<float>(_Text, _Start, Tmp);
+				value = ChStr::GetFloatingFromText<float>(_Text, _Start, Tmp);
 			}
 
 			std::string Serialise()override
@@ -376,7 +376,7 @@ namespace ChCpp
 				return "";
 			}
 
-			float value;
+			float value = 0.0f;
 		};
 
 		struct XVECTOR : public BaseType
@@ -438,7 +438,7 @@ namespace ChCpp
 
 				unsigned long ArrayCount = 0;
 
-				ArrayCount = ChStd::GetIntegialFromText<unsigned long>(UseText, 0, TmpPos);
+				ArrayCount = ChStr::GetIntegialFromText<unsigned long>(UseText, 0, TmpPos);
 
 				if (ArrayCount <= 0)return;
 
@@ -455,12 +455,12 @@ namespace ChCpp
 
 					if (TmpPos >= std::string::npos)
 					{
-						TmpPos = UseText.size() - 2;
+						TmpPos = UseText.size();
 					}
 
 					unsigned long Value;
 
-					Value = ChStd::GetIntegialFromText<unsigned long>(UseText, SPos, TmpPos);
+					Value = ChStr::GetIntegialFromText<unsigned long>(UseText, SPos, TmpPos);
 
 					value.push_back(Value);
 

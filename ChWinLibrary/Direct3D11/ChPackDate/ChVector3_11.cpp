@@ -290,21 +290,16 @@ void ChVector3_11::Set0Param()
 
 ChStd::Bool ChVector3_11::IsNormals()const {
 
-	if (std::abs(this->x)
+	return (std::abs(this->x)
 		+ std::abs(this->y)
-		+ std::abs(this->z) == 1.0f)return true;
-	return false;
+		+ std::abs(this->z) == 1.0f);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
 
 ChStd::Bool ChVector3_11::IsAll0()const {
 
-	if (this->x == 0.0f
-		&& this->y == 0.0f
-		&& this->z == 0.0f)return ChStd::True;
-
-	return ChStd::False;
+	return (x == 0.0f && y == 0.0f && z == 0.0f);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

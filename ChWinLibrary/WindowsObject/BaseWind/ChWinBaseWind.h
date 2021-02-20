@@ -38,7 +38,7 @@ namespace ChWin
 
 	 void WindSizeUpdate(const HWND _hWnd, LPARAM _lParam);
 
-	typedef class WindObject :public ChCpp::ChCp::InitPack
+	typedef class WindObject :public ChCpp::ChCp::Initializer,public ChCpp::ChCp::Releaser
 	{
 	public:
 
@@ -47,14 +47,12 @@ namespace ChWin
 
 		inline WindObject() {};
 
-		inline virtual ~WindObject() { Release(); }
-
 		///////////////////////////////////////////////////////////////////////////////////////
 		//InitAndRelease//
 
 		void Init(const HWND& _hWnd);
 
-		void Release();
+		void Release()override;
 
 		///////////////////////////////////////////////////////////////////////////////////////
 		//GetFunction//

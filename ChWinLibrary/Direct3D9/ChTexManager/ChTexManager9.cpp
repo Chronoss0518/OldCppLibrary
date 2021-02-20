@@ -133,7 +133,7 @@ void TextureManager9::SetColorTex(
 ///////////////////////////////////////////////////////////////////////////////////
 
 void TextureManager9::SetBlendColor(
-	const ChStd::COLOR255& _Color
+	const ChVec4& _Color
 	, const std::string _DataName)
 {
 

@@ -24,8 +24,6 @@
 #include"../Direct3D11/ChPackDate/ChQuaternion_11.h"
 #include"../Direct3D11/ChDirectX11Controller/ChDirectX11Controller.h"
 
-
-
 using IndexBuffer = ID3D11Buffer*;
 using VertexBuffer = ID3D11Buffer*;
 using ConstantBuffer = ID3D11Buffer*;

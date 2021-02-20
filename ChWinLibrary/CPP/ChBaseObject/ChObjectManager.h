@@ -3,14 +3,15 @@
 #define Ch_CPP_ObjMa_h
 
 #include"../ChBitBool/ChBitBool.h"
-#include"../ChClassParts/ChCPInitializePack.h"
 
 #include"ChBaseObject.h"
 
 namespace ChCpp
 {
 
-	class ObjectManager
+	
+
+	class ObjectManager:public ChCp::Releaser
 	{
 	public:
 
@@ -19,7 +20,10 @@ namespace ChCpp
 		///////////////////////////////////////////////////////////////////////////////////////
 		//InitAndRelease//
 
-		void Release();
+		inline void Release()override
+		{
+			if (!ObjectList.empty())ObjectList.clear();
+		}
 
 		///////////////////////////////////////////////////////////////////////////////////////
 		//SetFunction//
@@ -112,15 +116,12 @@ namespace ChCpp
 
 		std::vector<ChPtr::Shared<BaseObject>>RootObjects;
 
+
 		///////////////////////////////////////////////////////////////////////////////////////
 		//CostructerDestructer//
 
 		ObjectManager() {}
-
-		~ObjectManager()
-		{
-			Release();
-		}
+		~ObjectManager() {}
 
 	public:
 

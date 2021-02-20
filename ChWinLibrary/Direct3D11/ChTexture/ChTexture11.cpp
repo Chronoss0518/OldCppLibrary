@@ -32,6 +32,12 @@
 
 using namespace ChD3D11;
 
+static ID3D11Device* SDevice = nullptr;
+
+///////////////////////////////////////////////////////////////////////////////////////
+//Texture11Method//
+///////////////////////////////////////////////////////////////////////////////////////
+
 void Texture11::CreateTexture(const std::string& _TexPath)
 {
 	if (!D3D11API().IsInit())return;
@@ -39,6 +45,7 @@ void Texture11::CreateTexture(const std::string& _TexPath)
 	ID3D11Device* TmpDevice = D3D11Device();
 
 	CreateTexture(_TexPath, TmpDevice);
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -53,7 +60,7 @@ void Texture11::CreateTexture(const std::string& _TexPath, ID3D11Device* _Device
 
 	if (FAILED(DirectX::CreateWICTextureFromFile(
 		Device
-		, ChStd::ToWString(_TexPath).c_str()
+		, ChStr::ToWString(_TexPath).c_str()
 		, (ID3D11Resource**)&BaseTex
 		, &TexView)))
 	{
@@ -61,7 +68,7 @@ void Texture11::CreateTexture(const std::string& _TexPath, ID3D11Device* _Device
 		return;
 	}
 
-	InitSampler();
+	Init(_Device);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -97,7 +104,7 @@ void Texture11::CreateTexture(const std::wstring& _TexPath, ID3D11Device* _Devic
 		return;
 	}
 
-	InitSampler();
+	Init(_Device);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -152,7 +159,7 @@ void Texture11::CreateColorTexture(
 	Desc.MiscFlags = 0;
 
 	TextureSize = _Height * _Width;
-	PixellData = new ChVec4(TextureSize);
+	PixellData = new ChVec4[TextureSize];
 
 	for (unsigned long h = 0; h < _Height; h++)
 	{
@@ -171,6 +178,7 @@ void Texture11::CreateColorTexture(
 
 	CreateSRV();
 
+	Init(_Device);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -244,6 +252,7 @@ void Texture11::CreateColorTexture(
 
 	CreateSRV();
 
+	Init(_Device);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -303,6 +312,8 @@ void Texture11::CreateRenderTarget(
 	}
 
 	CreateSRV();
+
+	Init(_Device);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -336,8 +347,8 @@ void Texture11::CreateDepthBuffer(
 
 	D3D11_TEXTURE2D_DESC txDesc;
 	ZeroMemory(&txDesc, sizeof(txDesc));
-	txDesc.Width = _Width;
-	txDesc.Height = _Height;
+	txDesc.Width = static_cast<unsigned int>(_Width);
+	txDesc.Height = static_cast<unsigned int>(_Height);
 	txDesc.MipLevels = 1;
 	txDesc.ArraySize = 1;
 	txDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -361,7 +372,8 @@ void Texture11::CreateDepthBuffer(
 	Device->CreateDepthStencilView(BaseTex, &dsDesc, &DSView);
 
 	CreateSRV();
-	
+
+	Init(_Device);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -463,4 +475,14 @@ void Texture11::CreateSRV()
 
 	Device->CreateShaderResourceView(BaseTex, &SDesc, &TexView);
 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+void Texture11::Init(ID3D11Device* _Device)
+{
+
+	InitSampler();
+
+	SDevice = Device;
 }

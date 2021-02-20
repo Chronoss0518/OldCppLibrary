@@ -19,7 +19,7 @@ namespace ChD3D9
 
 	//Direct3D9を利用するために作られたクラス//
 	//D3DXも内蔵されている//
-	class DirectX3D9:public ChCpp::ChCp::InitPack
+	class DirectX3D9:public ChCpp::ChCp::Initializer
 	{
 	public:
 
@@ -122,7 +122,7 @@ namespace ChD3D9
 		//Zバッファ(深度を読み込むバッファ)を利用するか否かのフラグ//
 		inline void ZBufferUseFlg(const ChStd::Bool _Flg)
 		{
-			_Flg == ChStd::True ? Device->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE)
+			_Flg ? Device->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE)
 				: Device->SetRenderState(D3DRS_ZENABLE, D3DZB_FALSE);
 
 			Device->SetRenderState(D3DRS_ZWRITEENABLE, _Flg);
@@ -190,9 +190,9 @@ namespace ChD3D9
 		//デバイスが存在するかしないかの確認//
 		inline ChStd::Bool CheckInstanse()
 		{
-			if (ChPtr::NullCheck(D3D9))return ChStd::False;
-			if (ChPtr::NullCheck(Device))return ChStd::False;
-			return ChStd::True;
+			if (ChPtr::NullCheck(D3D9))return false;
+			if (ChPtr::NullCheck(Device))return false;
+			return true;
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////

@@ -10,12 +10,8 @@ namespace ChCpp
 		//‰Šú‰»‚ªŠ®—¹‚µ‚Ä‚¢‚é‚©Šm”F‚Å‚«‚é‚æ‚¤‚É‚È‚é//
 		//‰Šú‰»‚ğ‚·‚é‚Æ‚«‚ÉSetInitFlg(true);‚ğ//
 		//‰ğ•ú‚·‚é‚Æ‚«‚É‚ÍSetInitFlg(false);‚ğŒÄ‚Ô–//
-		typedef class InitializePack
+		class Initializer
 		{
-		private:
-
-			ChStd::Bool InitFlg = false;
-
 		protected:
 
 			///////////////////////////////////////////////////////////////////////////////////
@@ -38,7 +34,20 @@ namespace ChCpp
 
 			///////////////////////////////////////////////////////////////////////////////////
 
-		}InitPack;
+		protected:
+
+
+			///////////////////////////////////////////////////////////////////////////////////
+			//ConstructorDestructor//
+			Initializer(){}
+
+
+		private:
+
+			ChStd::Bool InitFlg = false;
+
+		};
+		
 
 
 	}

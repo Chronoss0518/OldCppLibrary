@@ -8,7 +8,7 @@ namespace ChCpp
 	class BaseFrame;
 
 	//BaseFrameŠÇ——pƒNƒ‰ƒX//
-	class BaseFrameList:public ChCpp::ChCp::InitPack
+	class BaseFrameList:public ChCpp::ChCp::Initializer
 	{
 	public:
 

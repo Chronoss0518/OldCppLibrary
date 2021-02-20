@@ -27,7 +27,6 @@ void ChCpp::CMXFile::CreateModel(const std::string& _FilePath)
 	if (_FilePath.rfind(".") == std::string::npos)return;
 
 	std::string Text;
-
 	{
 
 		ChFIO::File Files;
@@ -121,7 +120,7 @@ ChStd::Bool ChCpp::CMXFile::SetFrame(
 
 	TmpFrame->FName = _Text.substr(FramePos, _TargetTemplate->Bigen - FramePos);
 
-	TmpFrame->FName = ChStd::RemoveToWhiteSpaceChars(TmpFrame->FName);
+	TmpFrame->FName = ChStr::RemoveToWhiteSpaceChars(TmpFrame->FName);
 
 	for (auto&& Temp : _TargetTemplate->Nest)
 	{
@@ -391,7 +390,7 @@ ChStd::Bool ChCpp::CMXFile::SetMaterial(
 
 	MaterialName = _Text.substr(MatePos, _TargetTemplate->Bigen - MatePos);
 
-	MaterialName = ChStd::RemoveToWhiteSpaceChars(MaterialName);
+	MaterialName = ChStr::RemoveToWhiteSpaceChars(MaterialName);
 
 	size_t TmpPos = _TargetTemplate->Bigen;
 
@@ -770,9 +769,7 @@ void ChCpp::CMXFile::XFrameToChFrame(
 			for (unsigned long j = 0; j < ChVertexList.size(); j++)
 			{
 
-				ChVec3 Tmp = ChVertexList[j]->Pos - XVertexList[i]->Pos;
-
-				if (Tmp.Len() > 0.00000001f)continue;
+				if (ChVertexList[j]->Pos != XVertexList[i]->Pos)continue;
 
 				SummarizeVertex[i] = j;
 
@@ -785,6 +782,7 @@ void ChCpp::CMXFile::XFrameToChFrame(
 			}
 
 			if (LookFlg)continue;
+
 
 			SummarizeVertex[i] = ChVertexList.size();
 
@@ -836,8 +834,8 @@ void ChCpp::CMXFile::XFrameToChFrame(
 					ChVertexData->UVPos = XVertexList[XFace->VertexNos[Counters[j]]]->UVPos;
 
 
-					ChFace->VertexData[2 - j].UVPos = ChVertexData->UVPos;
-					ChFace->VertexData[2 - j].VertexNo = ChVertexData->VertexNo;
+					ChFace->VertexData[j].UVPos = ChVertexData->UVPos;
+					ChFace->VertexData[j].VertexNo = ChVertexData->VertexNo;
 				}
 
 

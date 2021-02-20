@@ -45,6 +45,12 @@ namespace ChWin
 	}
 }
 
+ChStd::Bool BaseWndProcs(
+	const HWND _hWnd
+	, const UINT _uMsg
+	, const WPARAM _wParam
+	, const LPARAM _lParam);
+
 std::function<ChStd::Bool(
 	HWND _hWnd
 	, UINT _uMsg
@@ -79,6 +85,8 @@ void Windows::Init(
 	wc.lpszMenuName = (LPSTR)NULL;
 	wc.lpszClassName = _WindClassName.c_str();
 	RegisterClass(&wc);
+
+	WinProcs = BaseWndProcs;
 
 	ClassName = wc.lpszClassName;
 
@@ -128,10 +136,10 @@ ChStd::Bool Windows::IsPushKey(const int _Key)
 	if (ButtonList.GetBitFlg(_Key))
 	{
 		IsNowPush.SetBitTrue(_Key);
-		return ChStd::True;
+		return true;
 	}
 	IsNowPush.SetBitFalse(_Key);
-	return ChStd::False;
+	return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -145,12 +153,12 @@ ChStd::Bool Windows::IsPushKeyNoHold(const int _Key)
 		if (!IsNowPush.GetBitFlg(_Key))
 		{
 			IsNowPush.SetBitTrue(_Key);
-			return ChStd::True;
+			return true;
 		}
-		return ChStd::False;
+		return false;
 	}
 	IsNowPush.SetBitFalse(_Key);
-	return ChStd::False;
+	return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -226,12 +234,12 @@ void Windows::SetKeyCode()
 	if (!System->IsUseSystemButtons())return;
 	if (IsKeyUpdate)return;
 	unsigned char KeyCode[256];
-	GetKeyboardState(KeyCode);
+	int Tmp = GetKeyboardState(KeyCode);
 	ButtonList.SetAllDownFlg();
 
 	for (unsigned short i = 0; i < 256; i++)
 	{
-		if (!(KeyCode[i] & ChStd::MaxCharBit))continue;
+		if (!(KeyCode[i] & ChStd::MAX_CHAR_BIT))continue;
 
 		ButtonList.SetBitTrue((unsigned char)i);
 	}
@@ -254,7 +262,7 @@ LRESULT CALLBACK ChSystem::WndProc(
 
 	if (Base)
 	{
-		Base->WndProcs(_hWnd, _uMsg, _wParam, _lParam);
+		Base->WinProcs(_hWnd, _uMsg, _wParam, _lParam);
 	}
 	else
 	{
@@ -278,8 +286,10 @@ LRESULT CALLBACK ChSystem::WndProc(
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
+//GlobalFunction//
+///////////////////////////////////////////////////////////////////////////////////
 
-ChStd::Bool ChSystem::Windows::WndProcs(
+ChStd::Bool BaseWndProcs(
 	const HWND _hWnd
 	, const UINT _uMsg
 	, const WPARAM _wParam
@@ -299,6 +309,7 @@ ChStd::Bool ChSystem::Windows::WndProcs(
 
 	}
 	break;
+
 	case WM_MOUSEHWHEEL:
 	{
 		POINTS Tmp;
@@ -308,6 +319,7 @@ ChStd::Bool ChSystem::Windows::WndProcs(
 
 	}
 	break;
+
 	case WM_COMMAND:
 
 		ChWin::ObjUpdate(_wParam);
@@ -320,7 +332,7 @@ ChStd::Bool ChSystem::Windows::WndProcs(
 		break;
 	}
 
-	
+
 
 	return true;
 

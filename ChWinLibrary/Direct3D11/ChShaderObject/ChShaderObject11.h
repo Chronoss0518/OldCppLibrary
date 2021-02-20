@@ -9,21 +9,16 @@ namespace ChD3D11
 		Vertex, Pixel, Geometry, Compute, Domain
 	};
 
-	class ShaderObject11:public ChCpp::ChCp::InitializePack
+	class ShaderObject11:public ChCpp::ChCp::Initializer,public ChCpp::ChCp::Releaser
 	{
 	public:
-
-		///////////////////////////////////////////////////////////////////////////////////
-		//ConstructerDestructer//
-
-		~ShaderObject11() { Release(); }
 
 		///////////////////////////////////////////////////////////////////////////////////
 		//InitAndRelease//
 
 		virtual void Init(ID3D11Device* _Device);
 
-		virtual void Release();
+		virtual void Release()override;
 
 		///////////////////////////////////////////////////////////////////////////////////
 		//CreateFunction//

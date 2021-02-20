@@ -22,16 +22,19 @@ namespace ChSystem
 		, WPARAM _wParam
 		, LPARAM _lParam);
 
+	using ChWinProc = std::function<ChStd::Bool(
+		HWND _hWnd
+		, UINT _uMsg
+		, WPARAM _wParam
+		, LPARAM _lParam)>;
 
 	//Windowsで作成されたWindとWindowsに関する入出力などを管理した、//
 	//WIndows全体の管理クラス//
-	class Windows :public BaseSystem
+	class Windows :public BaseSystem,public ChCpp::ChCp::Releaser
 	{
 	public:
 
 		Windows() {};
-
-		~Windows() {};
 
 		///////////////////////////////////////////////////////////////////////////////////
 		//InitAndRelease//
@@ -45,7 +48,15 @@ namespace ChSystem
 			, const int _nCmdShow);
 
 		//Windの解放//
-		void Release();
+		void Release()override;
+
+		///////////////////////////////////////////////////////////////////////////////////
+		//SetFunction//
+
+		inline void SetWinProcedure(const ChWinProc& _Proce)
+		{
+			WinProcs = _Proce;
+		}
 
 		///////////////////////////////////////////////////////////////////////////////////
 		//GetFunction//
@@ -119,20 +130,11 @@ namespace ChSystem
 			, WPARAM _wParam
 			, LPARAM _lParam);
 
-		static std::function<ChStd::Bool(
-			HWND _hWnd
-			, UINT _uMsg
-			, WPARAM _wParam
-			, LPARAM _lParam)>ImGuiProc;
+		static ChWinProc ImGuiProc;
 
 	protected:
 
-
-		virtual ChStd::Bool WndProcs(
-			const HWND _hWnd
-			, const UINT _uMsg
-			, const WPARAM _wParam
-			, const LPARAM _lParam);
+		ChWinProc WinProcs;
 
 		///////////////////////////////////////////////////////////////////////////////////
 

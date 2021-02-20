@@ -62,7 +62,7 @@ namespace ChMesh
 
 		inline void SetMaterialCol(
 			const unsigned long _Num
-			,const ChStd::COLOR1f& _Dif) 
+			,const ChVec4& _Dif) 
 		{
 			if (Material.size() <= _Num)return;
 

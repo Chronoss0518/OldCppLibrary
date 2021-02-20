@@ -26,6 +26,8 @@
 #include"Direct3D11/ChShader/ChShader11.h"
 //Component//
 
+//D3DObject//
+#include"BaseIncluder/ChD3DOI.h"
 
 //CopyRight Chronoss0518 2018/08//
 #endif

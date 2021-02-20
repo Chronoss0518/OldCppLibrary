@@ -34,17 +34,18 @@ VS_OUT main
 
 	Out.Pos = Pos;
 
-	Out.Pos = mul(Out.Pos, ModelMat);
+	float4x4 WorldMat = mul(FrameMatrix, ModelMat);
 
-	//float4x4 TmpMat
-	//	= float4x4(
-	//		1.0f, 0.0f, 0.0f, 1.0f
-	//		, 0.0f, 1.0f, 0.0f, 1.0f
-	//		, 0.0f, 0.0f, 1.0f, 1.0f
-	//		, 0.0f, 0.0f, 0.0f, 1.0f);
+	Out.Pos = mul(Out.Pos, WorldMat);
 
-	//TmpMat = BlendNum > 0 ?  BlendMatrix(Blend, BlendPow, BlendNum) : TmpMat;
+	float4x4 TmpMat
+		= float4x4(
+			1.0f, 0.0f, 0.0f, 1.0f
+			, 0.0f, 1.0f, 0.0f, 1.0f
+			, 0.0f, 0.0f, 1.0f, 1.0f
+			, 0.0f, 0.0f, 0.0f, 1.0f);
 
+	TmpMat = BlendNum > 0 ?  BlendMatrix(Blend, BlendPow, BlendNum) : TmpMat;
 
 	Out.UsePos = Out.Pos;
 

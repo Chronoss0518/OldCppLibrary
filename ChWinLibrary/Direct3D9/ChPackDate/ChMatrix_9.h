@@ -231,9 +231,11 @@ public:
 		TmpVec = _Vec;
 		float TmpRot;
 
+		auto Tmp = D3DXVECTOR3(0.0f, 0.0f, 1.0f);
+
 		D3DXVec3Normalize(&TmpVec, &TmpVec);
-		D3DXVec3Cross(&TmpCross, &(D3DXVECTOR3(0.0f, 0.0f, 1.0f)), &TmpVec);
-		TmpRot = D3DXVec3Dot(&TmpVec, &D3DXVECTOR3(0.0f, 0.0f, 1.0f));
+		D3DXVec3Cross(&TmpCross, &Tmp, &TmpVec);
+		TmpRot = D3DXVec3Dot(&TmpVec, &Tmp);
 
 		D3DXMATRIX TmpMat;
 		D3DXMatrixRotationAxis(&TmpMat, &TmpCross, std::acos(TmpRot));

@@ -15,14 +15,14 @@ namespace ChD3D11
 
 	//※LightはShader内のBaseLightとPointLightを利用してください//
 	//独自で構築しているShaderクラス//
-	class ShaderController :public ChCpp::ChCp::InitPack
+	class ShaderController11 final :public ChCpp::ChCp::Initializer,public ChCpp::ChCp::Releaser
 	{
 
 	protected:
 
 		struct LambertLight
 		{
-			ChStd::COLOR1f Dif = ChStd::COLOR1f(1.0f, 1.0f, 1.0f, 1.0f);
+			ChVec4 Dif = ChVec4(1.0f, 1.0f, 1.0f, 1.0f);
 			ChVec3_11 Dir = ChVec3_11(0.0f, -1.0f, 0.0f);
 			float AmbPow = 0.3f;
 		};
@@ -34,14 +34,6 @@ namespace ChD3D11
 			float Len = 1.0f;
 			ChVec3_11 Pos = ChVec3_11();
 			int Flg = 1;
-		};
-
-		struct TmpPLight
-		{
-
-			ChVec3 Dif = ChVec3(1.0f);
-			ChVec3_11 Pos = ChVec3_11();
-			float Len = 1.0f;
 		};
 
 
@@ -63,7 +55,7 @@ namespace ChD3D11
 
 	public:
 
-		void Release();
+		void Release()override;
 
 		///////////////////////////////////////////////////////////////////////////////////
 		//SetFunction//
@@ -127,14 +119,6 @@ namespace ChD3D11
 
 			WindSize.w = _w;
 			WindSize.h = _h;
-		}
-
-		inline void SetWindSize(const ChStd::FPOINT& _Size)
-		{
-			if (!*this)return;
-			if (DrawFlg)return;
-
-			WindSize = _Size;
 		}
 
 		//自身の用意したライトの強さを表すテクスチャを利用するためのフラグ//
@@ -212,7 +196,7 @@ namespace ChD3D11
 			return Fill;
 		}
 
-		inline ChStd::FPOINT GetWindSize()
+		inline ChVec2 GetWindSize()
 		{
 			return WindSize;
 		}
@@ -258,7 +242,7 @@ namespace ChD3D11
 		//ToonShader描画//
 		void DrawToons(
 			Mesh11& _Mesh
-			, const ChStd::COLOR1f& _Color
+			, const ChVec4& _Color
 			, const ChMat_11& _Mat = ChMat_11()
 			, const float _Size = 1.0f);
 
@@ -411,7 +395,7 @@ namespace ChD3D11
 		ChStd::Bool FogFlg = false;
 
 		//ウィンドサイズ//
-		ChStd::FPOINT WindSize;
+		ChVec2 WindSize;
 
 		//描画後にバックバッファを消去する等のフラグメント//
 		DXGI_SWAP_EFFECT BufferDatas = DXGI_SWAP_EFFECT_DISCARD;
@@ -477,21 +461,19 @@ namespace ChD3D11
 
 	public:
 
-		static inline ShaderController& GetIns()
+		static inline ShaderController11& GetIns()
 		{
-			static ShaderController Ins;
+			static ShaderController11 Ins;
 			return Ins;
 		}
 
-	protected:
+	private:
 
-		ShaderController() {}
-
-		~ShaderController() { Release(); }
+		ShaderController11() {}
 
 	};
 
-	static const std::function<ShaderController& ()>Shader = ShaderController::GetIns;
+	static const std::function<ShaderController11& ()>Shader11 = ShaderController11::GetIns;
 
 }
 

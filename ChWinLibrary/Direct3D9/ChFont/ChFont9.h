@@ -5,7 +5,7 @@ namespace ChD3D9
 {
 
 	//標準機能で描画されるフォントクラス//
-	class DrawFont:public ChCpp::ChCp::InitPack
+	class DrawFont:public ChCpp::ChCp::Initializer
 	{
 	public:
 
@@ -34,7 +34,7 @@ namespace ChD3D9
 			std::string _DrawStr
 			, const long _x
 			, const long y
-			, ChStd::COLOR255 _Col = ChStd::COLOR255(255, 255, 255, 255));
+			, ChVec4 _Col = ChVec4(1.0f,1.0f,1.0f,1.0f));
 
 		///////////////////////////////////////////////////////////////////////////////////
 
@@ -54,7 +54,7 @@ namespace ChD3D9
 
 		long FontW = StartSize;
 		long FontH = StartSize;
-		ChStd::COLOR255 FontColor = { 255, 255, 255, 255 };
+		ChVec4 FontColor = { 1.0f,1.0f,1.0f,1.0f };
 		std::string FontType;
 
 	public:

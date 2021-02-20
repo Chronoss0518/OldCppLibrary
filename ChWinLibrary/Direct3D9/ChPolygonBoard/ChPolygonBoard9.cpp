@@ -110,7 +110,7 @@ void PolygonBoard9::Draw(
 	
 	Device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ZERO);
 
-	Device->SetRenderState(D3DRS_NORMALIZENORMALS, ChStd::True);
+	Device->SetRenderState(D3DRS_NORMALIZENORMALS, true);
 	Device->SetRenderState(D3DRS_CULLMODE, TmpData);
 }
 

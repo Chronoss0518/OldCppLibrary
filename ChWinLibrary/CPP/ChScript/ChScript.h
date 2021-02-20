@@ -6,21 +6,15 @@ namespace ChCpp
 
 	//スクリプト全体を管理するクラス//
 	//これを各地に配置して利用する//
-	typedef class ScriptController
+	typedef class ScriptController:public ChCp::Releaser
 	{
 
 	public:
 
-
-		///////////////////////////////////////////////////////////////////////////////////
-		//ConstructerDestructer//
-
-		virtual ~ScriptController() { Release(); }
-
 		///////////////////////////////////////////////////////////////////////////////////
 		//InitAndRelease//
 
-		void Release()
+		void Release()override
 		{
 			ScriptList.clear();
 		}

@@ -2,14 +2,11 @@
 #ifndef Ch_Game_BaseSystem_h
 #define Ch_Game_BaseSystem_h
 
-#include"../../BaseIncluder/ChBase.h"
-#include"../../CPP/ChBitBool/ChBitBool.h"
-
 namespace ChSystem
 {
 	class SystemManager;
 
-	class BaseSystem : public ChCpp::ChCp::InitPack
+	class BaseSystem : public ChCpp::ChCp::Initializer
 	{
 
 	public:
@@ -60,7 +57,7 @@ namespace ChSystem
 
 	protected:
 
-		SystemManager* System;
+		SystemManager* System = nullptr;
 
 		unsigned int WindWidth = 0;
 		unsigned int WindHeight = 0;
@@ -74,7 +71,7 @@ namespace ChSystem
 
 	};
 
-	class SystemManager :public ChCpp::ChCp::InitializePack
+	class SystemManager :public ChCpp::ChCp::Initializer,public ChCpp::ChCp::Releaser
 	{
 	public:
 
@@ -87,7 +84,8 @@ namespace ChSystem
 		template<class C>
 		auto Init()
 			->typename std::enable_if
-			<std::is_base_of<BaseSystem,C>::value, ChPtr::Shared<C>>::type
+			<std::is_base_of<BaseSystem,C>::value
+			&& !std::is_same<BaseSystem,C>::value, ChPtr::Shared<C>>::type
 		{
 			if (*this)return nullptr;
 
@@ -102,7 +100,7 @@ namespace ChSystem
 			return ChPtr::SharedSafeCast<C>(BaseSystems);
 		}
 
-		void Release()
+		inline void Release()override
 		{
 			if (!*this)return;
 
@@ -194,9 +192,6 @@ namespace ChSystem
 		ChPtr::Shared<BaseSystem> BaseSystems = nullptr;
 
 		SystemManager() {}
-
-		~SystemManager() {}
-
 		unsigned long FPS = 60;
 		unsigned long NowTime = 0;
 

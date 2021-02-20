@@ -11,14 +11,14 @@ namespace ChD3D9
 		struct Vertex
 		{
 			ChVec3_9 Pos;
-			ChStd::COLOR1f Col;
+			ChVec4 Col;
 			ChVec2 UV;
 
 			Vertex();
 
 			Vertex(
 				const ChVec3_9 _Pos
-				, const ChStd::COLOR1f _Col
+				, const ChVec4 _Col
 				, const ChVec2 _UV
 			)
 			{
@@ -51,10 +51,10 @@ namespace ChD3D9
 
 		VertexData()
 		{
-			_1 = { ChVec3_9(-1.0f,-1.0f,0.0f),ChStd::COLOR1f(1.0f,1.0f,1.0f,1.0f),ChVec2(0.0f,0.0f) };
-			_2 = { ChVec3_9(1.0f,-1.0f,0.0f),ChStd::COLOR1f(1.0f,1.0f,1.0f,1.0f),ChVec2(1.0f,0.0f) };
-			_3 = { ChVec3_9(1.0f,1.0f,0.0f),ChStd::COLOR1f(1.0f,1.0f,1.0f,1.0f),ChVec2(1.0f,1.0f) };
-			_4 = { ChVec3_9(-1.0f,1.0f,0.0f),ChStd::COLOR1f(1.0f,1.0f,1.0f,1.0f),ChVec2(0.0f,1.0f) };
+			_1 = { ChVec3_9(-1.0f,-1.0f,0.0f),ChVec4(1.0f,1.0f,1.0f,1.0f),ChVec2(0.0f,0.0f) };
+			_2 = { ChVec3_9(1.0f,-1.0f,0.0f),ChVec4(1.0f,1.0f,1.0f,1.0f),ChVec2(1.0f,0.0f) };
+			_3 = { ChVec3_9(1.0f,1.0f,0.0f),ChVec4(1.0f,1.0f,1.0f,1.0f),ChVec2(1.0f,1.0f) };
+			_4 = { ChVec3_9(-1.0f,1.0f,0.0f),ChVec4(1.0f,1.0f,1.0f,1.0f),ChVec2(0.0f,1.0f) };
 		};
 
 		VertexData(const Vertex _v1
@@ -94,13 +94,13 @@ namespace ChD3D9
 		SpriteData() 
 		{
 			SpData = VertexData(
-				VertexData::Vertex( ChVec3_9(0.0f,0.0f,0.0f),ChStd::COLOR1f(1.0f,1.0f,1.0f,1.0f),ChVec2(0.0f,0.0f) )
+				VertexData::Vertex( ChVec3_9(0.0f,0.0f,0.0f),ChVec4(1.0f,1.0f,1.0f,1.0f),ChVec2(0.0f,0.0f) )
 				,
-				VertexData::Vertex(ChVec3_9(1280.0f,0.0f,0.0f),ChStd::COLOR1f(1.0f,1.0f,1.0f,1.0f), ChVec2(1.0f,0.0f) )
+				VertexData::Vertex(ChVec3_9(1280.0f,0.0f,0.0f),ChVec4(1.0f,1.0f,1.0f,1.0f), ChVec2(1.0f,0.0f) )
 				,
-				VertexData::Vertex(ChVec3_9(1280.0f,720.0f,0.0f),ChStd::COLOR1f(1.0f,1.0f,1.0f,1.0f), ChVec2(1.0f,1.0f) )
+				VertexData::Vertex(ChVec3_9(1280.0f,720.0f,0.0f),ChVec4(1.0f,1.0f,1.0f,1.0f), ChVec2(1.0f,1.0f) )
 				,
-				VertexData::Vertex(ChVec3_9(0.0f,720.0f,0.0f),ChStd::COLOR1f(1.0f,1.0f,1.0f,1.0f), ChVec2(0.0f,1.0f) )
+				VertexData::Vertex(ChVec3_9(0.0f,720.0f,0.0f),ChVec4(1.0f,1.0f,1.0f,1.0f), ChVec2(0.0f,1.0f) )
 			);
 		}
 
@@ -116,8 +116,8 @@ namespace ChD3D9
 			SpData = _VerData;
 		}
 
-		SpriteData(const ChStd::FPOINT& _Pos
-			, const ChStd::FPOINT& _Size)
+		SpriteData(const ChVec2& _Pos
+			, const ChVec2& _Size)
 		{
 			SpData.Ver[0].Pos = ChVec3_9(_Pos.x, _Pos.y, 0.0f);
 			SpData.Ver[1].Pos = ChVec3_9(_Pos.x + _Size.w, _Pos.y, 0.0f);
@@ -125,7 +125,7 @@ namespace ChD3D9
 			SpData.Ver[3].Pos = ChVec3_9(_Pos.x, _Pos.y + _Size.h, 0.0f);
 		}
 
-		SpriteData(const  ChStd::FRECT& _Rect)
+		SpriteData(const  ChVec4& _Rect)
 		{
 			SpData.Ver[0].Pos = ChVec3_9(_Rect.x, _Rect.y, 0.0f);
 			SpData.Ver[1].Pos = ChVec3_9(_Rect.x + _Rect.w, _Rect.y, 0.0f);

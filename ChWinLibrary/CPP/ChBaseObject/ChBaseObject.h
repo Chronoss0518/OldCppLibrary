@@ -5,12 +5,15 @@
 #include"../ChBitBool/ChBitBool.h"
 
 #include"ChBaseComponent.h"
+#include"ChOPClass.h"
 
 namespace ChCpp
 {
 	class ObjectManager;
 
 	//オブジェクトを生成する場合、このクラスを継承して作成する。//
+	//このクラスとクラスパーツ(ChCpp::OP)を継承した//
+	//オリジナルのクラスを作成して利用する。//
 	class BaseObject :public std::enable_shared_from_this<BaseObject>
 	{
 	public:
@@ -81,18 +84,6 @@ namespace ChCpp
 			return TmpComList;
 		}
 
-		//TransformCOmponentの取得//
-		template<class transform = TransformComponent>
-		ChPtr::Shared<transform>GetTransform()
-		{
-			if (Transform.lock() == nullptr)
-			{
-				SetComponent<transform>();
-			}
-
-			return ChPtr::SharedSafeCast<transform>(Transform.lock());
-		}
-
 		//子オブジェクト群の取得//
 		std::vector<ChPtr::Shared<BaseObject>>GetChildlen()
 		{
@@ -112,34 +103,7 @@ namespace ChCpp
 		//コンポーネントのセット//
 		template<class T>
 		inline auto SetComponent()->typename std::enable_if
-			<std::is_base_of<BaseComponent, T>::value&& std::is_base_of<TransformCom, T>::value, const ChPtr::Shared<T>>::type
-		{
-
-			if (Transform.lock() != nullptr)
-			{
-				Transform.lock()->Destroy();
-			}
-
-			ChPtr::Shared<BaseComponent> TmpCom = ChPtr::Make_S<T>();
-
-			if (TmpCom == nullptr)return nullptr;
-
-			ComList.push_back(TmpCom);
-
-			TmpCom->BaseInit(this);
-
-			TmpCom->Init();
-
-			Transform = ChPtr::SharedSafeCast<T>(TmpCom);
-
-			return ChPtr::SharedSafeCast<T>(TmpCom);
-
-		}
-
-		//コンポーネントのセット//
-		template<class T>
-		inline auto SetComponent()->typename std::enable_if
-			<std::is_base_of<BaseComponent, T>::value && !std::is_base_of<TransformCom, T>::value, const ChPtr::Shared<T>>::type
+			<std::is_base_of<BaseComponent, T>::value, const ChPtr::Shared<T>>::type
 		{
 
 			ChPtr::Shared<BaseComponent> TmpCom = ChPtr::Make_S<T>();
@@ -291,8 +255,6 @@ namespace ChCpp
 		std::string MyName;
 		std::string Tag;
 		ChStd::Bool DFlg = false;
-
-		ChPtr::Weak<TransformCom> Transform;
 
 	};
 

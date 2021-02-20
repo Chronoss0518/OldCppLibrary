@@ -23,6 +23,12 @@ cbuffer Material :register(b2)
 	float4 Dif = float4(1.0f, 1.0f, 1.0f, 1.0f);
 	float4 SpeCol;
 	float4 Anbient;
+
+	float4x4 FrameMatrix = float4x4(
+		1.0f, 0.0f, 0.0f, 1.0f
+		, 0.0f, 1.0f, 0.0f, 1.0f
+		, 0.0f, 0.0f, 1.0f, 1.0f
+		, 0.0f, 0.0f, 0.0f, 1.0f);
 };
 
 texture2D ModelTex :register(t0);

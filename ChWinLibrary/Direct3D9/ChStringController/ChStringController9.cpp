@@ -77,7 +77,7 @@ void StringController9::DrawSprightString(
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-void StringController9::SetStringColor(const ChStd::COLOR255& _Color)
+void StringController9::SetStringColor(const ChVec4& _Color)
 {
 	StrTex->GetBaseColor() = _Color;
 }

@@ -42,7 +42,7 @@ ChStd::Bool ChGravity9::UpDate(
 	
 	for (unsigned short i = 0; i < WpXList.size(); i++)
 	{
-		if (WpXList.empty())return ChStd::False;
+		if (WpXList.empty())return false;
 
 		auto TmpX = WpXList[i].lock();
 
@@ -65,7 +65,7 @@ ChStd::Bool ChGravity9::UpDate(
 		if (_MoveDir->y > 0.0f)
 		{
 			TmpSpeed = _MoveDir->y;
-			return ChStd::True;
+			return true;
 		}
 
 		if (-TmpSpeed >= Pow)Pow = -TmpSpeed;
@@ -90,15 +90,15 @@ ChStd::Bool ChGravity9::UpDate(
 			_Pos->y -= _MoveDir->y;
 			Pow = 0.0f;
 
-			return ChStd::True;
+			return true;
 		}
 
 		Vec *= Pow;
 		*_Pos += Vec;
-		return ChStd::True;
+		return true;
 	}
 
-	return ChStd::False;
+	return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -124,7 +124,7 @@ ChStd::Bool ChPushBack9::UpDate(ChVec3_9* _Pos, const ChVec3_9* _Dir)
 	for (unsigned short i = 0; i < WpXList.size(); i++)
 	{
 
-		if (WpXList.empty())return ChStd::False;
+		if (WpXList.empty())return false;
 
 		auto TmpX = WpXList[i].lock();
 
@@ -156,7 +156,12 @@ ChStd::Bool ChPushBack9::UpDate(ChVec3_9* _Pos, const ChVec3_9* _Dir)
 		ChVec3_9 TmpDir;
 
 		TmpDir = TmpX->GetFace()[FaceNum]->Normal;
-		float TmpDot = D3DXVec3Dot(&TmpDir, &-TmpVec);
+
+		TmpVec = -TmpVec;
+
+		float TmpDot = D3DXVec3Dot(&TmpDir, &TmpVec);
+
+		TmpVec = -TmpVec;
 
 		if (TmpDot == 0.0f)continue;
 
@@ -170,12 +175,12 @@ ChStd::Bool ChPushBack9::UpDate(ChVec3_9* _Pos, const ChVec3_9* _Dir)
 
 		*_Pos += TmpDir * (Limit - TmpLen + Len) * TmpDot;
 
-		return ChStd::True;
+		return true;
 
 
 
 	}
 
-	return ChStd::False;
+	return false;
 
 }

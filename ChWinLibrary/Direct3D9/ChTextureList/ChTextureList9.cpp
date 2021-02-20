@@ -97,7 +97,7 @@ void TextureList9::SetColorTex(
 ///////////////////////////////////////////////////////////////////////////////////
 
 void TextureList9::SetBlendColor(
-	const ChStd::COLOR255& _Color
+	const ChVec4& _Color
 	, const ChStd::DataNo DataNum)
 {
 	if (TexList.find(DataNum) == TexList.end())return;

@@ -64,10 +64,12 @@ void Sprite9::DrawSprite(
 	Device->SetTransform(D3DTS_WORLD, &tmpMat);
 	Device->SetFVF((D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1));
 
+	auto Tmp = D3DXVECTOR3((float)(_tex->GetOriginalWidth() / 2.0f), (float)(_tex->GetOriginalHeight() / 2.0f), 0.0f);
+
 	Sp->Draw(
 		_tex->GetTex()
 		, &TmpRec
-		, &D3DXVECTOR3((float)(_tex->GetOriginalWidth() / 2.0f), (float)(_tex->GetOriginalHeight() / 2.0f), 0.0f)
+		, &Tmp
 		, &TmpVec
 		, _tex->GetBaseColD3D());
 

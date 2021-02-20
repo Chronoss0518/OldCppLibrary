@@ -44,7 +44,7 @@ namespace ChD3D9
 
 	}CamObj;
 
-	class CameraController:public::ChCpp::ChCp::InitPack
+	class CameraController:public::ChCpp::ChCp::Initializer
 	{
 	public:
 

@@ -52,11 +52,12 @@ float4 main(VS_OUT In) :SV_Target0
 
 	float4 Color = In.Color;
 
-	//Color = Dif * ModelTex.Sample(ModelSmp, In.UV) * Color;
+	Color = Dif * ModelTex.Sample(ModelSmp, In.UV) * Color;
 
-	Color = ModelTex.Sample(ModelSmp, In.UV);
+	//Color = Dif;
+	//Color = ModelTex.Sample(ModelSmp, In.UV);
 
-	//clip(Color.a < 0.001f ? -1 : 1);
+	clip(Color.a < 0.001f ? -1 : 1);
 
 	//Color = LightCol(In, Color);
 

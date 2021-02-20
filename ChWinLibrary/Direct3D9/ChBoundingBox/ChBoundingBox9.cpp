@@ -101,15 +101,15 @@ ChStd::Bool BoundingBox9::IsHitToPos(
 	PPos.MatPos(TmpMat, PPos);
 
 	if (!(Main.y < PPos.y
-		&& Main.y + Depth.y > PPos.y))return ChStd::False;
+		&& Main.y + Depth.y > PPos.y))return false;
 
 	if (!(Main.x < PPos.x
-		&& Main.x + Depth.x > PPos.x))return ChStd::False;
+		&& Main.x + Depth.x > PPos.x))return false;
 
 	if (!(Main.z < PPos.z
-		&& Main.z + Depth.z > PPos.z))return ChStd::False;
+		&& Main.z + Depth.z > PPos.z))return false;
 
-	return ChStd::True;
+	return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -145,10 +145,10 @@ ChStd::Bool BoundingBox9::IsHitToB_Box(
 		if (!(Main.z < TmpPos.z + PBox.Main.z
 			&& Main.z + Depth.z > TmpPos.z))continue;
 
-		return ChStd::True;
+		return true;
 	}
 
-	return ChStd::False;
+	return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -172,15 +172,15 @@ ChStd::Bool BoundingBox9::IsHitToBull(
 	TmpVec *= _R;
 
 	if (!(Main.y < TmpPos.y + TmpVec.y
-		&& Main.y + Depth.y > TmpPos.y - TmpVec.y))return ChStd::False;
+		&& Main.y + Depth.y > TmpPos.y - TmpVec.y))return false;
 
 	if (!(Main.x < TmpPos.x + TmpVec.x
-		&& Main.x + Depth.x > TmpPos.x - TmpVec.x))return ChStd::False;
+		&& Main.x + Depth.x > TmpPos.x - TmpVec.x))return false;
 
 	if (!(Main.z < TmpPos.z + TmpVec.z
-		&& Main.z + Depth.z > TmpPos.z - TmpVec.z))return ChStd::False;
+		&& Main.z + Depth.z > TmpPos.z - TmpVec.z))return false;
 
-	return ChStd::True;
+	return true;
 
 }
 

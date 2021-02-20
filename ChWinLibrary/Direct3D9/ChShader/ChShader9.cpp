@@ -12,7 +12,7 @@
 
 using namespace ChD3D9;
 
-ChStd::FPOINT ShaderController::WindSize = ChStd::FPOINT(1280.0f, 720.0f);
+ChVec2 ShaderController::WindSize = ChVec2(1280.0f, 720.0f);
 
 ///////////////////////////////////////////////////////////////////////////////////////
 //ChShaderControllerメソッド
@@ -308,7 +308,7 @@ void ShaderController::DrawMesh(
 //Mesh描画用関数//
 void ShaderController::DrawMeshContour(
 	const ChPtr::Shared<ChMesh::Mesh9> _Mesh
-	, const ChStd::COLOR1f& _Color
+	, const ChVec4& _Color
 	, const ChMat_9& _Mat
 	, const float _Size)
 {
@@ -430,7 +430,7 @@ void ShaderController::DrawSprite(
 
 	{
 
-		ChStd::COLOR1f TmpVec;
+		ChVec4 TmpVec;
 		TmpVec = _Tex->GetBaseColor();
 
 		Device->SetPixelShaderConstantF(0, (const float*)&TmpVec, 1);

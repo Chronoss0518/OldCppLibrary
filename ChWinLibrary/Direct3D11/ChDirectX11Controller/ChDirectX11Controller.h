@@ -6,7 +6,7 @@ namespace ChD3D11
 {
 
 	//Direct3D11ÇóòópÇ∑ÇÈÇΩÇﬂÇ…çÏÇÁÇÍÇΩÉNÉâÉX//
-	class DirectX3D11:public ChCpp::ChCp::InitPack
+	class DirectX3D11:public ChCpp::ChCp::Initializer,ChCpp::ChCp::Releaser
 	{
 	public:
 
@@ -21,7 +21,7 @@ namespace ChD3D11
 			, const unsigned short _ScrX = 5
 			, const unsigned short _ScrY = 5);
 
-		void Release();
+		void Release()override;
 
 		///////////////////////////////////////////////////////////////////////////////////
 		//SetFunction//
@@ -93,11 +93,6 @@ namespace ChD3D11
 		//ConstructerDestructer//
 
 		inline DirectX3D11() {}
-
-		inline ~DirectX3D11()
-		{
-			Release();
-		}
 
 	public:
 

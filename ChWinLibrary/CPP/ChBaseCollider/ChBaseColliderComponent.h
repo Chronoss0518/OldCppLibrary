@@ -7,7 +7,7 @@ namespace ChCpp
 {
 
 
-	class BaseCollider : public ChCpp::BaseComponent
+	class BaseCollider : public BaseComponent
 	{
 
 

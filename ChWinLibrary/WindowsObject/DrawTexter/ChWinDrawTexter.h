@@ -10,7 +10,7 @@ namespace ChSystem
 
 namespace ChWin
 {
-	class DrawTexter:public ChCpp::ChCp::InitPack
+	class DrawTexter:public ChCpp::ChCp::Initializer,public ChCpp::ChCp::Releaser
 	{
 	public:
 
@@ -19,7 +19,7 @@ namespace ChWin
 
 		void Init(const HWND& _BaseWindHandl);
 
-		void Release();
+		void Release()override;
 
 		///////////////////////////////////////////////////////////////////////////////////////
 		//SetFunction//
@@ -41,15 +41,15 @@ namespace ChWin
 			, const ChStd::Bool& _ULFlg);
 
 		//ï`âÊÇ∑ÇÈï∂éöóÒÇÃêFê›íË//
-		inline void SetTexColor(const ChStd::COLOR255& _Color)
+		inline void SetTexColor(const ChVec4& _Color)
 		{
-			FontColor = _Color;
+			FontColor = _Color * 256;
 		}
 
 		//ï`âÊÇ∑ÇÈï∂éöóÒÇÃîwåiêFê›íË//
-		inline void SetTexBackColor(const ChStd::COLOR255& _Color)
+		inline void SetTexBackColor(const ChVec4& _Color)
 		{
-			BackColor = _Color;
+			BackColor = _Color * 256;
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////
@@ -67,17 +67,13 @@ namespace ChWin
 
 		inline DrawTexter(){}
 
-		inline ~DrawTexter()
-		{
-			Release();
-		}
 
 		HWND HOwn = nullptr;
 
-		HFONT FontData;
+		HFONT FontData = nullptr;
 
-		ChStd::COLOR255 FontColor;
-		ChStd::COLOR255 BackColor;
+		ChVec4 FontColor;
+		ChVec4 BackColor;
 
 	public:
 

@@ -7,7 +7,7 @@ namespace ChCpp
 	//ポインターで使用するメモリ全体を管理するクラス//
 	//セットできるクラスや構造体には//
 	//コンストラクター時の引数を必要としないもののみ利用できる//
-	 class MemoryManager:public ChCpp::ChCp::InitPack
+	 class MemoryManager:public ChCp::Initializer,public ChCp::Releaser
 	{
 	public:
 
@@ -28,7 +28,7 @@ namespace ChCpp
 
 		}
 
-		inline void Release()
+		inline void Release()override
 		{
 			if (!*this)return;
 
@@ -64,10 +64,7 @@ namespace ChCpp
 
 		inline MemoryManager() {}
 
-		inline ~MemoryManager()
-		{
-			Release();
-		}
+		inline ~MemoryManager() { Release(); }
 
 	public:
 

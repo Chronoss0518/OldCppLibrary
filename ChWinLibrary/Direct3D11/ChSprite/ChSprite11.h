@@ -1,7 +1,7 @@
 #ifndef Ch_D3D11_Sprite_h
 #define Ch_D3D11_Sprite_h
 
-#include"../ChShaderStructures.h"
+#include"../ChShaderStructures11.h"
 
 namespace ChD3D11
 {

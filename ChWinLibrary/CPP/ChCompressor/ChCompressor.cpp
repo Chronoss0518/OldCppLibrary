@@ -2,6 +2,7 @@
 #include"../../BaseIncluder/ChBase.h"
 #include"ChBaseCompressor.h"
 #include"ChDictionaryCompressor.h"
+#include"ChRunglessCompressor.h"
 
 using namespace ChCpp;
 using namespace Cmp;
@@ -18,6 +19,24 @@ std::string Dictionary::Press(const std::string& _PressBase)
 ///////////////////////////////////////////////////////////////////////////////////
 
 std::string Dictionary::Thaw(const std::string& _PressBase)
+{
+	return "";
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+//RunglessCompressorÉÅÉ\ÉbÉh
+///////////////////////////////////////////////////////////////////////////////////
+
+std::string Rung::Press(const std::string& _PressBase)
+{
+	
+
+	return "";
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
+std::string Rung::Thaw(const std::string& _PressBase)
 {
 	return "";
 }

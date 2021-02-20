@@ -10,7 +10,16 @@
 
 using socklen_t = int;
 
-#elif __linux__
+#elif _WIN64
+
+
+#include<Windows.h>
+#include<winsock.h>
+#pragma comment(lib,"wsock32.lib")
+
+using socklen_t = int;
+
+#else
 
 #include<unistd.h>
 #include<sys/socket.h>
@@ -49,16 +58,11 @@ namespace ChCpp
 		
 		class InternetProtocol;
 
-		class SockBase :public ChCpp::ChCp::InitPack
+		class SockBase :public ChCp::Initializer,public ChCp::Releaser
 		{
 		public:
 
 			friend InternetProtocol;
-
-			///////////////////////////////////////////////////////////////////////////////
-			//ConstructerDestructer//
-
-			virtual ~SockBase() { Release(); }
 
 
 			///////////////////////////////////////////////////////////////////////////////
@@ -66,7 +70,7 @@ namespace ChCpp
 
 			virtual void Init(const unsigned short _Port_No = 49152) = 0;
 
-			virtual void Release()
+			virtual void Release()override
 			{
 				if (!(*this))return;
 				closesocket(BaseSock);
@@ -102,7 +106,7 @@ namespace ChCpp
 
 		};
 
-		class InternetProtocol :public ChCpp::ChCp::InitPack
+		class InternetProtocol :public ChCpp::ChCp::Initializer
 		{
 		public:
 

@@ -12,7 +12,7 @@ typedef class BaseMesh9 Mesh9;
 
 //移動する際にある方向に物理的な力が働くようにするクラス//
 //ベースクラスのため、基本的にこれ自体を使うことはない//
-class ChPhysicalBase9:public ChCpp::ChCp::InitPack
+class ChPhysicalBase9:public ChCpp::ChCp::Initializer
 {
 public:
 
@@ -64,7 +64,7 @@ public:
 		ChVec3_9*
 		, const ChVec3_9*)
 	{
-		return ChStd::True;
+		return true;
 	};
 
 protected:

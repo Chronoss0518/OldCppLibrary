@@ -4,6 +4,8 @@
 
 #include"../../CPP/ChBaseObject/ChBaseObject.h"
 
+/*
+
 typedef class ChTransformComponent9 :public ChCpp::TransformCom
 {
 public:
@@ -46,5 +48,7 @@ public:
 	}
 
 }ChTransformCom9;
+
+*/
 
 #endif

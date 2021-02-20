@@ -50,12 +50,14 @@ void ChModelCom9::Draw3D()
 
 	ChMat_9 TmpMat;
 	{
-		auto Trans = LookObj()->GetTransform<ChTransformCom9>();
 
-		if (nullptr != Trans)
-		{
-			TmpMat = Trans->GetMat();
-		}
+		//auto Trans = LookObj()->GetTransform<ChTransformCom9>();
+
+		//if (nullptr != Trans)
+		//{
+		//	TmpMat = Trans->GetMat();
+		//}
+
 	}
 
 	ChD3D9::Shader().DrawMesh(Model, TmpMat);

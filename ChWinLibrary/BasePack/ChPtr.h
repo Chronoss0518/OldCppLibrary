@@ -46,8 +46,9 @@ namespace ChPtr
 	static inline auto NullCheck(const C _Class)->typename
 		std::enable_if<std::is_pointer<C>::value, ChStd::Bool>::type
 	{
-		if (_Class == NULL || _Class == nullptr)return ChStd::True;
-		return ChStd::False;
+		if (_Class == NULL) return true;
+		if (_Class == nullptr)return true;
+		return false;
 	}
 
 	//クラスがNULLとnullptrのどちらでもないかをチェックする関数//
@@ -55,8 +56,12 @@ namespace ChPtr
 	static inline auto NotNullCheck(const C _Class)->typename
 		std::enable_if<std::is_pointer<C>::value, ChStd::Bool>::type
 	{
-		if (_Class != NULL && _Class != nullptr)return ChStd::True;
-		return ChStd::False;
+		if (_Class != NULL)
+		{
+			if (_Class != nullptr)return true;
+		}
+
+		return false;
 	}
 
 	//make_sharedを短縮するための関数//

@@ -8,13 +8,6 @@ namespace ChCpp
 	{
 	public:
 
-		std::string operator[](size_t _Index)
-		{
-			if (FileText.size() <= _Index)return "";
-
-			return FileText[_Index];
-		}
-
 		std::string operator[](size_t _Index)const
 		{
 
@@ -22,6 +15,7 @@ namespace ChCpp
 
 			return FileText[_Index];
 		}
+
 
 		///////////////////////////////////////////////////////////////////////////////////////
 		//GetFunction//
@@ -60,13 +54,13 @@ namespace ChCpp
 			const unsigned int _StartPos = 0
 			, const unsigned int _EndPos = std::string::npos)const
 		{
-			FileObject Out;
+			FileObject out;
 
-			std::string Str = GetText().substr(_StartPos, _EndPos);
+			std::string str = GetText().substr(_StartPos, _EndPos);
 
-			Out.SetText(Str);
+			out.SetText(str);
 
-			return Out;
+			return out;
 
 		}
 

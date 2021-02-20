@@ -5,7 +5,7 @@ namespace ChCpp
 {
 	namespace Cmp
 	{
-		 typedef class BaseCompressor
+		 class BaseCompressor
 		{
 		public:
 
@@ -21,9 +21,11 @@ namespace ChCpp
 
 			///////////////////////////////////////////////////////////////////////////////////
 
-		}BaseComp;
+		};
 
-		 class Compressor :public ChCpp::ChCp::InitPack
+		 using BaseComp = BaseCompressor;
+
+		 class Compressor :public ChCpp::ChCp::Initializer, public ChCp::Releaser
 		{
 		public:
 
@@ -48,7 +50,7 @@ namespace ChCpp
 				return;
 			}
 
-			inline void Release()
+			inline void Release()override
 			{
 
 				compressor = nullptr;

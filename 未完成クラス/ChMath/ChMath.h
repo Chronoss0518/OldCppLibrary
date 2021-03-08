@@ -4,10 +4,6 @@
 #include <float.h>
 #include <cmath>
 
-
-
-#include"ChMathBase/ChMatrixBase.h"
-
 struct D3DXVECTOR4;
 struct D3DXVECTOR3;
 struct D3DXVECTOR2;
@@ -25,69 +21,65 @@ namespace DirectX
 struct ChVector4;
 struct ChVector3;
 struct ChVector2;
+struct ChQuaternion;
 struct ChRMatrix;
 struct ChLMatrix;
 struct ChUIMatrix;
 
 namespace ChMath
 {
-
-
-	template<typename T>
 	struct ChVector4Base
 	{
 
 		union {
 			struct
 			{
-				T x, y, z, w;
+				float x, y, z, w;
 			};
 			struct
 			{
-				T r, g, b, a;
+				float r, g, b, a;
 			};
 			struct
 			{
-				T left, top, right, down;
+				float x, y, w, h;
 			};
-			T Val[4]{ 0, 0, 0, 0 };
+			float Val[4]{ 0, 0, 0, 0 };
 		};
 	};
 
-	template<typename T>
 	struct ChVector3Base
 	{
 
 		union {
 			struct
 			{
-				T x, y, z;
+				float x, y, z;
 			};
 			struct
 			{
-				T r, g, b;
+				float r, g, b;
 			};
-			T Val[3]{ 0, 0, 0 };
+			float Val[3]{ 0, 0, 0 };
 		};
 	};
 
-	template<typename T>
 	struct ChVector2Base
 	{
 
 		union {
 			struct
 			{
-				T x, y;
+				float x, y;
 			};
 			struct
 			{
-				T w, h;
+				float w, h;
 			};
-			T Val[2]{ 0, 0 };
+			float Val[2]{ 0, 0 };
 		};
 	};
-	
+
 	struct ChQuaternionBase
 	{
 
@@ -100,106 +92,62 @@ namespace ChMath
 		};
 	};
 
-	template<typename T>
-	struct ChBaseMatrix2x2
-	{
-		union
-		{
-			struct
-			{
-
-				T l_11, l_12;
-				T l_21, l_22;
-
-			};
-			struct
-			{
-
-				T r_11, r_21;
-				T r_12, r_22;
-
-			};
-			T m[2][2];
-		};
-
-		/*
-		T& GetValue(const unsigned long _Column, const unsigned long _Row) { return m[_Column][_Row]; };
-		T GetCValue(const unsigned long _Column, const unsigned long _Row)const { return m[_Column][_Row]; };
-
-		unsigned long GetColumn()const override { return 2; }
-		unsigned long GetRow()const override { return 2; };
-
-		*/
-	};
-
-	template<typename T>
-	struct ChBaseMatrix3x3
+	struct ChLMatrixBase
 	{
 
-
-		union
-		{
+		union {
 			struct
 			{
-
-				T l_11, l_12, l_13;
-				T l_21, l_22, l_23;
-				T l_31, l_32, l_33;
-
+				float _11, _12, _13, _14;
+				float _21, _22, _23, _24;
+				float _31, _32, _33, _34;
+				float _41, _42, _43, _44;
 			};
-			struct
-			{
 
-				T r_11, r_21, r_31;
-				T r_12, r_22, r_32;
-				T r_13, r_23, r_33;
-
-			};
-			T m[3][3];
+			float m[4][4]{ {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0} };
 		};
 
-		/*
-		T& GetValue(const unsigned long _Column, const unsigned long _Row) { return m[_Column][_Row]; };
-		T GetCValue(const unsigned long _Column, const unsigned long _Row)const { return m[_Column][_Row]; };
-
-		unsigned long GetColumn()const override { return 3; }
-		unsigned long GetRow()const override { return 3; };
-
-		*/
 
 	};
 
-	template<typename T>
-	struct ChBaseMatrix4x4
+
+	struct ChRMatrixBase
+	{
+
+		union {
+			struct
+			{
+				float _11, _21, _31, _41;
+				float _12, _22, _32, _42;
+				float _13, _23, _33, _43;
+				float _14, _24, _34, _44;
+			};
+
+			float m[4][4]{ {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0} };
+		};
+
+
+	};
+
+	struct ChUIMatrixBase
 	{
 		union
 		{
 			struct
 			{
-
-				T l_11, l_12, l_13, l_14;
-				T l_21, l_22, l_23, l_24;
-				T l_31, l_32, l_33, l_34;
-				T l_41, l_42, l_43, l_44;
-
+				unsigned long _11, _12, _13, _14;
+				unsigned long _21, _22, _23, _24;
+				unsigned long _31, _32, _33, _34;
+				unsigned long _41, _42, _43, _44;
 			};
-			struct
-			{
 
-				T r_11, r_21, r_31, r_41;
-				T r_12, r_22, r_32, r_42;
-				T r_13, r_23, r_33, r_43;
-				T r_14, r_24, r_34, r_44;
-
-			};
-			T m[4][4];
+			unsigned long m[4][4]{ {0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0} };
 		};
-
 	};
 
 } // namespace ChMath
 
-struct ChVector4 : public ChMath::ChVector4Base<float>
+struct ChVector4 : public ChMath::ChVector4Base
 {
 
 	///////////////////////////////////////////////////////////////////////////////////
@@ -214,6 +162,9 @@ struct ChVector4 : public ChMath::ChVector4Base<float>
 	ChVector4& operator/=(const float& _Num);
 	ChVector4 operator/(const float& _Num) const;
 	ChVector4& operator=(const float& _Num);
+
+	ChVector4& operator=(const ChVector3& _Vec);
+	ChVector4& operator=(const ChVector2& _Vec);
 
 	ChVector4& operator-=(const ChVector4& _Vec);
 	ChVector4 operator-(const ChVector4& _Vec) const;
@@ -231,9 +182,6 @@ struct ChVector4 : public ChMath::ChVector4Base<float>
 	{
 		return (x != _Vec.x || y != _Vec.y || z != _Vec.z || w != _Vec.w);
 	}
-
-	operator const ChVector3() const;
-	operator const ChVector2() const;
 
 	operator const D3DXVECTOR4() const;
 	operator const D3DXVECTOR4* () const;
@@ -332,24 +280,6 @@ struct ChVector4 : public ChMath::ChVector4Base<float>
 
 	///////////////////////////////////////////////////////////////////////////////////
 
-	inline void Abs()
-	{
-		x = x < 0.0f ? x * -1.0f : x;
-		y = y < 0.0f ? y * -1.0f : y;
-		z = z < 0.0f ? z * -1.0f : z;
-		w = w < 0.0f ? w * -1.0f : w;
-	}
-
-	inline void Abs(const ChVector4& _Vec)
-	{
-		x = _Vec.x < 0.0f ? _Vec.x * -1.0f : _Vec.x;
-		y = _Vec.y < 0.0f ? _Vec.y * -1.0f : _Vec.y;
-		z = _Vec.z < 0.0f ? _Vec.z * -1.0f : _Vec.z;
-		w = _Vec.w < 0.0f ? _Vec.w * -1.0f : _Vec.w;
-	}
-
-	///////////////////////////////////////////////////////////////////////////////////
-
 	//•â³‚ðs‚¤(Now‚Í0`1)
 	inline void Correction(
 		const ChVector4& _Start, const ChVector4& _End, const float _Now)
@@ -371,7 +301,7 @@ using ChVec4 = ChVector4;
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-struct ChVector3 : public ChMath::ChVector3Base<float>
+struct ChVector3 : public ChMath::ChVector3Base
 {
 
 	ChVector3& operator*=(const float& _Num);
@@ -379,6 +309,9 @@ struct ChVector3 : public ChMath::ChVector3Base<float>
 	ChVector3& operator/=(const float& _Num);
 	ChVector3 operator/(const float& _Num) const;
 	ChVector3& operator=(const float& _Num);
+
+	ChVector3& operator=(const ChVector4& _Vec);
+	ChVector3& operator=(const ChVector2& _Vec);
 
 	ChVector3& operator-=(const ChVector3& _Vec);
 	ChVector3 operator-(const ChVector3& _Vec) const;
@@ -396,9 +329,6 @@ struct ChVector3 : public ChMath::ChVector3Base<float>
 	{
 		return (x != _Vec.x || y != _Vec.y || z != _Vec.z);
 	}
-
-	operator const ChVector4() const;
-	operator const ChVector2() const;
 
 	operator const D3DXVECTOR3() const;
 	operator const D3DXVECTOR3* () const;
@@ -492,23 +422,6 @@ struct ChVector3 : public ChMath::ChVector3Base<float>
 
 	///////////////////////////////////////////////////////////////////////////////////
 
-	inline void Abs()
-	{
-		x = x < 0.0f ? x * -1.0f : x;
-		y = y < 0.0f ? y * -1.0f : y;
-		z = z < 0.0f ? z * -1.0f : z;
-	}
-
-	inline void Abs(const ChVector3& _Vec)
-	{
-
-		x = _Vec.x < 0.0f ? _Vec.x * -1.0f : _Vec.x;
-		y = _Vec.y < 0.0f ? _Vec.y * -1.0f : _Vec.y;
-		z = _Vec.z < 0.0f ? _Vec.z * -1.0f : _Vec.z;
-	}
-
-	///////////////////////////////////////////////////////////////////////////////////
-
 	//•â³‚ðs‚¤(Now‚Í0`1)
 	inline void Correction(
 		const ChVector3& _Start, const ChVector3& _End, const float _Now)
@@ -530,7 +443,7 @@ using ChVec3 = ChVector3;
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-struct ChVector2 : public ChMath::ChVector2Base<float>
+struct ChVector2 : public ChMath::ChVector2Base
 {
 
 	ChVector2& operator*=(const float& _Num);
@@ -538,6 +451,9 @@ struct ChVector2 : public ChMath::ChVector2Base<float>
 	ChVector2& operator/=(const float& _Num);
 	ChVector2 operator/(const float& _Num) const;
 	ChVector2& operator=(const float& _Num);
+
+	ChVector2& operator=(const ChVector4& _Vec);
+	ChVector2& operator=(const ChVector3& _Vec);
 
 	ChVector2& operator-=(const ChVector2& _Vec);
 	ChVector2 operator-(const ChVector2& _Vec) const;
@@ -555,9 +471,6 @@ struct ChVector2 : public ChMath::ChVector2Base<float>
 	{
 		return (x != _Vec.x || y != _Vec.y);
 	}
-
-	operator const ChVector4() const;
-	operator const ChVector3() const;
 
 	operator const D3DXVECTOR2() const;
 	operator const D3DXVECTOR2* () const;
@@ -629,21 +542,6 @@ struct ChVector2 : public ChMath::ChVector2Base<float>
 	inline float Len() const
 	{
 		return GetLen(*this, ChVector2());
-	}
-
-	///////////////////////////////////////////////////////////////////////////////////
-
-	inline void Abs()
-	{
-		x = x < 0.0f ? x * -1.0f : x;
-		y = y < 0.0f ? y * -1.0f : y;
-	}
-
-	inline void Abs(const ChVector2& _Vec)
-	{
-
-		x = _Vec.x < 0.0f ? _Vec.x * -1.0f : _Vec.x;
-		y = _Vec.y < 0.0f ? _Vec.y * -1.0f : _Vec.y;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////
@@ -760,19 +658,19 @@ struct ChLMatrix;
 struct ChRMatrix;
 
 //LeftHandAxisMatrix//
-struct ChLMatrix : public ChMath::ChBaseMatrix4x4<float>
+struct ChLMatrix : public ChMath::ChLMatrixBase
 {
 
 	float& operator[](const int Num);
 	float operator[](const int Num)const;
 
-	ChLMatrix& operator *= (const ChLMatrix _Mat);
+	ChLMatrix& operator * (const ChLMatrix _Mat);
 	ChLMatrix const operator * (const ChLMatrix _Mat)const;
 
-	ChLMatrix& operator += (const ChLMatrix _Mat);
+	ChLMatrix& operator + (const ChLMatrix _Mat);
 	ChLMatrix const operator + (const ChLMatrix _Mat)const;
 
-	ChLMatrix& operator -= (const ChLMatrix _Mat);
+	ChLMatrix& operator - (const ChLMatrix _Mat);
 	ChLMatrix const operator - (const ChLMatrix _Mat)const;
 
 	operator const D3DXMATRIX() const;
@@ -795,7 +693,19 @@ struct ChLMatrix : public ChMath::ChBaseMatrix4x4<float>
 
 	inline ChLMatrix()
 	{
-		//Identity();
+		for (unsigned char i = 0; i < 4; i++)
+		{
+			for (unsigned char j = 0; j < 4; j++)
+			{
+				m[i][j] = 0;
+			}
+		}
+
+		_11 = 1.0f;
+		_22 = 1.0f;
+		_33 = 1.0f;
+		_44 = 1.0f;
+
 	}
 
 	inline ChLMatrix(const ChLMatrix& _Mat) { *this = _Mat; }
@@ -838,6 +748,8 @@ struct ChLMatrix : public ChMath::ChBaseMatrix4x4<float>
 
 	void SetRotation(const ChVec3& _Vec);
 
+	void SetRotation(const ChQua& _Qua);
+
 	void SetRotation(const float _x, const float _y, const float _z);
 
 	void SetScalling(const ChVec3& _Vec);
@@ -847,101 +759,17 @@ struct ChLMatrix : public ChMath::ChBaseMatrix4x4<float>
 	///////////////////////////////////////////////////////////////////////////////////
 	//GetFunction//
 
-	ChVec3 GetPosition()const;
+	ChVec3 GetPosition();
 
-	ChVec3 GetRotation()const;
+	ChQua GetRotation();
 
-	ChVec3 GetScalling()const;
-
-	ChMath::MatrixBase3x3 GetRotMatrix()const;
+	ChVec3 GetScalling();
 
 	///////////////////////////////////////////////////////////////////////////////////
 
-	ChVec4 Transform(const ChVec4 _Base)const;
+	ChVec4 Transform(const ChVec4 _Base);
 
-	ChVec4 TransformCoord(const ChVec4 _Base)const;
-
-	///////////////////////////////////////////////////////////////////////////////////
-
-	void Identity()
-	{
-
-		for (unsigned char i = 0; i < 4; i++)
-		{
-			for (unsigned char j = 0; j < 4; j++)
-			{
-				m[i][j] = (i != j ? 0.0f : 1.0f);
-			}
-		}
-
-	}
-
-	///////////////////////////////////////////////////////////////////////////////////
-
-	void Inverse()
-	{
-	
-		ChLMatrix TmpMat = *this;
-		ChLMatrix Addl;
-	
-		float Tmp[24];
-	
-		unsigned char Count = 0;
-	
-		//for (unsigned char i = 0; i < 4; i++)
-		//{
-		//	for (unsigned char j = 0; j < 4; j++)
-		//	{
-		//		for (unsigned char k = 0; k < 4; k++)
-		//		{
-		//			for (unsigned char l = 0; l < 4; l++)
-		//			{
-	
-		//				if (j != i && j != k && i != k && j != l && i != l && k != l)
-		//				{
-		//					Tmp[Count] = m[0][i] * m[1][j] * m[2][k] * m[3][l];
-	
-		//					Count++;
-		//				}
-		//				
-	
-	
-	
-		//			}
-		//		}
-		//	}
-		//}
-	
-		for (unsigned char i = 0; i < 4; i++)
-		{
-			for (unsigned char j = 0; j < 3; j++)
-			{
-				for (unsigned char k = 0; k < 2; k++)
-				{
-					Tmp[Count] = m[0][j] *
-						m[1][j] *
-						m[2][k] *
-						m[3][0];
-	
-					Count++;
-				}
-			}
-		}
-	
-		float Sum = Tmp[0];
-		ChStd::Bool Flg = true;
-	
-		for (unsigned char i = 0; i < 23; i++)
-		{
-			Sum = (Flg) ? Sum - Tmp[i + 1] : Sum + Tmp[i + 1];
-	
-			Flg = (i + 1 % 2 == 0) ? -Flg : Flg;
-	
-		}
-	
-		if (Sum == 0.0f)return;
-	
-	}
+	ChVec4 TransformCoord(const ChVec4 _Base);
 
 	///////////////////////////////////////////////////////////////////////////////////
 
@@ -950,11 +778,13 @@ struct ChLMatrix : public ChMath::ChBaseMatrix4x4<float>
 };
 
 //RightHandAxisMatrix//
-struct ChRMatrix : public ChMath::ChBaseMatrix4x4<float>
+struct ChRMatrix : public ChMath::ChRMatrixBase
 {
 	float& operator[](const int Num);
 
 	float operator[](const int Num)const;
+
+	
 
 	//ChRMatrix& operator=(const D3DXVECTOR3&);
 	//ChRMatrix& operator=(const DirectX::XMFLOAT3&);
@@ -974,9 +804,14 @@ struct ChRMatrix : public ChMath::ChBaseMatrix4x4<float>
 		{
 			for (unsigned char j = 0; j < 4; j++)
 			{
-				m[i][j] = i!=j ? 0.0f : 1.0f;
+				m[i][j] = 0;
 			}
 		}
+
+		_11 = 1.0f;
+		_22 = 1.0f;
+		_33 = 1.0f;
+		_44 = 1.0f;
 	}
 
 	inline ChRMatrix(const ChRMatrix& _Mat) { *this = _Mat; }
@@ -1011,10 +846,15 @@ struct ChRMatrix : public ChMath::ChBaseMatrix4x4<float>
 
 	ChVec3 GetPosition();
 
-	ChVec3 GetRotation();
+	ChVec3 GetPos();
+
+	ChQua GetRotation();
+
+	ChQua GetRot();
 
 	ChVec3 GetScalling();
 
+	ChVec3 GetScal();
 
 	ChLMatrix ConvertAxis();
 
@@ -1023,8 +863,9 @@ struct ChRMatrix : public ChMath::ChBaseMatrix4x4<float>
 using ChRMat = ChRMatrix;
 using ChLMat = ChLMatrix;
 
-struct ChUIMatrix : public ChMath::ChBaseMatrix4x4<unsigned long>
+struct ChUIMatrix : public ChMath::ChUIMatrixBase
 {
+
 
 	///////////////////////////////////////////////////////////////////////////////////
 	//ConstructerDestructer//

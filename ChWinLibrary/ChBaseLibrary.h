@@ -18,7 +18,12 @@
 #include"CPP/ChMemoryManager/ChMemoryManager.h"
 #include"CPP/ChMultiThread/ChMultiThread.h"
 #include"CPP/ChBaseObject/ChObjectManager.h"
+#include"CPP/ChHitTestObject/ChHitTestObject.h"
 
+#include"CPP/ChHitTestObject/ChHitTestPanel.h"
+#include"CPP/ChHitTestObject/ChHitTestBox.h"
+#include"CPP/ChHitTestObject/ChHitTestSphere.h"
+#include"CPP/ChHitTestObject/ChHitTestMesh.h"
 #include"CPP/ChCollider/ChCollider.h"
 #include"CPP/ChModel/ChModel.h"
 #include"CPP/ChScript/ChScript.h"

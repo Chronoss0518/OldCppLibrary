@@ -314,7 +314,10 @@ ChAnimationSupporter9::Create4D(const std::string& _Str, size_t& _FPos, const Ch
 		{
 			ChQua TmpQua;
 			TmpQua.Deserialize(_Str, _FPos);
-			*Qua = TmpQua;
+			Qua->x = TmpQua.x;
+			Qua->y = TmpQua.y;
+			Qua->z = TmpQua.z;
+			Qua->w = TmpQua.w;
 		}
 
 		if (_RFlg)*Qua *= -1.0f;

@@ -73,6 +73,30 @@ ChVector4& ChVec4::operator= (const float& _Num)
 
 ///////////////////////////////////////////////////////////////////////////////////
 
+ChVector4& ChVec4::operator = (const ChVector3& _Vec)
+{
+	x = _Vec.x;
+	y = _Vec.y;
+	z = _Vec.z;
+	w = 1.0f;
+	return *this;
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
+ChVector4& ChVec4::operator = (const ChVector2& _Vec)
+{
+
+	x = _Vec.x;
+	y = _Vec.y;
+	z = 0.0f;
+	w = 1.0f;
+	return *this;
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
 ChVector4& ChVec4::operator *= (const ChVector4& _Vec)
 {
 
@@ -149,33 +173,6 @@ ChVector4 ChVec4::operator + (const ChVector4& _Vec)const
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-ChVec4::operator const ChVector3() const
-{
-	ChVec3 Out;
-
-	Out.x = x;
-	Out.y = y;
-	Out.z = z;
-
-	return Out;
-
-}
-
-///////////////////////////////////////////////////////////////////////////////////
-
-ChVec4::operator const ChVector2() const
-{
-
-	ChVec2 Out;
-
-	Out.x = x;
-	Out.y = y;
-
-	return Out;
-}
-
-///////////////////////////////////////////////////////////////////////////////////
-
 std::string ChVec4::Serialize(
 	const std::string& _CutChar
 	, const std::string& _EndChar)
@@ -207,7 +204,7 @@ std::string ChVec4::SerializeARGB(
 	}
 
 
-	return TmpVec.Serialize(_CutChar, _EndChar);
+	return TmpVec.Serialize(_CutChar,_EndChar);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -348,7 +345,7 @@ float ChVec4::GetDot(const ChVector4& _Vec1, const ChVector4& _Vec2)
 
 	float TmpLen;
 
-	TmpLen = (_Vec1.x * _Vec2.x)
+	TmpLen = (_Vec1.x *  _Vec2.x)
 		+ (_Vec1.y * _Vec2.y)
 		+ (_Vec1.z * _Vec2.z)
 		+ (_Vec1.w * _Vec2.w);
@@ -487,6 +484,28 @@ ChVector3& ChVec3::operator= (const float& _Num)
 
 ///////////////////////////////////////////////////////////////////////////////////
 
+ChVector3& ChVec3::operator = (const ChVector4& _Vec)
+{
+	x = _Vec.x;
+	y = _Vec.y;
+	z = _Vec.z;
+	return *this;
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
+ChVector3& ChVec3::operator = (const ChVector2& _Vec)
+{
+
+	x = _Vec.x;
+	y = _Vec.y;
+	z = 0.0f;
+	return *this;
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
 ChVector3& ChVec3::operator *= (const ChVector3& _Vec)
 {
 
@@ -550,34 +569,6 @@ ChVector3 ChVec3::operator + (const ChVector3& _Vec)const
 	TmpVec += _Vec;
 
 	return TmpVec;
-}
-
-///////////////////////////////////////////////////////////////////////////////////
-
-ChVec3::operator const ChVector4() const
-{
-	ChVec4 Out;
-
-	Out.x = x;
-	Out.y = y;
-	Out.z = z;
-	Out.w = 0.0f;
-
-	return Out;
-
-}
-
-///////////////////////////////////////////////////////////////////////////////////
-
-ChVec3::operator const ChVector2() const
-{
-
-	ChVec2 Out;
-
-	Out.x = x;
-	Out.y = y;
-
-	return Out;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -715,7 +706,7 @@ float ChVec3::GetDot(const ChVector3& _Vec1, const ChVector3& _Vec2)
 
 	float TmpLen;
 
-	TmpLen = (_Vec1.x * _Vec2.x)
+	TmpLen = (_Vec1.x *  _Vec2.x)
 		+ (_Vec1.y * _Vec2.y)
 		+ (_Vec1.z * _Vec2.z);
 
@@ -752,7 +743,7 @@ float ChVec3::GetLen(
 
 	ChVec3 TmpVec = _Vec1 - _Vec2;
 
-	BaseLen =
+	BaseLen = 
 		std::abs(TmpVec.x)
 		+ std::abs(TmpVec.y)
 		+ std::abs(TmpVec.z);
@@ -849,6 +840,26 @@ ChVector2& ChVec2::operator= (const float& _Num)
 
 ///////////////////////////////////////////////////////////////////////////////////
 
+ChVector2& ChVec2::operator = (const ChVector4& _Vec)
+{
+	x = _Vec.x;
+	y = _Vec.y;
+	return *this;
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
+ChVector2& ChVec2::operator = (const ChVector3& _Vec)
+{
+
+	x = _Vec.x;
+	y = _Vec.y;
+	return *this;
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
 ChVector2& ChVec2::operator *= (const ChVector2& _Vec)
 {
 
@@ -909,35 +920,6 @@ ChVector2 ChVec2::operator + (const ChVector2& _Vec)const
 	TmpVec += _Vec;
 
 	return TmpVec;
-}
-
-///////////////////////////////////////////////////////////////////////////////////
-
-ChVec2::operator const ChVector4() const
-{
-	ChVec4 Out;
-
-	Out.x = x;
-	Out.y = y;
-	Out.z = 0.0f;
-	Out.w = 0.0f;
-
-	return Out;
-
-}
-
-///////////////////////////////////////////////////////////////////////////////////
-
-ChVec2::operator const ChVector3() const
-{
-
-	ChVec3 Out;
-
-	Out.x = x;
-	Out.y = y;
-	Out.z = 0.0f;
-
-	return Out;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -1075,7 +1057,7 @@ float ChVec2::GetDot(const ChVector2& _Vec1, const ChVector2& _Vec2)
 
 	float TmpLen;
 
-	TmpLen = (_Vec1.x * _Vec2.x)
+	TmpLen = (_Vec1.x *  _Vec2.x)
 		+ (_Vec1.y * _Vec2.y);
 
 	return TmpLen;
@@ -1277,100 +1259,6 @@ void ChQua::RotYPR(
 //ChLMatrix Method//
 ///////////////////////////////////////////////////////////////////////////////////
 
-ChLMatrix& ChLMatrix::operator *= (const ChLMatrix _Mat)
-{
-
-
-	for (unsigned char i = 0; i < 4; i++)
-	{
-		float Tmp[4];
-		for (unsigned char j = 0; j < 4; j++)
-		{
-			Tmp[j] = m[i][j];
-		}
-		for (unsigned char j = 0; j < 4; j++)
-		{
-			m[i][j] = Tmp[0] * _Mat.m[0][j];
-
-			for (unsigned char k = 1; k < 4; k++)
-			{
-				m[i][j] += Tmp[k] * _Mat.m[k][j];
-			}
-		}
-	}
-
-	return *this;
-}
-
-///////////////////////////////////////////////////////////////////////////////////
-
-ChLMatrix const ChLMatrix::operator * (const ChLMatrix _Mat)const
-{
-	ChLMatrix Out = *this;
-
-	Out *= _Mat;
-
-	return Out;
-}
-
-///////////////////////////////////////////////////////////////////////////////////
-
-ChLMatrix& ChLMatrix::operator += (const ChLMatrix _Mat)
-{
-
-	for (unsigned char i = 0; i < 4; i++)
-	{
-		for (unsigned char j = 0; j < 4; j++)
-		{
-			m[i][j] += _Mat.m[i][j];
-		}
-	}
-
-	return *this;
-}
-
-///////////////////////////////////////////////////////////////////////////////////
-
-ChLMatrix const ChLMatrix::operator + (const ChLMatrix _Mat)const
-{
-
-	ChLMatrix Out = *this;
-
-	Out += _Mat;
-
-	return Out;
-}
-
-///////////////////////////////////////////////////////////////////////////////////
-
-ChLMatrix& ChLMatrix::operator -= (const ChLMatrix _Mat)
-{
-
-	for (unsigned char i = 0; i < 4; i++)
-	{
-		for (unsigned char j = 0; j < 4; j++)
-		{
-			m[i][j] -= _Mat.m[i][j];
-		}
-	}
-
-	return *this;
-}
-
-///////////////////////////////////////////////////////////////////////////////////
-
-ChLMatrix const ChLMatrix::operator - (const ChLMatrix _Mat)const
-{
-
-	ChLMatrix Out = *this;
-
-	Out -= _Mat;
-
-	return Out;
-}
-
-///////////////////////////////////////////////////////////////////////////////////
-
 std::string ChLMatrix::Serialize(
 	const std::string& _CutChar
 	, const std::string& _EndChar)
@@ -1477,7 +1365,9 @@ void ChLMatrix::Deserialize(
 
 void ChLMatrix::SetPosition(const ChVec3& _Vec)
 {
-	SetPosition(_Vec.x, _Vec.y, _Vec.z);
+	_41 = _Vec.x;
+	_42 = _Vec.y;
+	_43 = _Vec.z;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -1485,9 +1375,9 @@ void ChLMatrix::SetPosition(const ChVec3& _Vec)
 void ChLMatrix::SetPosition(const float _x, const float _y, const float _z)
 {
 
-	l_41 = _x;
-	l_42 = _y;
-	l_43 = _z;
+	_41 = _x;
+	_42 = _y;
+	_43 = _z;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -1499,162 +1389,102 @@ void ChLMatrix::ChLMatrix::SetRotation(const ChVec3& _Vec)
 
 ///////////////////////////////////////////////////////////////////////////////////
 
+void ChLMatrix::SetRotation(const ChQua& _Qua)
+{
+
+	ChVec3 Vec = _Qua.GetEulerAngleForVec3();
+
+	SetRotation(Vec.x, Vec.y, Vec.z);
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
 void ChLMatrix::SetRotation(const float _x, const float _y, const float _z)
 {
-	float x = -std::fmod(_x, 2.0f), y = -std::fmod(_y, 2.0f), z = -std::fmod(_z, 2.0f);
 
+	ChVec3 Scl = ChVec3(_11, _22, _33);
 
-	ChLMat XAxis, YAxis, ZAxis;
+	_11 = std::cos(_y) * std::cos(_z);
+	_22 = std::cos(_x) * std::cos(_z);
+	_33 = std::cos(_x) * std::cos(_y);
+	_12 = std::sin(_z);
+	_13 = -std::sin(_y);
+	_21 = -std::sin(_z);
+	_23 = std::sin(_x);
+	_31 = std::sin(_y);
+	_32 = -std::sin(_x);
 
-	XAxis.l_22 = std::cos(x);
-	XAxis.l_23 = std::sin(x);
-
-	XAxis.l_32 = -std::sin(x);
-	XAxis.l_33 = std::cos(x);
-
-	YAxis.l_11 = std::cos(y);
-	YAxis.l_13 = -std::sin(y);
-
-	YAxis.l_31 = std::sin(y);
-	YAxis.l_33 = std::cos(y);
-
-	ZAxis.l_11 = std::cos(z);
-	ZAxis.l_12 = std::sin(z);
-
-	ZAxis.l_21 = -std::sin(z);
-	ZAxis.l_22 = std::cos(z);
-
-	YAxis = XAxis * YAxis;
-
-	YAxis = ZAxis * YAxis;
-
-	YAxis.SetPosition(GetPosition());
-	YAxis.SetScalling(GetScalling());
-
-	*this = YAxis;
-
-
+	SetScalling(Scl);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
 
 void ChLMatrix::SetScalling(const ChVec3& _Vec)
 {
-	SetScalling(_Vec.x, _Vec.y, _Vec.z);
 
+	_11 *= _Vec.x;
+	_22 *= _Vec.y;
+	_33 *= _Vec.z;
+	
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
 
 void ChLMatrix::SetScalling(const float _x, const float _y, const float _z)
 {
-	for (unsigned char i = 0; i < 3; i++)
-	{
-		m[0][i] *= _x;
-	}
-	for (unsigned char i = 0; i < 3; i++)
-	{
-		m[1][i] *= _y;
-	}
-	for (unsigned char i = 0; i < 3; i++)
-	{
-		m[2][i] *= _z;
-	}
+	_11 *= _x;
+	_22 *= _y;
+	_33 *= _z;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-ChVec3 ChLMatrix::GetPosition()const
+ChVec3 ChLMatrix::GetPosition()
 {
-	return ChVec3(l_41, l_42, l_43);
+	return ChVec3(_41, _42, _43);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-ChVec3 ChLMatrix::GetRotation()const
+ChQua ChLMatrix::GetRotation()
 {
-	ChVec3 TmpScl = GetScalling();
-
-	float OutM[4][4];
-
-	for (unsigned char i = 0; i < 3; i++)
-	{
-		for (unsigned char j = 0; j < 3; j++)
-		{
-			OutM[i][j] = m[i][j];
-			OutM[i][j] /= TmpScl.Val[i] != 0.0f ? TmpScl.Val[i] : 1.0f;
-		}
-	}
-
-
-	ChVec3 Out = ChVec3(
-		(std::atan2f(OutM[2][1], OutM[2][2])),
-		(std::asinf(-OutM[2][0])),
-		(std::atan2f(OutM[1][0], OutM[0][0])));
-
-	//ChVec3 Out = ChVec3(
-	//	(std::atan2f(_32,_33)),
-	//	(std::asinf(_31)),
-	//	(std::atan2f(_21,_11)));
-
-
-	return Out;
 
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-ChVec3 ChLMatrix::GetScalling()const
+ChVec3 ChLMatrix::GetScalling()
 {
-	ChVec3 XS = ChVec3(l_11, l_12, l_13);
-	ChVec3 YS = ChVec3(l_21, l_22, l_23);
-	ChVec3 ZS = ChVec3(l_31, l_32, l_33);
 
-	return ChVec3(XS.Len(), YS.Len(), ZS.Len());
+	return ChVec3(_11, _22, _33);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
-//
-//ChMath::MatrixBase3x3 ChLMatrix::GetRotMatrix()const
-//{
-//	ChMath::MatrixBase3x3 Out;
-//
-//	for (unsigned char i = 0; i < 3; i++)
-//	{
-//		for (unsigned char j = 0; j < 3; j++)
-//		{
-//			Out[i][j] = m[i][j];
-//		}
-//	}
-//
-//	return Out;
-//
-//}
 
-///////////////////////////////////////////////////////////////////////////////////
-
-ChVec4 ChLMatrix::Transform(const ChVec4 _Base)const
+ChVec4 ChLMatrix::Transform(const ChVec4 _Base)
 {
 	ChVec4 Out;
 
-	Out.x = _Base.x * l_11 + _Base.y * l_21 + _Base.z * l_31 + _Base.w * l_41;
-	Out.y = _Base.x * l_12 + _Base.y * l_22 + _Base.z * l_32 + _Base.w * l_42;
-	Out.z = _Base.x * l_13 + _Base.y * l_23 + _Base.z * l_33 + _Base.w * l_43;
-	Out.w = _Base.x * l_14 + _Base.y * l_24 + _Base.z * l_34 + _Base.w * l_44;
+	Out.x = _Base.x * _11 + _Base.y * _12 + _Base.z * _13 + _Base.w * _14;
+	Out.y = _Base.x * _21 + _Base.y * _22 + _Base.z * _23 + _Base.w * _24;
+	Out.z = _Base.x * _31 + _Base.y * _32 + _Base.z * _33 + _Base.w * _34;
+	Out.w = _Base.x * _41 + _Base.y * _42 + _Base.z * _43 + _Base.w * _44;
 
 	return Out;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-ChVec4 ChLMatrix::TransformCoord(const ChVec4 _Base)const
+ChVec4 ChLMatrix::TransformCoord(const ChVec4 _Base)
 {
 
 	ChVec4 Out;
-	Out.x = _Base.x * l_11 + _Base.y * l_21 + _Base.z * l_31;
-	Out.y = _Base.x * l_12 + _Base.y * l_22 + _Base.z * l_32;
-	Out.z = _Base.x * l_13 + _Base.y * l_23 + _Base.z * l_33;
-	Out.w = _Base.x * l_14 + _Base.y * l_24 + _Base.z * l_34 + _Base.w * l_44;
+
+	Out.x = _Base.x * _11 + _Base.y * _12 + _Base.z * _13 + _Base.w * _14;
+	Out.y = _Base.x * _21 + _Base.y * _22 + _Base.z * _23 + _Base.w * _24;
+	Out.z = _Base.x * _31 + _Base.y * _32 + _Base.z * _33 + _Base.w * _34;
+	Out.w = _Base.x + _Base.y + _Base.z + _Base.w * _44;
+
 	return Out;
 }
 
@@ -1795,7 +1625,7 @@ double ChMath::Round(const double& _Val, const unsigned int _Digit)
 {
 	double Out = _Val * std::powl(10, static_cast<double>(_Digit - 1));
 	Out = std::round(Out);
-	Out = Out * std::powl(0.1, static_cast<double>(_Digit - 1));
+	Out = Out * std::powl(0.1 , static_cast<double>(_Digit - 1));
 
 
 	return Out;
@@ -1908,37 +1738,37 @@ ChMath::Degree& ChMath::Degree::operator=(const ChMath::Radian _Num)
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-ChMath::Degree::Degree()
-{
-	Val = 0.0f;
-}
+	ChMath::Degree::Degree()
+	{
+		Val = 0.0f;
+	}
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-ChMath::Degree::Degree(const float _Val)
-{
-	*this = _Val;
-}
+	ChMath::Degree::Degree(const float _Val)
+	{
+		*this = _Val;
+	}
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-ChMath::Degree::Degree(const Degree& _Val)
-{
-	Val = _Val;
-}
+	ChMath::Degree::Degree(const Degree &_Val)
+	{
+		Val = _Val;
+	}
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-ChMath::Degree::Degree(const Radian& _Val)
-{
-	*this = _Val;
-}
+	ChMath::Degree::Degree(const Radian &_Val)
+	{
+		*this = _Val;
+	}
 
 ///////////////////////////////////////////////////////////////////////////////////
 
 void ChMath::Degree::Math()
 {
-	if (Val < 0.0f)
+	if (Val < 0.0f) 
 	{
 		unsigned int Tmp;
 		Tmp = static_cast<unsigned int>(std::floor((Val / -360.0f)));
@@ -2063,31 +1893,31 @@ ChMath::Radian& ChMath::Radian::operator=(const Degree _Num)
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-ChMath::Radian::Radian()
-{
-	Val = 0.0f;
-}
+	ChMath::Radian::Radian()
+	{
+		Val = 0.0f;
+	}
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-ChMath::Radian::Radian(const float _Val)
-{
-	*this = _Val;
-}
+	ChMath::Radian::Radian(const float _Val)
+	{
+		*this = _Val;
+	}
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-ChMath::Radian::Radian(const Radian& _Val)
-{
-	Val = _Val;
-}
+	ChMath::Radian::Radian(const Radian &_Val)
+	{
+		Val = _Val;
+	}
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-ChMath::Radian::Radian(const Degree& _Val)
-{
-	*this = _Val;
-}
+	ChMath::Radian::Radian(const Degree &_Val)
+	{
+		*this = _Val;
+	}
 
 ///////////////////////////////////////////////////////////////////////////////////
 

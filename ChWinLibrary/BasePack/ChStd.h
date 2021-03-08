@@ -28,7 +28,7 @@ namespace ChStd
 	const static unsigned long MAX_LONG_BIT = 0x80000000;
 	const static unsigned long long MAX_LLONG_BIT = 0x8000000000000000;
 
-#ifdef _WIN32
+#ifdef _WIN64
 	const static unsigned int W_MAX_INT_BIT = 0x80000000;
 #else
 	const static unsigned int W_MAX_INT_BIT = 0x8000;

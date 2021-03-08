@@ -179,7 +179,9 @@ void ShaderController::SetDrawDatas(const D3DCOLOR&
 
 	ChVec4 TmpPos;
 
-	TmpPos = CamPos;
+	TmpPos.x = CamPos.x;
+	TmpPos.y = CamPos.y;
+	TmpPos.z = CamPos.z;
 
 	TmpPos.w = 0.0f;
 

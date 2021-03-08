@@ -14,6 +14,7 @@ namespace ChCpp
 	{
 		BaseCollider* HitObject;
 		ChVec3 HitVector;
+		std::string Name;
 
 	};
 
@@ -25,6 +26,8 @@ namespace ChCpp
 		///////////////////////////////////////////////////////////////////////////////////////
 		//SetFunction//
 
+		inline void SetName(const std::string& _Name) { Name = _Name; }
+
 		inline void SetPos(const ChVec3& _Pos) { Pos = _Pos; }
 
 		void SetIfIsHitObject(BaseCollider* _Obj);
@@ -33,6 +36,8 @@ namespace ChCpp
 
 		///////////////////////////////////////////////////////////////////////////////////////
 		//GetFunction//
+
+		inline std::string GetName() { return  Name; }
 
 		inline ChVec3 GetPos() { return Pos; }
 
@@ -80,19 +85,19 @@ namespace ChCpp
 
 		virtual BaseCollider* HitTest(SphereCollider* _Sphere) = 0;
 
-		virtual ChVec3 HitVector(BoxCollider* _Col) = 0;
-
-		virtual ChVec3 HitVector(SphereCollider* _Col) = 0;
-
 		///////////////////////////////////////////////////////////////////////////////////////
 
 		BaseCollider(){}
+
+	protected:
+
+		std::string TypeName = "";
 
 	private:
 
 		std::vector<BaseCollider*>HitTestObjects;
 		
-		std::string TypeName = "";
+		std::string Name = "";
 
 		ChVec3 Pos;
 		
@@ -142,6 +147,11 @@ namespace ChCpp
 
 	public:
 
+		inline BoxCollider()
+		{
+			TypeName = "BoxCollider";
+		}
+
 		///////////////////////////////////////////////////////////////////////////////////////
 		//SetFunction//
 
@@ -168,11 +178,7 @@ namespace ChCpp
 
 		virtual BaseCollider* HitTest(BoxCollider* _Box)override;
 
-		virtual ChVec3 HitVector(BoxCollider* _Col)override;
-
 		virtual BaseCollider* HitTest(SphereCollider* _Sphere)override;
-
-		virtual ChVec3 HitVector(SphereCollider* _Col)override;
 
 		///////////////////////////////////////////////////////////////////////////////////////
 
@@ -211,11 +217,7 @@ namespace ChCpp
 
 		virtual BaseCollider* HitTest(BoxCollider* _Box)override;
 
-		virtual ChVec3 HitVector(BoxCollider* _Col)override;
-
 		virtual BaseCollider* HitTest(SphereCollider* _Sphere)override;
-
-		virtual ChVec3 HitVector(SphereCollider* _Col)override;
 
 		///////////////////////////////////////////////////////////////////////////////////////
 

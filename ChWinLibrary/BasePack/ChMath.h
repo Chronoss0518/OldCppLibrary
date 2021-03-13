@@ -853,7 +853,7 @@ struct ChLMatrix : public ChMath::ChBaseMatrix4x4<float>
 
 	ChVec3 GetScalling()const;
 
-	ChMath::MatrixBase3x3 GetRotMatrix()const;
+	ChMath::MatrixBase<float,3,3> GetRotMatrix()const;
 
 	///////////////////////////////////////////////////////////////////////////////////
 

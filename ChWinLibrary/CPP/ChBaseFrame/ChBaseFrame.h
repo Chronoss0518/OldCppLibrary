@@ -98,15 +98,16 @@ namespace ChCpp
 
 		virtual void Frame() = 0;
 
-		///////////////////////////////////////////////////////////////////////////////////
-		//ConstructerDestructer//
-		BaseFrame() {};
-
-		virtual ~BaseFrame() { Release(); };
-
 		friend BaseFrameList;
 
 	protected:
+
+		///////////////////////////////////////////////////////////////////////////////////
+		//ConstructerDestructer//
+
+		BaseFrame() {};
+
+		virtual ~BaseFrame() { Release(); };
 
 		//“o˜^‚³‚ê‚Ä‚¢‚éƒtƒŒ[ƒ€‚ÉˆÚ“®‚·‚é//
 		void ChangeFrame(const std::string& _FrameName)

@@ -38,18 +38,25 @@
 
 #include"BaseSystem/ChBaseSystem/ChBaseSystem.h"
 
-/*
+
 #ifndef Ch_Library_Create
 #ifdef _MT
+#ifdef _DLL
+#ifdef _DEBUG
+#pragma comment(lib,"ChCpp_MDd.lib")
+#else
+#pragma comment(lib,"ChCpp_MD.lib")
+#endif//_DEBUG
+#else//_DLL
 #ifdef _DEBUG
 #pragma comment(lib,"ChCpp_MTd.lib")
 #else
 #pragma comment(lib,"ChCpp_MT.lib")
 #endif//_DEBUG
+#endif//else
 #endif//_MT
 #endif//Ch_Library_Create
 
-*/
 
 #endif //Ch_GIF_h//
 //CopyRight Chronoss0518 2018/08//

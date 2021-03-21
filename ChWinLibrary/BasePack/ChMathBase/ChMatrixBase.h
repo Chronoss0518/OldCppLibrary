@@ -1000,7 +1000,7 @@ namespace ChMath
 
 				for (unsigned long i = 0; i < MaxNum; i++)
 				{
-					Tmp *= m[i % Column][i % Row]
+					Tmp *= m[i % Column][i % Row];
 				}
 
 				if (Tmp == 0.0f)return LUMat;

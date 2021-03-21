@@ -22,19 +22,23 @@
 #include"WindowsObject/DrawTexter/ChWinDrawTexter.h"
 
 
-/*
-
 #ifndef Ch_Library_Create
 #ifdef _MT
+#ifdef _DLL
+#ifdef _DEBUG
+#pragma comment(lib,"ChWin_MDd.lib")
+#else
+#pragma comment(lib,"ChWin_MD.lib")
+#endif//_DEBUG
+#else//_DLL
 #ifdef _DEBUG
 #pragma comment(lib,"ChWin_MTd.lib")
 #else
 #pragma comment(lib,"ChWin_MT.lib")
 #endif//_DEBUG
+#endif//else
 #endif//_MT
-#endif//_DLL
-*/
-
+#endif//Ch_Library_Create
 
 #endif
 

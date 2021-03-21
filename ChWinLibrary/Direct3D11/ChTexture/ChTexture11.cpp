@@ -401,7 +401,7 @@ void Texture11::ClearBackBuffer(ID3D11DeviceContext* _DC, const ChVec4& _BackCol
 {
 	if (ChPtr::NullCheck(_DC))return;
 
-	_DC->ClearRenderTargetView(RTView,_BackColor.Val);
+	_DC->ClearRenderTargetView(RTView,_BackColor.Val.GetVal());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////

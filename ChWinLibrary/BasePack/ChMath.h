@@ -4,8 +4,6 @@
 #include <float.h>
 #include <cmath>
 
-
-
 #include"ChMathBase/ChMatrixBase.h"
 
 struct D3DXVECTOR4;
@@ -50,7 +48,7 @@ namespace ChMath
 			{
 				T left, top, right, down;
 			};
-			T Val[4]{ 0, 0, 0, 0 };
+			VectorBase<T,4> Val;
 		};
 	};
 
@@ -67,7 +65,7 @@ namespace ChMath
 			{
 				T r, g, b;
 			};
-			T Val[3]{ 0, 0, 0 };
+			VectorBase<T, 3> Val;
 		};
 	};
 
@@ -84,7 +82,7 @@ namespace ChMath
 			{
 				T w, h;
 			};
-			T Val[2]{ 0, 0 };
+			VectorBase<T, 2> Val;
 		};
 	};
 	
@@ -192,7 +190,8 @@ namespace ChMath
 				T r_14, r_24, r_34, r_44;
 
 			};
-			T m[4][4];
+			//T m[4][4];
+			MatrixBase<T,4,4> m;
 		};
 
 	};
@@ -215,12 +214,15 @@ struct ChVector4 : public ChMath::ChVector4Base<float>
 	ChVector4 operator/(const float& _Num) const;
 	ChVector4& operator=(const float& _Num);
 
+	ChVector4& operator=(const ChVector4& _Vec);
 	ChVector4& operator-=(const ChVector4& _Vec);
 	ChVector4 operator-(const ChVector4& _Vec) const;
 	ChVector4& operator+=(const ChVector4& _Vec);
 	ChVector4 operator+(const ChVector4& _Vec) const;
 	ChVector4& operator*=(const ChVector4& _Vec);
 	ChVector4 operator*(const ChVector4& _Vec) const;
+	ChVector4& operator/=(const ChVector4& _Vec);
+	ChVector4 operator/(const ChVector4& _Vec) const;
 
 	bool operator==(const ChVector4& _Vec)const
 	{
@@ -245,13 +247,13 @@ struct ChVector4 : public ChMath::ChVector4Base<float>
 
 	inline ChVector4()
 	{
-		*this = 0.0f;
-		w = 1.0f;
+		Val.Identity();
 	}
 
 	inline ChVector4(const float _Num)
 	{
-		*this = _Num;
+
+		Val.Set(_Num);
 
 		if (w < -1.0f)
 			w = -1.0f;
@@ -334,18 +336,12 @@ struct ChVector4 : public ChMath::ChVector4Base<float>
 
 	inline void Abs()
 	{
-		x = x < 0.0f ? x * -1.0f : x;
-		y = y < 0.0f ? y * -1.0f : y;
-		z = z < 0.0f ? z * -1.0f : z;
-		w = w < 0.0f ? w * -1.0f : w;
+		Val.Abs();
 	}
 
 	inline void Abs(const ChVector4& _Vec)
 	{
-		x = _Vec.x < 0.0f ? _Vec.x * -1.0f : _Vec.x;
-		y = _Vec.y < 0.0f ? _Vec.y * -1.0f : _Vec.y;
-		z = _Vec.z < 0.0f ? _Vec.z * -1.0f : _Vec.z;
-		w = _Vec.w < 0.0f ? _Vec.w * -1.0f : _Vec.w;
+		Val.Abs(_Vec.Val);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////
@@ -380,12 +376,15 @@ struct ChVector3 : public ChMath::ChVector3Base<float>
 	ChVector3 operator/(const float& _Num) const;
 	ChVector3& operator=(const float& _Num);
 
+	ChVector3& operator=(const ChVector3& _Vec);
 	ChVector3& operator-=(const ChVector3& _Vec);
 	ChVector3 operator-(const ChVector3& _Vec) const;
 	ChVector3& operator+=(const ChVector3& _Vec);
 	ChVector3 operator+(const ChVector3& _Vec) const;
 	ChVector3& operator*=(const ChVector3& _Vec);
 	ChVector3 operator*(const ChVector3& _Vec) const;
+	ChVector3& operator/=(const ChVector3& _Vec);
+	ChVector3 operator/(const ChVector3& _Vec) const;
 
 	bool operator==(const ChVector3& _Vec)const
 	{
@@ -420,12 +419,12 @@ struct ChVector3 : public ChMath::ChVector3Base<float>
 
 	inline ChVector3()
 	{
-		*this = 0.0f;
+		Val.Identity();
 	}
 
 	inline ChVector3(const float _Num)
 	{
-		*this = _Num;
+		Val.Set(_Num);
 	}
 
 	inline ChVector3(
@@ -494,17 +493,12 @@ struct ChVector3 : public ChMath::ChVector3Base<float>
 
 	inline void Abs()
 	{
-		x = x < 0.0f ? x * -1.0f : x;
-		y = y < 0.0f ? y * -1.0f : y;
-		z = z < 0.0f ? z * -1.0f : z;
+		Val.Abs();
 	}
 
 	inline void Abs(const ChVector3& _Vec)
 	{
-
-		x = _Vec.x < 0.0f ? _Vec.x * -1.0f : _Vec.x;
-		y = _Vec.y < 0.0f ? _Vec.y * -1.0f : _Vec.y;
-		z = _Vec.z < 0.0f ? _Vec.z * -1.0f : _Vec.z;
+		Val.Abs(_Vec.Val);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////
@@ -539,12 +533,15 @@ struct ChVector2 : public ChMath::ChVector2Base<float>
 	ChVector2 operator/(const float& _Num) const;
 	ChVector2& operator=(const float& _Num);
 
+	ChVector2& operator=(const ChVector2& _Vec);
 	ChVector2& operator-=(const ChVector2& _Vec);
 	ChVector2 operator-(const ChVector2& _Vec) const;
 	ChVector2& operator+=(const ChVector2& _Vec);
 	ChVector2 operator+(const ChVector2& _Vec) const;
 	ChVector2& operator*=(const ChVector2& _Vec);
 	ChVector2 operator*(const ChVector2& _Vec) const;
+	ChVector2& operator/=(const ChVector2& _Vec);
+	ChVector2 operator/(const ChVector2& _Vec) const;
 
 	bool operator==(const ChVector2& _Vec)const
 	{
@@ -569,12 +566,12 @@ struct ChVector2 : public ChMath::ChVector2Base<float>
 
 	inline ChVector2()
 	{
-		*this = 0.0f;
+		Val.Identity();
 	}
 
 	inline ChVector2(const float _Num)
 	{
-		*this = _Num;
+		Val.Set(_Num);
 	}
 
 	inline ChVector2(
@@ -635,15 +632,12 @@ struct ChVector2 : public ChMath::ChVector2Base<float>
 
 	inline void Abs()
 	{
-		x = x < 0.0f ? x * -1.0f : x;
-		y = y < 0.0f ? y * -1.0f : y;
+		Val.Abs();
 	}
 
 	inline void Abs(const ChVector2& _Vec)
 	{
-
-		x = _Vec.x < 0.0f ? _Vec.x * -1.0f : _Vec.x;
-		y = _Vec.y < 0.0f ? _Vec.y * -1.0f : _Vec.y;
+		Val.Abs(_Vec.Val);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////
@@ -762,9 +756,10 @@ struct ChRMatrix;
 //LeftHandAxisMatrix//
 struct ChLMatrix : public ChMath::ChBaseMatrix4x4<float>
 {
+	///////////////////////////////////////////////////////////////////////////////////
+	//Operator//
 
-	float& operator[](const int Num);
-	float operator[](const int Num)const;
+	ChLMatrix& operator =(const ChLMatrix _Mat);
 
 	ChLMatrix& operator *= (const ChLMatrix _Mat);
 	ChLMatrix const operator * (const ChLMatrix _Mat)const;
@@ -795,10 +790,10 @@ struct ChLMatrix : public ChMath::ChBaseMatrix4x4<float>
 
 	inline ChLMatrix()
 	{
-		//Identity();
+		Identity();
 	}
 
-	inline ChLMatrix(const ChLMatrix& _Mat) { *this = _Mat; }
+	inline ChLMatrix(const ChLMatrix& _Mat) { m.Set(_Mat.m); }
 
 	inline ChLMatrix(const D3DXVECTOR3& _Vec) { *this = _Vec; }
 	inline ChLMatrix(const DirectX::XMFLOAT3& _Vec) { *this = _Vec; }
@@ -839,6 +834,12 @@ struct ChLMatrix : public ChMath::ChBaseMatrix4x4<float>
 	void SetRotation(const ChVec3& _Vec);
 
 	void SetRotation(const float _x, const float _y, const float _z);
+
+	void SetRotationXAxis(const float _x);
+
+	void SetRotationYAxis(const float _y);
+
+	void SetRotationZAxis(const float _z);
 
 	void SetScalling(const ChVec3& _Vec);
 
@@ -952,9 +953,7 @@ struct ChLMatrix : public ChMath::ChBaseMatrix4x4<float>
 //RightHandAxisMatrix//
 struct ChRMatrix : public ChMath::ChBaseMatrix4x4<float>
 {
-	float& operator[](const int Num);
-
-	float operator[](const int Num)const;
+	ChRMatrix& operator =(const ChRMatrix& _Mat);
 
 	//ChRMatrix& operator=(const D3DXVECTOR3&);
 	//ChRMatrix& operator=(const DirectX::XMFLOAT3&);
@@ -1025,23 +1024,20 @@ using ChLMat = ChLMatrix;
 
 struct ChUIMatrix : public ChMath::ChBaseMatrix4x4<unsigned long>
 {
+	///////////////////////////////////////////////////////////////////////////////////
+	//Operator//
+
+	ChUIMatrix& operator =(const ChUIMatrix _Mat);
 
 	///////////////////////////////////////////////////////////////////////////////////
 	//ConstructerDestructer//
 
 	inline ChUIMatrix()
 	{
-		for (unsigned char i = 0; i < 4; i++)
-		{
-			for (unsigned char j = 0; j < 4; j++)
-			{
-				m[i][j] = 0;
-			}
-		}
-
+		m.Set(0UL);
 	}
 
-	inline ChUIMatrix(const ChUIMatrix& _Mat) { *this = _Mat; }
+	inline ChUIMatrix(const ChUIMatrix& _Mat) { m.Set(_Mat.m); }
 
 	///////////////////////////////////////////////////////////////////////////////////
 	//SerializeDeserialize//

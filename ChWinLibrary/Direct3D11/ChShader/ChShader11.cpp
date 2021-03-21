@@ -320,14 +320,14 @@ void ShaderController11::DrawStart()
 	{
 		TmpView = &RenderTargets[0];
 		DC->OMSetRenderTargets(RenderTargets.size(), TmpView, nullptr);
-		DC->ClearRenderTargetView(RenderTargets[0], BackColor.Val);
+		DC->ClearRenderTargetView(RenderTargets[0], BackColor.Val.GetVal());
 		RTDrawFlg = true;
 	}
 	else
 	{
 
 		DC->OMSetRenderTargets(1, &BBTargetView, DSBuffer->GetDSView());
-		DC->ClearRenderTargetView(BBTargetView, BackColor.Val);
+		DC->ClearRenderTargetView(BBTargetView, BackColor.Val.GetVal());
 		DSBuffer->ClearDepthBuffer(DC);
 
 		RTDrawFlg = false;

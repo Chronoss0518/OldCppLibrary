@@ -127,7 +127,7 @@ namespace ChD3D11
 			if (!*this)return;
 			if (DrawFlg)return;
 
-			if (MyLightTex == nullptr)return;
+			if (MyLightTex.IsTex())return;
 			UseMyLightTex = _Flg;
 		}
 
@@ -250,13 +250,13 @@ namespace ChD3D11
 		//板ポリゴン描画群//
 
 		void Draw(
-			ChPtr::Shared<ChD3D11::Texture11>& _Tex
+			ChD3D11::Texture11& _Tex
 			, PolygonBoard11& _Polygon
 			, const ChMat_11& _Mat = ChMat_11());
 
 		//円形で指定範囲を描画//
 		void DrawToCircleParsec(
-			ChPtr::Shared<ChD3D11::Texture11>& _Tex
+			ChD3D11::Texture11& _Tex
 			, PolygonBoard11& _Polygon
 			, const ChVec2& _StartLine
 			, const float _DrawDot
@@ -264,7 +264,7 @@ namespace ChD3D11
 
 		//四角形で指定範囲を描画//
 		void DrawSquareParsec(
-			ChPtr::Shared<ChD3D11::Texture11>& _Tex
+			ChD3D11::Texture11& _Tex
 			, PolygonBoard11& _Polygon
 			, const ChVec2& _StartLine
 			, const float _DrawDot
@@ -275,13 +275,13 @@ namespace ChD3D11
 
 		//通常描画//
 		void Draw(
-			ChPtr::Shared<ChD3D11::Texture11>& _Tex
+			ChD3D11::Texture11& _Tex
 			, Sprite11& _Sprite
 			, const ChMat_11& _Mat = ChMat_11());
 
 		//円形で指定範囲を描画//
 		void DrawToCircleParsec(
-			ChPtr::Shared<ChD3D11::Texture11>& _Tex
+			ChD3D11::Texture11& _Tex
 			, Sprite11& _Sprite
 			, const ChVec2& _StartLine
 			, const float _DrawDot
@@ -289,7 +289,7 @@ namespace ChD3D11
 
 		//四角形で指定範囲を描画//
 		void DrawSquareParsec(
-			ChPtr::Shared<ChD3D11::Texture11>& _Tex
+			ChD3D11::Texture11& _Tex
 			, Sprite11& _Sprite
 			, const ChVec2& _StartLine
 			, const float _DrawDot
@@ -342,26 +342,26 @@ namespace ChD3D11
 
 		//描画用//
 		ID3D11RenderTargetView* BBTargetView = nullptr;
-		ChPtr::Shared<ChD3D11::Texture11>DSBuffer = nullptr;
+		ChD3D11::Texture11 DSBuffer;
 
 		//熱感知カメラ用//
-		ChPtr::Shared<ChD3D11::Texture11> Temperature = nullptr;
-		ChPtr::Shared<ChD3D11::Texture11> TemperaturePowerMap = nullptr;
+		ChD3D11::Texture11 Temperature;
+		ChD3D11::Texture11 TemperaturePowerMap;
 		//暗視カメラ用//
-		ChPtr::Shared<ChD3D11::Texture11> NightVision = nullptr;
-		ChPtr::Shared<ChD3D11::Texture11> NightVisionPowerMap = nullptr;
+		ChD3D11::Texture11 NightVision;
+		ChD3D11::Texture11 NightVisionPowerMap;
 
 		//ShadowMap生成用//
-		ChPtr::Shared<ChD3D11::Texture11> DepthShadowTexture = nullptr;
+		ChD3D11::Texture11 DepthShadowTexture;
 
 		//モデルの画像がない場合にセットする//
-		ChPtr::Shared<ChD3D11::Texture11>WhiteTex = nullptr;
+		ChD3D11::Texture11 WhiteTex;
 
 		//モデルの法線マップがない場合に使用する画像//
-		ChPtr::Shared<ChD3D11::Texture11>NormalTex = nullptr;
+		ChD3D11::Texture11 NormalTex;
 
 		//ライトの強さを表す画像情報//
-		ChPtr::Shared<ChD3D11::Texture11>LightEffectTex = nullptr;
+		ChD3D11::Texture11 LightEffectTex;
 
 
 		ChStd::Bool LightUseFlg = false;
@@ -383,7 +383,7 @@ namespace ChD3D11
 		//AmbTex = nullptr;
 
 		//ライトの強さを設定する画像//
-		ChPtr::Shared<ChD3D11::Texture11>MyLightTex = nullptr;
+		ChD3D11::Texture11 MyLightTex;
 
 		ChStd::Bool UseMyLightTex = false;
 

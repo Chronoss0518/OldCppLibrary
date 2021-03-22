@@ -84,7 +84,7 @@ namespace ChCpp
 	//ゲームシーンを簡易的生成を行うためのクラス//
 	//必要に応じて以下の関数をオーバーライドする//
 	//void Init(),void Release(),void Frame()//
-	class BaseFrame
+	class BaseFrame:public ChCpp::ChCp::Releaser
 	{
 	public:
 
@@ -92,7 +92,7 @@ namespace ChCpp
 		//InitAndRelease//
 		virtual inline void Init() {};
 
-		virtual inline void Release() {};
+		virtual inline void Release()override {};
 
 		///////////////////////////////////////////////////////////////////////////////////
 

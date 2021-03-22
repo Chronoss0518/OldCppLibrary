@@ -136,11 +136,9 @@ void ShaderController11::Init(
 	ViewPort.Width = _WindWidth;
 	ViewPort.Height = _WindHeight;
 
-	WhiteTex = ChPtr::Make_S<ChD3D11::Texture11>();
-	WhiteTex->CreateColorTexture(Device,ChVec4(1.0f, 1.0f, 1.0f, 1.0f), 1, 1);
+	WhiteTex.CreateColorTexture(Device,ChVec4(1.0f, 1.0f, 1.0f, 1.0f), 1, 1);
 
-	NormalTex = ChPtr::Make_S<Texture11>();
-	NormalTex->CreateColorTexture(Device, ChVec4(0.5f, 1.0f, 0.5f, 1.0f), 1, 1);
+	NormalTex.CreateColorTexture(Device, ChVec4(0.5f, 1.0f, 0.5f, 1.0f), 1, 1);
 
 	BDObject.ProjMat.CreateProjectionMat(
 		ChMath::ToRadian(60.0f)
@@ -165,9 +163,8 @@ void ShaderController11::Init(
 		{
 			TmpCol[i] = ChVec4(i / 256.0f, i / 256.0f, i / 256.0f, 1.0f);
 		}
-		LightEffectTex = ChPtr::Make_S<Texture11>();
 
-		LightEffectTex->CreateColorTexture(Device, TmpCol, 256, 1);
+		LightEffectTex.CreateColorTexture(Device, TmpCol, 256, 1);
 
 	}
 
@@ -183,9 +180,7 @@ void ShaderController11::Init(
 
 	}
 
-	DSBuffer = ChPtr::Make_S<ChD3D11::Texture11>();
-
-	DSBuffer->CreateDepthBuffer(Device, _WindWidth, _WindHeight);
+	DSBuffer.CreateDepthBuffer(Device, _WindWidth, _WindHeight);
 
 	//•`‰æ•û–@//
 	D3D11_RASTERIZER_DESC RasteriserDesc
@@ -213,9 +208,9 @@ void ShaderController11::Init(
 
 void ShaderController11::Release()
 {
-	WhiteTex = nullptr;
-	NormalTex = nullptr;
-	LightEffectTex = nullptr;
+	WhiteTex.Release();
+	NormalTex.Release();
+	LightEffectTex.Release();
 
 	if (ChPtr::NotNullCheck(BBTargetView))
 	{
@@ -241,7 +236,7 @@ void ShaderController11::Release()
 		PolygonData = nullptr;
 	}
 
-	MyLightTex = nullptr;
+	MyLightTex.Release();
 
 	SetInitFlg(false);
 }
@@ -326,9 +321,9 @@ void ShaderController11::DrawStart()
 	else
 	{
 
-		DC->OMSetRenderTargets(1, &BBTargetView, DSBuffer->GetDSView());
+		DC->OMSetRenderTargets(1, &BBTargetView, DSBuffer.GetDSView());
 		DC->ClearRenderTargetView(BBTargetView, BackColor.Val.GetVal());
-		DSBuffer->ClearDepthBuffer(DC);
+		DSBuffer.ClearDepthBuffer(DC);
 
 		RTDrawFlg = false;
 	}
@@ -441,7 +436,7 @@ void ShaderController11::DrawToons(
 ///////////////////////////////////////////////////////////////////////////////////
 
 void ShaderController11::Draw(
-	ChPtr::Shared<ChD3D11::Texture11>& _Tex
+	ChD3D11::Texture11& _Tex
 	, PolygonBoard11& _Polygon
 	, const ChMat_11& _Mat)
 {
@@ -451,9 +446,9 @@ void ShaderController11::Draw(
 	//CDObject.ModelMat = _Mat.Transpose();
 	CDObject.ModelMat = _Mat;
 
-	ChPtr::Shared<ChD3D11::Texture11> DrawTex = _Tex;
+	ChD3D11::Texture11* DrawTex = &_Tex;
 
-	if (DrawTex == nullptr)DrawTex = WhiteTex;
+	if (!DrawTex->IsTex())DrawTex = &WhiteTex;
 
 	PoVTex.SetShader(DC);
 
@@ -464,7 +459,6 @@ void ShaderController11::Draw(
 	DC->VSSetConstantBuffers(1, 1, &CharaData);
 	DC->PSSetConstantBuffers(1, 1, &CharaData);
 
-
 	DrawTex->SetDrawData(DC, 0);
 
 	_Polygon.SetDrawData(DC);
@@ -473,7 +467,7 @@ void ShaderController11::Draw(
 ///////////////////////////////////////////////////////////////////////////////////
 
 void ShaderController11::Draw(
-	ChPtr::Shared<ChD3D11::Texture11>& _Tex
+	ChD3D11::Texture11& _Tex
 	, Sprite11& _Sprite
 	, const ChMat_11& _Mat)
 {
@@ -484,9 +478,9 @@ void ShaderController11::Draw(
 	//PDObject.ModelMat = _Mat.Transpose();
 	PDObject.ModelMat = _Mat;
 
-	ChPtr::Shared<ChD3D11::Texture11> DrawTex = _Tex;
+	ChD3D11::Texture11* DrawTex = &_Tex;
 
-	if (DrawTex == nullptr)DrawTex = WhiteTex;
+	if (!DrawTex->IsTex())DrawTex = &WhiteTex;
 
 	SpVTex.SetShader(DC);
 

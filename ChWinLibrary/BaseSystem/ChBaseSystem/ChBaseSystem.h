@@ -142,7 +142,7 @@ namespace ChSystem
 		{
 			if (*this)return false;
 			if (BaseSystems == nullptr)return false;
-			return BaseSystems->IsPause(_Key);
+			return BaseSystems->IsPushKey(_Key);
 		}
 
 		//BaseSystem‚æ‚èŠÔÚ“I‚ÉŠm”F‚·‚é//
@@ -150,7 +150,7 @@ namespace ChSystem
 		{
 			if (*this)return false;
 			if (BaseSystems == nullptr)return false;
-			return BaseSystems->IsPause(_Key);
+			return BaseSystems->IsPushKeyNoHold(_Key);
 
 		}
 

@@ -45,6 +45,7 @@ namespace ChD3D11
 	void Mesh11::Release()
 	{
 		FrameList.clear();
+		ShaderObject<PrimitiveVertex11>::Release();
 		ModelData = nullptr;
 	}
 

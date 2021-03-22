@@ -11,10 +11,7 @@ void Sprite11::Init()
 {
 	if (!D3D11API().IsInit())return;
 
-
 	Init(D3D11Device());
-
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -47,7 +44,7 @@ void Sprite11::Init(const ID3D11Device* _Device)
 
 void Sprite11::Release()
 {
-
+	ShaderObject<Vertex11>::Release();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -69,6 +66,19 @@ void Sprite11::SetUVPos(const unsigned char _PosNames, const ChVec2& _PosData)
 	if (_PosNames >= 4)return;
 
 	UVPoss[_PosNames] = _PosData;
+
+	UpdateFlg = true;
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
+void Sprite11::Move(const float _x, const float _y)
+{
+	for (unsigned char i = 0; i < 4; i++)
+	{
+		Position[i].x += _x;
+		Position[i].y += _y;
+	}
 
 	UpdateFlg = true;
 }

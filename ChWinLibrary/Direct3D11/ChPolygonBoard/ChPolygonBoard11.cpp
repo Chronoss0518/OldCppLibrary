@@ -89,7 +89,7 @@ void PolygonBoard11::Init(ID3D11Device* _Device)
 
 void PolygonBoard11::Release()
 {
-	Primitives.Release();
+	ShaderObject<MeshVertex11>::Release();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

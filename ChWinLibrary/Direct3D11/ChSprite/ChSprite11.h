@@ -8,7 +8,7 @@ namespace ChD3D11
 
 	enum class SpritePositionName : unsigned char
 	{
-		LeftTop,RightDown,RightTop, LeftDown
+		LeftTop,RightTop,RightDown, LeftDown
 	};
 
 	class Sprite11 :public ShaderObject<Vertex11>
@@ -59,22 +59,40 @@ namespace ChD3D11
 		///////////////////////////////////////////////////////////////////////////////////
 		//GetFunction//
 
+
+		inline ChVec2 GetPos(const SpritePositionName _PosNames)
+		{
+			return Position[ChStd::EnumCast(_PosNames)];
+		}
+
 		inline ChVec2 GetPos(const unsigned char _Num)
 		{
 			if (_Num >= 4)return ChVec2();
 
 			return Position[_Num];
-
 		}
 
-		inline ChVec2 GetUVPos(const unsigned char _Num)
+		inline ChVec2 GetPosUVPos(const SpritePositionName _PosNames)
+		{
+			return UVPoss[ChStd::EnumCast(_PosNames)];
+		}
+
+		ChVec2 GetPosUVPos(const unsigned char _Num)
 		{
 			if (_Num >= 4)return ChVec2();
 
 			return UVPoss[_Num];
-
 		}
 
+		///////////////////////////////////////////////////////////////////////////////////
+		
+		inline void Move(const ChVec2& _Vec) { Move(_Vec.x, _Vec.y); }
+
+		void Move(const float _x,const float _y);
+
+		inline void MoveX(const float _x) { Move(_x, 0.0f); }
+
+		inline void MoveY(const float _y) { Move(0.0f, _y); }
 
 		///////////////////////////////////////////////////////////////////////////////////
 

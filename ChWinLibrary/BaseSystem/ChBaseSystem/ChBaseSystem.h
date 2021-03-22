@@ -140,7 +140,7 @@ namespace ChSystem
 		//BaseSystemより間接的に確認する//
 		inline ChStd::Bool IsPushKey(const int _Key)
 		{
-			if (*this)return false;
+			if (!*this)return false;
 			if (BaseSystems == nullptr)return false;
 			return BaseSystems->IsPushKey(_Key);
 		}
@@ -148,7 +148,7 @@ namespace ChSystem
 		//BaseSystemより間接的に確認する//
 		inline ChStd::Bool IsPushKeyNoHold(const int _Key)
 		{
-			if (*this)return false;
+			if (!*this)return false;
 			if (BaseSystems == nullptr)return false;
 			return BaseSystems->IsPushKeyNoHold(_Key);
 
@@ -157,7 +157,7 @@ namespace ChSystem
 		//BaseSystemより間接的に確認する//
 		inline ChStd::Bool IsPause(const int _Key)
 		{
-			if (*this)return false;
+			if (!*this)return false;
 			if (BaseSystems == nullptr)return false;
 			return BaseSystems->IsPause(_Key);
 
@@ -166,7 +166,7 @@ namespace ChSystem
 		//システムを継続するか//
 		ChStd::Bool IsUpdate()
 		{
-			if (!BaseSystems)return false;
+			if (BaseSystems == nullptr)return false;
 			NowTime = BaseSystems->GetNowTime();
 			return BaseSystems->IsUpdate();
 		}
@@ -179,6 +179,9 @@ namespace ChSystem
 		//FPS処理
 		inline ChStd::Bool FPSProcess()
 		{
+			if (!*this)return false;
+			if (BaseSystems == nullptr)return false;
+
 			NowTime = BaseSystems->GetNowTime();
 
 			static unsigned long FPSTime;

@@ -2,6 +2,6 @@
 <html>
   <body>
       <h1>My Library</h1>
-      <p>Using My Library To Created My Projects</p>
+      <p>ChCppLibraryの古いバージョン置き場</p>
   </body>
 </html>

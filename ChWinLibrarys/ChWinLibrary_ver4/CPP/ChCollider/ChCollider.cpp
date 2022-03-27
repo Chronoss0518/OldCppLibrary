@@ -1,0 +1,121 @@
+#include"../../BaseIncluder/ChBase.h"
+#include"ChCollider.h"
+
+using namespace ChCpp;
+
+///////////////////////////////////////////////////////////////////////////////////////
+//BaseCollider Method//
+///////////////////////////////////////////////////////////////////////////////////////
+
+void BaseCollider::SetIfIsHitObject(BaseCollider* _Obj)
+{
+	if (_Obj == this)return;
+
+	ChVec3 Vec = Pos - _Obj->Pos;
+
+	if (Vec.Len() > GetMaxLen() + _Obj->GetMaxLen())return;
+
+	HitTestObjects.push_back(_Obj);
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+void BaseCollider::Update()
+{
+
+	for (auto Obj : HitTestObjects)
+	{
+		HitTestFunction<BoxCollider>(Obj);
+		HitTestFunction<SphereCollider>(Obj);
+	}
+
+
+	HitTestObjects.clear();
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+void BaseCollider::AddColliders()
+{
+	ColManager().AddCollider(this);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+//ColliderManager Method//
+///////////////////////////////////////////////////////////////////////////////////////
+
+void ColliderManager::Update()
+{
+	if (Collisions.size() <= 0)return;
+
+	for (auto&& Col : Collisions)
+	{
+		Col->StartUp();
+	}
+
+	for (unsigned long i = 0; i < Collisions.size() - 2; i++)
+	{
+		auto& Col = *Collisions[i];
+
+		for (unsigned long j = i + 1; j < Collisions.size() - 1; j++)
+		{
+			Col.SetIfIsHitObject(Collisions[j]);
+		}
+	}
+
+	for (auto&& Col : Collisions)
+	{
+		Col->Update();
+	}
+
+	for (auto&& Col : Collisions)
+	{
+		Col->EndStep();
+	}
+
+
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+//BoxCollider Method//
+///////////////////////////////////////////////////////////////////////////////////////
+
+BaseCollider* BoxCollider::HitTest(BoxCollider* _Box)
+{
+	return nullptr;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+BaseCollider* BoxCollider::HitTest(SphereCollider* _Sphere)
+{
+
+	return nullptr;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+//SphereCollider Method//
+///////////////////////////////////////////////////////////////////////////////////////
+
+BaseCollider* SphereCollider::HitTest(BoxCollider* _Box)
+{
+
+	
+
+	return nullptr;
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+BaseCollider* SphereCollider::HitTest(SphereCollider* _Sphere)
+{
+	ChVec3 Tmp =  _Sphere->GetPos() - GetPos();
+
+	if (Tmp.Len() > GetLen() + _Sphere->GetLen())return nullptr;
+
+	return _Sphere;
+}
